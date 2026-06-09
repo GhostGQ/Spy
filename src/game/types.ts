@@ -8,7 +8,6 @@ export type Winner = 'civilians' | 'spies' | 'majority' | 'ghosts' | 'skip';
 export interface Category {
   id: string;
   title: string;
-  emoji: string;
   words: string[];
 }
 

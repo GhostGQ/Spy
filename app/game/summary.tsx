@@ -1,10 +1,12 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import type { ReactNode } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Card } from '@/components/Card';
 import { PrimaryButton } from '@/components/PrimaryButton';
+import { CategoryIcon } from '@/components/icons/CategoryIcon';
 import { getCategory } from '@/data/categories';
 import { getMode } from '@/data/modes';
 import type { Role } from '@/game/types';
@@ -17,12 +19,22 @@ const KIND_META: Record<Role['kind'], { label: string; color: string; icon: keyo
   ghost: { label: 'Призрак', color: colors.level, icon: 'sparkles' },
 };
 
-function InfoRow({ label, value, icon }: { label: string; value: string; icon: keyof typeof Ionicons.glyphMap }) {
+function InfoRow({
+  label,
+  value,
+  valueNode,
+  icon,
+}: {
+  label: string;
+  value?: string;
+  valueNode?: ReactNode;
+  icon: keyof typeof Ionicons.glyphMap;
+}) {
   return (
     <View className="flex-row items-center py-2">
       <Ionicons name={icon} size={18} color={colors.muted} />
       <Text className="ml-2 flex-1 text-sm text-muted">{label}</Text>
-      <Text className="text-base font-bold text-white">{value}</Text>
+      {valueNode ?? <Text className="text-base font-bold text-white">{value}</Text>}
     </View>
   );
 }
@@ -79,7 +91,16 @@ export default function Summary() {
           <Card className="mt-4">
             <InfoRow label="Режим" value={`${mode.emoji} ${mode.title}`} icon="game-controller-outline" />
             <View className="h-px bg-border" />
-            <InfoRow label="Категория" value={`${category.emoji} ${category.title}`} icon="albums-outline" />
+            <InfoRow
+              label="Категория"
+              icon="albums-outline"
+              valueNode={
+                <View className="flex-row items-center">
+                  <CategoryIcon id={category.id} size={18} color={colors.accentBright} />
+                  <Text className="ml-1.5 text-base font-bold text-white">{category.title}</Text>
+                </View>
+              }
+            />
             <View className="h-px bg-border" />
             <InfoRow label="Загаданное слово" value={word} icon="key-outline" />
             {config.mode === 'ghost' && fakeWord ? (

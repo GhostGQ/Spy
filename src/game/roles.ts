@@ -1,6 +1,12 @@
 import { getCategory } from '@/data/categories';
 import type { GameConfig, Role } from '@/game/types';
 
+/** A selected category paired with its currently enabled words. */
+export interface WordPool {
+  categoryId: string;
+  words: string[];
+}
+
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -51,14 +57,23 @@ export function maxSpecialMajority(playerCount: number): number {
 }
 
 /**
- * Core role assignment. Pure function of config (+ Math.random).
+ * Core role assignment. Pure function of config + the enabled word pools
+ * (+ Math.random). `pools` are the selected categories with their enabled words.
  */
-export function assignRoles(config: GameConfig): AssignResult {
-  // Pick one category at random from the selected ones, then a word from it.
-  const ids = config.categoryIds.length ? config.categoryIds : ['food'];
-  const categoryId = ids[Math.floor(Math.random() * ids.length)];
-  const category = getCategory(categoryId);
-  const word = pickWord(category.words);
+export function assignRoles(config: GameConfig, pools: WordPool[]): AssignResult {
+  // Pick one (non-empty) pool at random, then a word from it. Fall back to the
+  // full word list of the first selected category if nothing is enabled.
+  const usable = pools.filter((p) => p.words.length > 0);
+  const pool: WordPool =
+    usable.length > 0
+      ? usable[Math.floor(Math.random() * usable.length)]
+      : (() => {
+          const id = config.categoryIds[0] ?? 'food';
+          return { categoryId: id, words: getCategory(id).words };
+        })();
+
+  const categoryId = pool.categoryId;
+  const word = pickWord(pool.words);
   const n = config.playerCount;
 
   let specialCount: number;
@@ -68,7 +83,7 @@ export function assignRoles(config: GameConfig): AssignResult {
     // Hidden, randomized at start. Can exceed civilians, but at least 1 civilian.
     specialCount = randomInt(1, n - 1);
   } else if (config.mode === 'ghost') {
-    fakeWord = pickDifferentWord(category.words, word);
+    fakeWord = pickDifferentWord(pool.words, word);
     specialCount = Math.min(Math.max(1, config.specialCount), maxSpecialMajority(n));
   } else {
     // classic

@@ -1,7 +1,18 @@
 import { create } from 'zustand';
 
-import { assignRoles } from '@/game/roles';
+import { getCategory } from '@/data/categories';
+import { assignRoles, type WordPool } from '@/game/roles';
 import type { GameConfig, ModeId, Role, Winner } from '@/game/types';
+import { enabledWords, useSettingsStore } from '@/store/settingsStore';
+
+/** Build the enabled-word pools for the currently selected categories. */
+function buildPools(config: GameConfig): WordPool[] {
+  const disabled = useSettingsStore.getState().disabledWords;
+  return config.categoryIds.map((id) => ({
+    categoryId: id,
+    words: enabledWords(getCategory(id).words, disabled[id]),
+  }));
+}
 
 const DEFAULT_CONFIG: GameConfig = {
   mode: 'classic',
@@ -77,7 +88,7 @@ export const useGameStore = create<GameState>((set, get) => ({
 
   startGame: () => {
     const { config } = get();
-    const result = assignRoles(config);
+    const result = assignRoles(config, buildPools(config));
     set({
       roles: result.roles,
       word: result.word,
@@ -93,7 +104,7 @@ export const useGameStore = create<GameState>((set, get) => ({
 
   playAgain: () => {
     const { config } = get();
-    const result = assignRoles(config);
+    const result = assignRoles(config, buildPools(config));
     set({
       roles: result.roles,
       word: result.word,
