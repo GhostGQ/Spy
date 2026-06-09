@@ -6,6 +6,23 @@ import type { Category } from '@/game/types';
  */
 export const CATEGORIES: Category[] = [
   {
+    id: 'locations',
+    title: 'Локации',
+    words: ['Аэропорт', 'Больница', 'Школа', 'Банк', 'Театр', 'Стадион', 'Ресторан', 'Отель', 'Пляж', 'Музей', 'Метро', 'Суд']
+  },
+  {
+    id: 'superpower',
+    title: 'Суперсилы',
+    words:
+      ['Телепортация', 'Невидимость', 'Полёт', 'Чтение мыслей', 'Управление временем', 'Управление огнём', 'Управление льдом', 'Сверхскорость', 'Сверхсила', 'Исцеление', 'Управление электричеством', 'Превращение в животных']
+  },
+  {
+    id: 'games',
+    title: 'Игры',
+    words:
+      ['Minecraft', 'Dota 2', 'Counter-Strike 2', 'Valorant', 'GTA V', 'The Witcher 3', 'Cyberpunk 2077', 'Fortnite', 'League of Legends', 'Terraria', 'Among Us', 'The Sims 4']
+  },
+  {
     id: 'food',
     title: 'Еда',
     words: [

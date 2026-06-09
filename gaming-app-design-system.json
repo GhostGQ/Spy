@@ -1,0 +1,619 @@
+{
+  "$schema": "https://design-system.schema/v1",
+  "meta": {
+    "name": "Gaming Mobile App Design System",
+    "version": "1.0.0",
+    "category": "Gaming / Entertainment / Consumer Mobile App",
+    "platform": "iOS / Android (Mobile-first)",
+    "description": "A dark, immersive gaming platform design system built around deep navy/indigo backgrounds, electric blue accents, glowing UI effects, and cinematic game art. Characterized by deep contrast, vibrant highlights, and a high-energy aesthetic that feels native to the gaming world."
+  },
+
+  "designPrinciples": {
+    "aesthetic": "Dark Neon Glassmorphism / Gaming UI",
+    "tone": "High-energy, immersive, confident, cinematic",
+    "motif": "Deep space darkness lit by electric neon — everything lives in shadow until illuminated by accent color",
+    "coreIdea": "The interface should feel like a HUD (heads-up display) — functional, bold, and visually exciting without getting in the way of the game art",
+    "visualHierarchy": "Game art first (full-bleed imagery), then action (CTA buttons), then metadata (ratings, installs, genres)",
+    "density": "Medium density — enough content to feel rich, but clear breathing room between list items and cards",
+    "contrast": "Extreme — near-black backgrounds against electric blue, white text, and vivid game cover art"
+  },
+
+  "colorSystem": {
+    "description": "Deep indigo/navy dark mode base with electric blue as the dominant accent. Purple used as secondary accent for gradient variety. All surfaces are dark with subtle blue tints.",
+    "palette": {
+      "backgroundBase": "#1A1D3A",
+      "backgroundDeep": "#13152E",
+      "backgroundCard": "#1E2248",
+      "backgroundCardElevated": "#252A52",
+      "backgroundSurface": "#2A2F5A",
+      "backgroundOverlay": "rgba(20, 22, 50, 0.85)",
+      "accentBlue": "#3B82F6",
+      "accentBlueBright": "#60A5FA",
+      "accentBlueElectric": "#2DD4F7",
+      "accentPurple": "#7C3AED",
+      "accentPurpleLight": "#A78BFA",
+      "accentPurpleVibrant": "#8B5CF6",
+      "accentGradientStart": "#3B82F6",
+      "accentGradientEnd": "#7C3AED",
+      "highlightCyan": "#06B6D4",
+      "textPrimary": "#FFFFFF",
+      "textSecondary": "#B8BDD8",
+      "textMuted": "#6B7394",
+      "textAccent": "#60A5FA",
+      "textLink": "#3B82F6",
+      "starYellow": "#FBBF24",
+      "downloadBlue": "#60A5FA",
+      "onlineGreen": "#34D399",
+      "errorRed": "#F87171",
+      "divider": "rgba(255,255,255,0.06)",
+      "borderSubtle": "rgba(255,255,255,0.08)",
+      "borderGlow": "rgba(59,130,246,0.4)"
+    },
+    "gradients": {
+      "backgroundPage": "linear-gradient(180deg, #1A1D3A 0%, #13152E 100%)",
+      "backgroundSplash": "linear-gradient(160deg, #1E2248 0%, #13152E 50%, #1A1040 100%)",
+      "accentPrimary": "linear-gradient(135deg, #3B82F6 0%, #7C3AED 100%)",
+      "accentSecondary": "linear-gradient(135deg, #2DD4F7 0%, #3B82F6 100%)",
+      "featureBanner": "linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)",
+      "ctaButton": "linear-gradient(90deg, #3B82F6 0%, #2DD4F7 100%)",
+      "ctaButtonSecondary": "linear-gradient(135deg, #4F46E5 0%, #6D28D9 100%)",
+      "gameCardOverlay": "linear-gradient(180deg, transparent 40%, rgba(13,15,30,0.95) 100%)",
+      "heroOverlay": "linear-gradient(180deg, rgba(20,22,50,0) 0%, rgba(20,22,50,0.6) 70%, rgba(20,22,50,1) 100%)",
+      "glowBlue": "radial-gradient(circle at center, rgba(59,130,246,0.3) 0%, transparent 70%)",
+      "glowPurple": "radial-gradient(circle at center, rgba(124,58,237,0.3) 0%, transparent 70%)"
+    },
+    "semanticColors": {
+      "activeTab": "accentBlue",
+      "inactiveTab": "textMuted",
+      "ratingStars": "starYellow",
+      "downloadCount": "downloadBlue",
+      "onlineIndicator": "onlineGreen",
+      "liveTag": "accentBlueElectric",
+      "tournamentBadge": "accentPurpleVibrant"
+    }
+  },
+
+  "typography": {
+    "description": "Bold, heavy sans-serif for headings; clean medium-weight for body. Strong size contrast between display and utility text. All text is white or blue-tinted — never dark text on dark background.",
+    "fontFamilies": {
+      "display": "'Rajdhani', 'Barlow', 'Exo 2', sans-serif",
+      "body": "'Inter', 'DM Sans', 'Barlow', sans-serif",
+      "ui": "'Inter', 'DM Sans', sans-serif",
+      "mono": "'JetBrains Mono', 'Fira Code', monospace",
+      "note": "Rajdhani or Barlow Condensed are ideal for headings — slightly techy/condensed, still highly legible. Inter for all body/UI copy."
+    },
+    "scale": {
+      "hero": { "size": "36px", "weight": 800, "lineHeight": "1.1", "letterSpacing": "-0.5px", "usage": "Page hero title (Browse Games)" },
+      "h1": { "size": "28px", "weight": 700, "lineHeight": "1.2", "usage": "Screen titles, game names in hero" },
+      "h2": { "size": "22px", "weight": 700, "lineHeight": "1.3", "usage": "Section headers (Top This Year)" },
+      "h3": { "size": "18px", "weight": 600, "lineHeight": "1.4", "usage": "Card titles, tournament names" },
+      "h4": { "size": "16px", "weight": 600, "lineHeight": "1.4", "usage": "List item game titles" },
+      "bodyLarge": { "size": "15px", "weight": 400, "lineHeight": "1.5", "usage": "Subtitle descriptions" },
+      "body": { "size": "13px", "weight": 400, "lineHeight": "1.5", "usage": "Genre tags, card descriptions" },
+      "bodySmall": { "size": "12px", "weight": 400, "lineHeight": "1.4", "usage": "Metadata: ratings, download counts" },
+      "label": { "size": "11px", "weight": 600, "lineHeight": "1.2", "letterSpacing": "0.4px", "usage": "Tags, badges, tab labels" },
+      "cta": { "size": "16px", "weight": 700, "lineHeight": "1.2", "letterSpacing": "0.2px", "usage": "Button text (Play, Start Now, Join)" },
+      "playerCount": { "size": "14px", "weight": 600, "lineHeight": "1.2", "usage": "Online player count indicator" }
+    },
+    "weightUsage": {
+      "800": "Hero display titles",
+      "700": "Screen titles, CTA buttons, key headings",
+      "600": "Game titles in lists, section labels, metadata keys",
+      "400": "Body copy, genre tags, descriptions",
+      "300": "Muted metadata, secondary timestamps"
+    }
+  },
+
+  "spacing": {
+    "description": "8pt base grid. Generous horizontal padding. Tight vertical rhythm within list items, wider gaps between sections.",
+    "baseUnit": "8px",
+    "scale": {
+      "xs": "4px",
+      "sm": "8px",
+      "md": "12px",
+      "lg": "16px",
+      "xl": "20px",
+      "2xl": "24px",
+      "3xl": "32px",
+      "4xl": "40px",
+      "5xl": "48px",
+      "6xl": "64px"
+    },
+    "screenPadding": "20px",
+    "cardPadding": "16px",
+    "listItemPaddingVertical": "12px",
+    "sectionGap": "28px",
+    "componentGap": "12px",
+    "listItemGap": "4px",
+    "gridGap": "8px"
+  },
+
+  "borderRadius": {
+    "description": "Moderately rounded — not pill-shaped softness like consumer apps. Cards are rounded, buttons can be pill, but the system has a more structured, tech feel.",
+    "none": "0px",
+    "xs": "4px",
+    "sm": "8px",
+    "md": "12px",
+    "lg": "16px",
+    "xl": "20px",
+    "2xl": "24px",
+    "pill": "999px",
+    "usage": {
+      "gameListThumbnail": "12px",
+      "gameGridCard": "16px",
+      "featureBanner": "16px",
+      "playButton": "999px",
+      "ctaButton": "999px",
+      "searchInput": "12px",
+      "tabBar": "0px (full width) or 20px top corners if floating",
+      "tournamentCard": "16px",
+      "heroScreen": "20px top corners if shown inside frame",
+      "filterChip": "999px",
+      "avatarIcon": "50%"
+    }
+  },
+
+  "shadows": {
+    "description": "Glows and colored shadows — not neutral dark shadows. Blue or purple glow is the signature effect.",
+    "none": "none",
+    "subtle": "0px 2px 8px rgba(0,0,0,0.4)",
+    "card": "0px 4px 20px rgba(0,0,0,0.5)",
+    "cardGlow": "0px 4px 24px rgba(59,130,246,0.2)",
+    "ctaGlow": "0px 8px 24px rgba(59,130,246,0.5)",
+    "ctaGlowPurple": "0px 8px 24px rgba(124,58,237,0.45)",
+    "featureBannerGlow": "0px 8px 32px rgba(124,58,237,0.35)",
+    "thumbnailInset": "inset 0px -2px 12px rgba(0,0,0,0.6)",
+    "iconGlow": "0px 0px 12px rgba(59,130,246,0.6)"
+  },
+
+  "effects": {
+    "glassmorphism": {
+      "background": "rgba(30, 34, 72, 0.7)",
+      "backdropFilter": "blur(16px)",
+      "border": "1px solid rgba(255,255,255,0.07)",
+      "usage": "Overlay cards on hero screens, search bar background, bottom sheet modals"
+    },
+    "neonGlow": {
+      "description": "Blue/cyan glow on active elements and CTAs",
+      "boxShadow": "0 0 20px rgba(59,130,246,0.6), 0 0 40px rgba(59,130,246,0.2)",
+      "textShadow": "0 0 10px rgba(96,165,250,0.8)",
+      "usage": "Active tab icons, primary CTA buttons, online indicators"
+    },
+    "imageOverlay": {
+      "description": "Dark gradient overlay on game cover art for text legibility",
+      "gradient": "linear-gradient(180deg, transparent 40%, rgba(13,15,30,0.95) 100%)",
+      "usage": "Bottom of all game grid cards"
+    },
+    "heroBleed": {
+      "description": "Full-bleed game character/art that breaks outside card bounds",
+      "overflow": "visible",
+      "zIndex": "elevated above sibling cards",
+      "usage": "Center hero screen — character bleeds beyond phone frame edges"
+    },
+    "innerGlow": {
+      "border": "1px solid rgba(59,130,246,0.25)",
+      "boxShadow": "inset 0 0 20px rgba(59,130,246,0.08)",
+      "usage": "Featured/active cards to indicate selection or highlight"
+    }
+  },
+
+  "components": {
+    "screenLayout": {
+      "background": "gradients.backgroundPage",
+      "padding": "0 20px",
+      "safeAreaTop": "respect OS notch",
+      "safeAreaBottom": "respect home indicator",
+      "maxWidth": "390px"
+    },
+
+    "navigationBar": {
+      "style": "Transparent over dark background",
+      "height": "56px",
+      "background": "transparent",
+      "backdropFilter": "none (background handles darkness)",
+      "leftSlot": "back chevron icon, textPrimary",
+      "centerSlot": "screen title — h3, textPrimary, centered",
+      "rightSlot": "icon buttons (bell, filter/sliders)",
+      "iconSize": "22px",
+      "iconColor": "textPrimary",
+      "titleStyle": "h3, white, fontWeight 600",
+      "backChevron": "< simple left arrow, 22px, white"
+    },
+
+    "tabBar": {
+      "position": "fixed bottom",
+      "height": "68px",
+      "background": "backgroundCard",
+      "border": "1px solid borderSubtle",
+      "borderRadius": "0px",
+      "activeColor": "accentBlue",
+      "activeGlow": "shadows.iconGlow",
+      "inactiveColor": "textMuted",
+      "tabCount": 5,
+      "iconSize": "24px",
+      "showLabels": false,
+      "indicatorStyle": "colored icon only, no underline bar",
+      "shadow": "0px -4px 20px rgba(0,0,0,0.4)"
+    },
+
+    "heroScreen": {
+      "description": "Full-bleed immersive screen with game character art and single CTA",
+      "background": "gradients.backgroundSplash",
+      "artPosition": "center, top-anchored, overflows card/screen bounds",
+      "artBlend": "screen or normal, character lighting matches purple/blue ambient",
+      "overlay": "effects.heroBleed",
+      "bottomGradient": "gradients.heroOverlay",
+      "cta": {
+        "position": "bottom, 24px above safe area",
+        "style": "buttons.ctaPrimary",
+        "fullWidth": true,
+        "label": "Start Now / Play Now"
+      }
+    },
+
+    "featureBanner": {
+      "description": "Horizontal promotional card — tournament / event callout",
+      "background": "gradients.featureBanner",
+      "borderRadius": "16px",
+      "padding": "16px",
+      "height": "100px",
+      "layout": "row: game art thumbnail left + text center + CTA button right",
+      "thumbnailSize": "70px, borderRadius 10px",
+      "titleStyle": "h3, white, fontWeight 700",
+      "subtitleStyle": "body, textSecondary",
+      "cta": {
+        "label": "Join",
+        "background": "accentBlue",
+        "borderRadius": "999px",
+        "padding": "8px 20px",
+        "textStyle": "label, white, fontWeight 700",
+        "shadow": "shadows.ctaGlow"
+      },
+      "shadow": "shadows.featureBannerGlow"
+    },
+
+    "gameListItem": {
+      "description": "Horizontal list row for ranked game listings",
+      "layout": "row: thumbnail | text block | play button",
+      "height": "72px",
+      "background": "transparent",
+      "borderBottom": "1px solid divider",
+      "thumbnail": {
+        "size": "56px",
+        "borderRadius": "12px",
+        "shadow": "shadows.subtle"
+      },
+      "textBlock": {
+        "gap": "4px",
+        "titleStyle": "h4, textPrimary, fontWeight 600",
+        "genreStyle": "body, textMuted, fontWeight 400",
+        "metaRow": {
+          "layout": "row, gap 12px",
+          "ratingIcon": "★ starYellow, 12px",
+          "ratingValue": "bodySmall, textSecondary, fontWeight 600",
+          "downloadIcon": "↓ downloadBlue, 12px",
+          "downloadValue": "bodySmall, textMuted"
+        }
+      },
+      "playButton": {
+        "label": "Play",
+        "background": "transparent",
+        "border": "1.5px solid borderGlow",
+        "borderRadius": "999px",
+        "padding": "8px 20px",
+        "textStyle": "label, accentBlueBright, fontWeight 700",
+        "hoverState": {
+          "background": "accentBlue",
+          "textColor": "white",
+          "shadow": "shadows.ctaGlow"
+        }
+      }
+    },
+
+    "gameGridCard": {
+      "description": "2-column grid card showing game cover art with title overlay",
+      "aspectRatio": "3/4 portrait",
+      "borderRadius": "16px",
+      "overflow": "hidden",
+      "background": "backgroundCard",
+      "imageStyle": "full-bleed cover, object-fit: cover",
+      "overlay": "effects.imageOverlay",
+      "titlePosition": "bottom-left, inside card, over gradient",
+      "titleStyle": "h4, white, fontWeight 700, textShadow subtle",
+      "logoPosition": "bottom-right (game logo if available)",
+      "shadow": "shadows.card",
+      "activeState": {
+        "border": "1.5px solid accentBlue",
+        "shadow": "shadows.cardGlow"
+      }
+    },
+
+    "searchBar": {
+      "height": "48px",
+      "background": "backgroundSurface",
+      "borderRadius": "12px",
+      "border": "1px solid borderSubtle",
+      "padding": "0 16px",
+      "layout": "row: search icon + input + filter icon",
+      "iconColor": "textMuted",
+      "iconSize": "18px",
+      "placeholderStyle": "body, textMuted",
+      "inputStyle": "body, textPrimary",
+      "focusState": {
+        "border": "1px solid accentBlue",
+        "shadow": "0 0 0 2px rgba(59,130,246,0.15)"
+      },
+      "filterIcon": {
+        "size": "18px",
+        "color": "textMuted",
+        "style": "sliders / equalizer icon (3 horizontal lines with dots)"
+      }
+    },
+
+    "onlineIndicator": {
+      "description": "Live player count shown in nav or header area",
+      "layout": "row: wifi/signal icon + count",
+      "icon": "signal/broadcast icon, accentBlueElectric, 16px",
+      "countStyle": "playerCount, textPrimary",
+      "containerStyle": {
+        "background": "transparent",
+        "borderRadius": "999px",
+        "gap": "4px"
+      }
+    },
+
+    "sectionHeader": {
+      "layout": "row, space-between, align center",
+      "titleStyle": "h2, textPrimary",
+      "emojiSuffix": "optional (🔥 for trending)",
+      "actionStyle": "body, textAccent, fontWeight 600",
+      "marginBottom": "16px"
+    },
+
+    "buttons": {
+      "ctaPrimary": {
+        "background": "gradients.ctaButton",
+        "borderRadius": "999px",
+        "height": "54px",
+        "padding": "0 32px",
+        "textStyle": "cta, white",
+        "shadow": "shadows.ctaGlow",
+        "fullWidth": true
+      },
+      "ctaSecondary": {
+        "background": "gradients.ctaButtonSecondary",
+        "borderRadius": "999px",
+        "height": "48px",
+        "padding": "0 24px",
+        "textStyle": "cta, white",
+        "shadow": "shadows.ctaGlowPurple"
+      },
+      "outline": {
+        "background": "transparent",
+        "border": "1.5px solid borderGlow",
+        "borderRadius": "999px",
+        "height": "40px",
+        "padding": "0 20px",
+        "textStyle": "label, accentBlueBright, fontWeight 700"
+      },
+      "icon": {
+        "size": "40px",
+        "borderRadius": "50%",
+        "background": "backgroundSurface",
+        "border": "1px solid borderSubtle",
+        "iconSize": "20px",
+        "iconColor": "textSecondary"
+      },
+      "joinSmall": {
+        "background": "accentBlue",
+        "borderRadius": "999px",
+        "padding": "8px 20px",
+        "textStyle": "label, white, fontWeight 700",
+        "shadow": "shadows.ctaGlow"
+      }
+    },
+
+    "filterChip": {
+      "background": "backgroundSurface",
+      "borderRadius": "999px",
+      "padding": "6px 16px",
+      "textStyle": "label, textSecondary",
+      "border": "1px solid borderSubtle",
+      "activeState": {
+        "background": "accentBlue",
+        "textColor": "white",
+        "border": "none",
+        "shadow": "shadows.ctaGlow"
+      }
+    },
+
+    "pageTitle": {
+      "titleStyle": "hero, textPrimary",
+      "subtitleStyle": "bodyLarge, textSecondary",
+      "linkStyle": "bodyLarge, textLink, underline",
+      "marginBottom": "24px"
+    }
+  },
+
+  "iconography": {
+    "style": "Outlined/stroke icons, 2px stroke weight, slightly rounded caps",
+    "size": {
+      "xs": "14px",
+      "sm": "18px",
+      "md": "22px",
+      "lg": "28px",
+      "xl": "36px"
+    },
+    "recommendedLibrary": "Phosphor Icons (Regular weight) or Heroicons (Outline)",
+    "activeState": "filled or highlighted in accentBlue with glow",
+    "inactiveState": "outline in textMuted",
+    "colorRule": "Never use pure white for all icons — active = accentBlue, inactive = textMuted (#6B7394)",
+    "tabIcons": ["gamepad", "rocket/launch", "bag/store", "heart/wishlist", "chat/messages"],
+    "systemIcons": {
+      "back": "< chevron left",
+      "notification": "bell outline",
+      "search": "magnifying glass",
+      "filter": "sliders / equalizer",
+      "download": "arrow down with underline",
+      "rating": "star filled",
+      "online": "broadcast/wifi signal"
+    }
+  },
+
+  "gameArtTreatment": {
+    "description": "Game cover art is the hero of the UI — everything else defers to it",
+    "gridCard": {
+      "fit": "cover, fill container",
+      "overlay": "bottom dark gradient for text legibility",
+      "borderRadius": "inherit from card",
+      "loading": "dark placeholder with shimmer"
+    },
+    "listThumbnail": {
+      "size": "56x56px",
+      "fit": "cover",
+      "borderRadius": "12px",
+      "shadow": "shadows.subtle"
+    },
+    "heroCenterArt": {
+      "fit": "contain, anchored top-center",
+      "overflow": "bleeds outside screen/card bounds",
+      "ambientLighting": "character art uses purplish/cyan rim lighting to integrate with background",
+      "zIndex": "above background, below bottom CTA"
+    },
+    "bannerThumbnail": {
+      "size": "70px wide",
+      "aspectRatio": "1/1 or 3/4",
+      "borderRadius": "10px"
+    }
+  },
+
+  "motion": {
+    "description": "Snappy and energetic — fast enters, punchy button feedback, smooth parallax on hero art",
+    "easing": {
+      "standard": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "snap": "cubic-bezier(0.0, 0, 0.2, 1)",
+      "bounce": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+      "decelerate": "cubic-bezier(0, 0, 0.2, 1)"
+    },
+    "duration": {
+      "instant": "80ms",
+      "fast": "150ms",
+      "normal": "250ms",
+      "slow": "350ms",
+      "pageTransition": "300ms"
+    },
+    "patterns": {
+      "cardPress": "scale(0.96), 80ms, snap easing",
+      "ctaPress": "scale(0.97) + glow intensify, 100ms",
+      "screenEnter": "translateY(20px) opacity(0) → normal, 300ms, stagger children 40ms",
+      "tabSwitch": "instant icon color change + glow fade in, 150ms",
+      "gridImageLoad": "opacity(0) → opacity(1), 200ms, ease-in",
+      "listScroll": "spring momentum, native feel",
+      "heroParallax": "character art moves at 0.7x scroll speed",
+      "buttonGlowPulse": "keyframe animation — glow opacity 0.5 → 1 → 0.5, 2s infinite, ease-in-out"
+    }
+  },
+
+  "contentPatterns": {
+    "rankedList": {
+      "layout": "vertical list, full width",
+      "itemSeparator": "1px divider line",
+      "showRankNumber": false,
+      "maxVisible": "4-5 items before scroll",
+      "thumbnailLeft": true,
+      "actionRight": true
+    },
+    "gameGrid": {
+      "columns": 2,
+      "gap": "8px",
+      "cardAspectRatio": "3/4",
+      "titleOverlay": true,
+      "scrollDirection": "vertical"
+    },
+    "horizontalScroll": {
+      "showScrollbar": false,
+      "snapBehavior": "mandatory left snap",
+      "peekAmount": "20px (next item visible)"
+    },
+    "sectionStructure": "Header row (title + action link) → content (list or grid or scroll)",
+    "emptyState": {
+      "icon": "large muted game controller icon, 64px, textMuted",
+      "title": "h3, textSecondary",
+      "subtitle": "body, textMuted",
+      "cta": "buttons.ctaPrimary"
+    }
+  },
+
+  "screenTemplates": {
+    "browseList": {
+      "zones": [
+        "status bar",
+        "nav bar (back + online count)",
+        "page title + subtitle",
+        "feature/event banner",
+        "section header (Top This Year 🔥)",
+        "ranked game list (scrollable)",
+        "tab bar"
+      ],
+      "background": "gradients.backgroundPage",
+      "scrollable": true
+    },
+    "heroDetail": {
+      "zones": [
+        "full-bleed game art (bleeds screen bounds)",
+        "ambient background gradient",
+        "bottom CTA (Start Now / Play)"
+      ],
+      "background": "gradients.backgroundSplash",
+      "scrollable": false,
+      "noNavBar": true
+    },
+    "popularGrid": {
+      "zones": [
+        "nav bar (back + title + bell)",
+        "search bar with filter icon",
+        "2-column game grid (scrollable)",
+        "tab bar"
+      ],
+      "background": "gradients.backgroundPage",
+      "scrollable": true
+    }
+  },
+
+  "accessibility": {
+    "minimumTouchTarget": "44x44px",
+    "colorContrast": "White on dark backgrounds consistently exceeds WCAG AA",
+    "focusRing": "2px solid accentBlue, 2px offset, visible on keyboard nav",
+    "reduceMotion": "Disable glow pulse animations and parallax if prefers-reduced-motion",
+    "darkModeOnly": true,
+    "imageAlt": "All game cover art must have descriptive alt text",
+    "buttonLabels": "All icon-only buttons need aria-label"
+  },
+
+  "responsiveBehavior": {
+    "targetPlatform": "Mobile-first (375px–430px)",
+    "breakpoints": {
+      "small": "375px",
+      "base": "390px",
+      "large": "430px"
+    },
+    "tabletAdaptation": {
+      "grid": "3-column game grid on screens > 768px",
+      "sidebar": "persistent left nav replaces bottom tab bar",
+      "heroArt": "side-by-side layout with info panel"
+    }
+  },
+
+  "codingGuidelines": {
+    "cssVariables": "Map all tokens to CSS custom properties: --color-bg-base, --color-accent-blue, --shadow-cta-glow, etc.",
+    "darkModeNote": "This is a dark-mode-only system. No light mode variant. Never apply light backgrounds.",
+    "backgroundStrategy": "Set deep dark gradient at the page/root level. Individual components use semi-transparent dark fills.",
+    "glowStrategy": "Glow effects use box-shadow with rgba of the accent color. Never use filter:blur for glows on interactive elements (performance).",
+    "imageHandling": "Always set a dark background-color on image containers to handle load states gracefully.",
+    "borderUsage": "Borders are very subtle (rgba white at 6-8% opacity). Only use colored borders (borderGlow) for interactive/focus states.",
+    "fontLoading": "Load Rajdhani (700, 800) + Inter (400, 600) from Google Fonts. Subset to Latin.",
+    "gameDataModel": "type Game = { id: string; title: string; genre: string; rating: number; downloadCount: string; coverUrl: string; isLive?: boolean; }",
+    "noWhiteBackgrounds": "Hard rule — no white or near-white surfaces anywhere. Minimum surface darkness is backgroundCard (#1E2248).",
+    "gradientTextUse": "Use gradient text (background-clip: text) sparingly — only for hero headlines or featured labels."
+  }
+}
