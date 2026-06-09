@@ -1,6 +1,6 @@
 import {router} from 'expo-router';
 import {ArrowRight} from 'phosphor-react-native';
-import {Switch, Text, View} from 'react-native';
+import {ScrollView, Switch, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {PrimaryButton} from '@/components/PrimaryButton';
@@ -70,32 +70,72 @@ export default function Setup() {
             onBack={() => router.back()}
           />
 
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{paddingBottom: 16}}
+          >
             <View className='flex-1'>
               <Label>Режим</Label>
-              <View className='gap-2.5 grid grid-cols-2 grid-rows-2'>
-                {MODES.map(m => {
-                  const selected = config.mode === m.id;
-                  const acc = MODE_ACCENT[m.id];
+              <View className='gap-2.5'>
+                {(() => {
+                  const fullWidth = MODES.filter(m => m.id === 'classic');
+                  const halfWidth = MODES.filter(m => m.id !== 'classic');
                   return (
-                    <SelectableCard
-                      key={m.id}
-                      title={m.title}
-                      id={m.id}
-                      selected={selected}
-                      onPress={() => setMode(m.id)}
-                      accent={acc}
-                      icon={
-                        <ModeIcon
-                          name={m.iconKey}
-                          size={26}
-                          color={
-                            selected ? accentHex[acc] : colors.textSecondary
-                          }
-                        />
-                      }
-                    />
+                    <>
+                      {fullWidth.map(m => {
+                        const selected = config.mode === m.id;
+                        const acc = MODE_ACCENT[m.id];
+                        return (
+                          <SelectableCard
+                            key={m.id}
+                            title={m.title}
+                            selected={selected}
+                            onPress={() => setMode(m.id)}
+                            accent={acc}
+                            icon={
+                              <ModeIcon
+                                name={m.iconKey}
+                                size={32}
+                                color={
+                                  selected
+                                    ? accentHex[acc]
+                                    : colors.textSecondary
+                                }
+                              />
+                            }
+                          />
+                        );
+                      })}
+                      <View className='flex-row gap-2.5'>
+                        {halfWidth.map(m => {
+                          const selected = config.mode === m.id;
+                          const acc = MODE_ACCENT[m.id];
+                          return (
+                            <View key={m.id} className='flex-1'>
+                              <SelectableCard
+                                title={m.title}
+                                selected={selected}
+                                onPress={() => setMode(m.id)}
+                                accent={acc}
+                                icon={
+                                  <ModeIcon
+                                    name={m.iconKey}
+                                    size={32}
+                                    color={
+                                      selected
+                                        ? accentHex[acc]
+                                        : colors.textSecondary
+                                    }
+                                  />
+                                }
+                              />
+                            </View>
+                          );
+                        })}
+                      </View>
+                    </>
                   );
-                })}
+                })()}
               </View>
 
               <Label>Игроки</Label>
@@ -163,6 +203,7 @@ export default function Setup() {
                 </GlassCard>
               ) : null}
             </View>
+          </ScrollView>
 
           <View className='pb-2 pt-3'>
             <PrimaryButton

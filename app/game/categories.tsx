@@ -8,6 +8,7 @@ import { ScreenGradient } from '@/components/ScreenGradient';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { CategoryIcon } from '@/components/icons/CategoryIcon';
 import { CATEGORIES } from '@/data/categories';
+import { hapticSelection } from '@/lib/haptics';
 import { colors } from '@/theme/colors';
 import { glow } from '@/theme/glow';
 import { useGameStore } from '@/store/gameStore';
@@ -32,7 +33,10 @@ function CategoryTile({
 }) {
   return (
     <Pressable
-      onPress={onPress}
+      onPress={() => {
+        hapticSelection();
+        onPress();
+      }}
       onLongPress={onLongPress}
       delayLongPress={250}
       style={[
@@ -75,7 +79,6 @@ export default function Categories() {
   const config = useGameStore((s) => s.config);
   const toggleCategory = useGameStore((s) => s.toggleCategory);
   const startGame = useGameStore((s) => s.startGame);
-  const rememberSetup = useSettingsStore((s) => s.rememberSetup);
   const disabledWords = useSettingsStore((s) => s.disabledWords);
 
   const selectedCount = config.categoryIds.length;
@@ -88,7 +91,6 @@ export default function Categories() {
 
   const onStart = () => {
     if (!canStart) return;
-    rememberSetup(config.mode, config.categoryIds);
     startGame();
     router.push('/game/roles');
   };
@@ -103,7 +105,7 @@ export default function Categories() {
             onBack={() => router.back()}
           />
 
-          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 8 }}>
+          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 2 }}>
             <View className="flex-row flex-wrap justify-between">
               {CATEGORIES.map((c) => (
                 <CategoryTile
@@ -124,7 +126,7 @@ export default function Categories() {
             <Text className="mb-3 text-center font-sans text-sm text-muted">
               {selectedCount > 0 && selectedEnabled === 0 ? (
                 <Text style={{ color: colors.danger }} className="font-sans-sb">
-                  Включите хотя бы одно слово в выбранной категории
+                  Включите хотя бы одно слово из категории
                 </Text>
               ) : (
                 <>

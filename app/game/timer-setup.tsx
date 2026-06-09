@@ -6,6 +6,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {PrimaryButton} from '@/components/PrimaryButton';
 import {ScreenGradient} from '@/components/ScreenGradient';
 import {ScreenHeader} from '@/components/ScreenHeader';
+import {hapticImpact, hapticSelection} from '@/lib/haptics';
 import {useGameStore} from '@/store/gameStore';
 import {colors} from '@/theme/colors';
 import {glow} from '@/theme/glow';
@@ -25,7 +26,10 @@ export default function TimerSetup() {
   const setDuration = useGameStore(s => s.setDuration);
 
   const minutes = Math.round(durationSec / 60);
-  const setMinutes = (m: number) => setDuration(m * 60);
+  const setMinutes = (m: number) => {
+    hapticSelection();
+    setDuration(m * 60);
+  };
 
   const canDec = minutes > MIN_MIN;
   const canInc = minutes < MAX_MIN;
@@ -158,7 +162,10 @@ export default function TimerSetup() {
               iconNode={<Play size={22} color='#FFFFFF' weight='fill' />}
               size='lg'
               accent='time'
-              onPress={() => router.replace('/game/timer')}
+              onPress={() => {
+                hapticImpact();
+                router.replace('/game/timer');
+              }}
             />
           </View>
         </View>

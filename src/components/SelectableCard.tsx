@@ -2,13 +2,12 @@ import type {ReactNode} from 'react';
 import {CheckCircle} from 'phosphor-react-native';
 import {Pressable, Text, View} from 'react-native';
 
+import {hapticSelection} from '@/lib/haptics';
 import {accentHex, colors, type AccentToken} from '@/theme/colors';
 import {glow} from '@/theme/glow';
-import {ModeId} from '@/game/types';
 
 interface Props {
   title: string;
-  id?: ModeId;
   /** Rendered icon node shown in the leading chip. */
   icon?: ReactNode;
   selected: boolean;
@@ -20,7 +19,6 @@ interface Props {
 export function SelectableCard({
   title,
   icon,
-  id,
   selected,
   onPress,
   accent = 'accent',
@@ -28,7 +26,10 @@ export function SelectableCard({
   const hex = accentHex[accent];
   return (
     <Pressable
-      onPress={onPress}
+      onPress={() => {
+        hapticSelection();
+        onPress();
+      }}
       style={[
         {
           borderColor: selected ? hex : colors.borderSubtle,
@@ -36,19 +37,17 @@ export function SelectableCard({
         },
         selected ? glow(hex, 'card') : null,
       ]}
-      className={`${id === "classic" ? 'col-span-2' : ''} flex-col gap-2 items-center justify-center rounded-2xl border p-4 active:opacity-90 relative`}
+      className='flex-col gap-2 items-center justify-center rounded-2xl border p-4 active:opacity-90 relative'
     >
       {icon ? (
         <View
           style={{backgroundColor: `${hex}1F`, borderColor: `${hex}33`}}
-          className='h-12 w-12 items-center justify-center rounded-2xl border'
+          className='h-16 w-16 items-center justify-center rounded-2xl border'
         >
           {icon}
         </View>
       ) : null}
-      <View className='flex-1'>
-        <Text className='font-sans-sb text-base text-white'>{title}</Text>
-      </View>
+      <Text className='font-sans-sb text-base text-white'>{title}</Text>
       {selected ? (
         <CheckCircle
           size={26}

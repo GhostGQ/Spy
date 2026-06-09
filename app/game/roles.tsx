@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { RoleCard } from '@/components/RoleCard';
 import { ScreenGradient } from '@/components/ScreenGradient';
+import { hapticImpact, hapticSelection } from '@/lib/haptics';
 import { colors } from '@/theme/colors';
 import { useGameStore } from '@/store/gameStore';
 
@@ -37,13 +38,16 @@ export default function Roles() {
 
   const onTapCard = () => {
     if (!revealed) {
+      hapticImpact();
       setFrontRole(role);
       setRevealed(true);
       return;
     }
     if (isLast) {
+      hapticSelection();
       router.replace('/game/timer-setup');
     } else {
+      hapticSelection();
       setRevealed(false);
       setIndex((i) => i + 1);
     }

@@ -1,11 +1,12 @@
 import { router } from 'expo-router';
-import { SpeakerHigh, Vibrate, X } from 'phosphor-react-native';
+import { CaretRight, FileText, ShieldCheck, SpeakerHigh, Vibrate, X } from 'phosphor-react-native';
 import type { ReactNode } from 'react';
 import { Pressable, Switch, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Card } from '@/components/Card';
 import { ScreenGradient } from '@/components/ScreenGradient';
+import { hapticSelection } from '@/lib/haptics';
 import { colors } from '@/theme/colors';
 import { useSettingsStore } from '@/store/settingsStore';
 
@@ -36,6 +37,25 @@ function Row({
         thumbColor="#FFFFFF"
       />
     </View>
+  );
+}
+
+function LinkRow({ icon, label, onPress }: { icon: ReactNode; label: string; onPress: () => void }) {
+  const handlePress = () => {
+    hapticSelection();
+    onPress();
+  };
+  return (
+    <Pressable onPress={handlePress} className="flex-row items-center py-3 active:opacity-70">
+      <View
+        style={{ backgroundColor: colors.surface3, borderColor: colors.borderSubtle }}
+        className="mr-3 h-10 w-10 items-center justify-center rounded-2xl border"
+      >
+        {icon}
+      </View>
+      <Text className="flex-1 font-sans-sb text-base text-white">{label}</Text>
+      <CaretRight size={18} color={colors.textSecondary} weight="bold" />
+    </Pressable>
   );
 }
 
@@ -71,6 +91,23 @@ export default function Settings() {
               label="Вибрация"
               value={hapticsEnabled}
               onValueChange={setHaptics}
+            />
+          </Card>
+
+          <Text className="mb-2 mt-5 px-1 font-display text-xs uppercase tracking-widest text-muted">
+            Правовая информация
+          </Text>
+          <Card>
+            <LinkRow
+              icon={<FileText size={20} color={colors.accentBright} weight="bold" />}
+              label="Условия использования"
+              onPress={() => router.push('/terms')}
+            />
+            <View style={{ backgroundColor: colors.divider }} className="h-px" />
+            <LinkRow
+              icon={<ShieldCheck size={20} color={colors.accentBright} weight="bold" />}
+              label="Политика конфиденциальности"
+              onPress={() => router.push('/privacy')}
             />
           </Card>
 

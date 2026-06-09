@@ -45,6 +45,8 @@ export default function RootLayout() {
         <Stack.Screen name="index" />
         <Stack.Screen name="rules" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
         <Stack.Screen name="settings" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
+        <Stack.Screen name="terms" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
+        <Stack.Screen name="privacy" options={{ presentation: 'modal', animation: 'slide_from_bottom' }} />
         <Stack.Screen name="game/timer" options={{ gestureEnabled: false }} />
         <Stack.Screen name="game/result" options={{ gestureEnabled: false }} />
       </Stack>

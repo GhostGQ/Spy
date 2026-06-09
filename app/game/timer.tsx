@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { CircularTimer } from '@/components/CircularTimer';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { ScreenGradient } from '@/components/ScreenGradient';
+import { hapticNotify } from '@/lib/haptics';
 import { colors } from '@/theme/colors';
 import { glow } from '@/theme/glow';
 import { useGameStore } from '@/store/gameStore';
@@ -21,23 +22,27 @@ export default function Timer() {
 
   const overlayOpen = paused || exitOpen;
 
-  // Countdown — runs while no overlay is open. Reaching 0 → result selection.
+  // Countdown — runs while no overlay is open. The updater stays pure (just
+  // decrements); navigation happens in the effect below once it reaches 0.
   useEffect(() => {
     if (overlayOpen) return;
     intervalRef.current = setInterval(() => {
-      setRemaining((r) => {
-        if (r <= 1) {
-          if (intervalRef.current) clearInterval(intervalRef.current);
-          router.replace('/game/result');
-          return 0;
-        }
-        return r - 1;
-      });
+      setRemaining((r) => (r <= 1 ? 0 : r - 1));
     }, 1000);
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, [overlayOpen]);
+
+  // Navigate to the result screen when the countdown hits 0 (side effect, not
+  // inside render or a state updater).
+  useEffect(() => {
+    if (remaining <= 0) {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      hapticNotify('warning');
+      router.replace('/game/result');
+    }
+  }, [remaining]);
 
   const finishGame = () => router.replace('/game/result');
   const toMenu = () => {

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { getCategory } from '@/data/categories';
+import { CATEGORIES, getCategory } from '@/data/categories';
 import { assignRoles, type WordPool } from '@/game/roles';
 import type { GameConfig, ModeId, Role, Winner } from '@/game/types';
 import { enabledWords, useSettingsStore } from '@/store/settingsStore';
@@ -121,7 +121,11 @@ export const useGameStore = create<GameState>((set, get) => ({
 
   reset: () => {
     const { lastCategories, lastMode } = useSettingsStore.getState();
-    const categoryIds = lastCategories.length ? lastCategories : DEFAULT_CONFIG.categoryIds;
+    // Keep only ids that still exist in the current category data — stale ids
+    // from older app versions would otherwise inflate the selected count.
+    const validIds = new Set(CATEGORIES.map((c) => c.id));
+    const restored = lastCategories.filter((id) => validIds.has(id));
+    const categoryIds = restored.length ? restored : DEFAULT_CONFIG.categoryIds;
     const mode = (lastMode as GameConfig['mode']) ?? DEFAULT_CONFIG.mode;
     set({
       config: { ...DEFAULT_CONFIG, mode, categoryIds },
