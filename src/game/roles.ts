@@ -53,7 +53,7 @@ export interface AssignResult {
  */
 export function maxSpecialMajority(playerCount: number): number {
   // civilians must be strictly greater than special roles
-  return Math.max(1, Math.ceil(playerCount / 2) - 1);
+  return Math.max(1, playerCount - 1);
 }
 
 /**
