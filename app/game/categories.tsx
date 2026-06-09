@@ -44,7 +44,7 @@ function CategoryTile({
         },
         selected ? glow(colors.accent, 'card') : null,
       ]}
-      className="mb-3 items-center justify-center rounded-3xl border-2 p-4 active:opacity-90"
+      className="mb-3 items-center justify-center rounded-3xl border-2 p-3 active:opacity-90"
     >
       <View style={{ position: 'absolute', top: 10, right: 10, zIndex: 2 }}>
         {selected ? (
@@ -96,7 +96,7 @@ export default function Categories() {
   return (
     <ScreenGradient>
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
-        <View className="flex-1 px-6 pt-4">
+        <View className="flex-1 px-3 pt-4">
           <ScreenHeader
             title="Категория"
             subtitle="Тап — выбрать · удержание — слова"

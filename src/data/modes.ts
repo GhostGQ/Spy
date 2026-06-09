@@ -1,5 +1,5 @@
 import type { ModeIconKey } from '@/components/icons/ModeIcons';
-import type { ModeId, WinnerOption } from '@/game/types';
+import type { GameConfig, ModeId, WinnerOption } from '@/game/types';
 
 export interface ModeMeta {
   id: ModeId;
@@ -58,7 +58,7 @@ export const MODES: ModeMeta[] = [
     emoji: '👻',
     short: 'Призраки не знают, что они призраки',
     description:
-      'Все думают, что они мирные. Но призракам показывается похожее, но другое слово. Призрак не знает, что он призрак. Большинство ищет тех, кто говорит «не о том».',
+      'Все думают, что они мирные. Призраки видят похожее, но другое слово — и сами не знают, что они призраки. Задача большинства — вычислить тех, кто говорит «не о том».\n\nРежим «Классический призрак»: включается переключателем в настройках. К обычным шпионам (которые знают свою роль, но не знают слова) добавляется один тайный призрак с фейк-словом. Мирные ищут и шпионов, и призрака одновременно.',
     configurableSpecialCount: true,
     specialCountLabel: 'Призраки',
     winners: [
@@ -71,4 +71,14 @@ export const MODES: ModeMeta[] = [
 
 export function getMode(id: ModeId): ModeMeta {
   return MODES.find((m) => m.id === id) ?? MODES[0];
+}
+
+/** Winner buttons shown on the result screen for a specific configuration. */
+export function getWinners(config: GameConfig): WinnerOption[] {
+  // The "classic ghost" variant plays like classic (spies vs civilians),
+  // so it uses the classic winner options rather than majority/ghosts.
+  if (config.mode === 'ghost' && config.ghostClassic) {
+    return getMode('classic').winners;
+  }
+  return getMode(config.mode).winners;
 }

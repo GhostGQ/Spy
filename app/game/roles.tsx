@@ -58,7 +58,7 @@ export default function Roles() {
   return (
     <ScreenGradient>
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
-        <View className="flex-1 px-5 py-4">
+        <View className="flex-1 px-3 py-4">
           {/* progress dots */}
           <View className="mb-2 flex-row items-center justify-center gap-1.5">
             {roles.map((r, i) => (

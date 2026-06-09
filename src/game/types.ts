@@ -31,6 +31,13 @@ export interface GameConfig {
   playerCount: number;
   /** Spies (classic) or ghosts (ghost). Ignored for chaos (randomized at start). */
   specialCount: number;
+  /**
+   * Ghost mode only. When false (default) it's the pure ghost game: no spies,
+   * everyone is told they're a civilian, `specialCount` ghosts hold a fake word.
+   * When true it's the "classic ghost" variant: `specialCount` spies (who know
+   * they're spies) plus exactly one ghost.
+   */
+  ghostClassic: boolean;
 }
 
 export interface WinnerOption {

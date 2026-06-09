@@ -22,7 +22,7 @@ export default function Rules() {
   return (
     <ScreenGradient>
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
-        <View className="flex-row items-center px-6 pb-2 pt-4">
+        <View className="flex-row items-center px-3 pb-2 pt-4">
           <Text className="flex-1 font-display text-2xl uppercase text-white">Правила</Text>
           <Pressable
             onPress={() => router.back()}

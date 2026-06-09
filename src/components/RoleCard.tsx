@@ -117,12 +117,12 @@ export function RoleCard({ role, playerNumber, revealed }: Props) {
 
         <Text
           adjustsFontSizeToFit
-          numberOfLines={2}
+          numberOfLines={3}
           style={{
             color: shownSpy ? accent : '#FFFFFF',
             fontFamily: 'Tektur_700Bold',
-            fontSize: 52,
-            lineHeight: 56,
+            fontSize: 38,
+            lineHeight: 48,
             textAlign: 'center',
             letterSpacing: 1,
             textShadowColor: `${accent}AA`,

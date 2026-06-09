@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { ScreenGradient } from '@/components/ScreenGradient';
-import { getMode } from '@/data/modes';
+import { getWinners } from '@/data/modes';
 import type { Winner } from '@/game/types';
 import { colors } from '@/theme/colors';
 import { glow } from '@/theme/glow';
@@ -28,9 +28,9 @@ function winnerIcon(key: Winner, color: string) {
 }
 
 export default function Result() {
-  const modeId = useGameStore((s) => s.config.mode);
+  const config = useGameStore((s) => s.config);
   const setWinner = useGameStore((s) => s.setWinner);
-  const mode = getMode(modeId);
+  const winners = getWinners(config);
 
   const choose = (w: Winner) => {
     setWinner(w);
@@ -58,7 +58,7 @@ export default function Result() {
           </View>
 
           <View className="gap-3">
-            {mode.winners.map((w) => {
+            {winners.map((w) => {
               const isSkip = w.key === 'skip';
               const iconColor = isSkip ? colors.muted : '#FFFFFF';
               return (

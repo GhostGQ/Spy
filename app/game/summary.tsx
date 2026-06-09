@@ -10,7 +10,7 @@ import { ScreenGradient } from '@/components/ScreenGradient';
 import { CategoryIcon } from '@/components/icons/CategoryIcon';
 import { GhostIcon, ModeIcon, SpyIcon } from '@/components/icons/ModeIcons';
 import { getCategory } from '@/data/categories';
-import { getMode } from '@/data/modes';
+import { getMode, getWinners } from '@/data/modes';
 import type { Role } from '@/game/types';
 import { colors } from '@/theme/colors';
 import { glow } from '@/theme/glow';
@@ -50,7 +50,7 @@ export default function Summary() {
 
   const mode = getMode(config.mode);
   const category = getCategory(roundCategoryId || config.categoryIds[0]);
-  const winnerOption = winner ? mode.winners.find((w) => w.key === winner) : undefined;
+  const winnerOption = winner ? getWinners(config).find((w) => w.key === winner) : undefined;
   const showWinner = winner && winner !== 'skip' && winnerOption;
 
   const onPlayAgain = () => {
@@ -65,7 +65,7 @@ export default function Summary() {
   return (
     <ScreenGradient>
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
-        <View className="flex-1 px-6 pt-4">
+        <View className="flex-1 px-3 pt-4">
           <Text className="mb-1 text-center font-display text-3xl uppercase text-white">
             Итоги партии
           </Text>

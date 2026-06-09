@@ -1,13 +1,14 @@
-import type { ReactNode } from 'react';
-import { CheckCircle } from 'phosphor-react-native';
-import { Pressable, Text, View } from 'react-native';
+import type {ReactNode} from 'react';
+import {CheckCircle} from 'phosphor-react-native';
+import {Pressable, Text, View} from 'react-native';
 
-import { accentHex, colors, type AccentToken } from '@/theme/colors';
-import { glow } from '@/theme/glow';
+import {accentHex, colors, type AccentToken} from '@/theme/colors';
+import {glow} from '@/theme/glow';
+import {ModeId} from '@/game/types';
 
 interface Props {
   title: string;
-  subtitle?: string;
+  id?: ModeId;
   /** Rendered icon node shown in the leading chip. */
   icon?: ReactNode;
   selected: boolean;
@@ -18,8 +19,8 @@ interface Props {
 /** Glassy selectable row with a glowing accent state (design system). */
 export function SelectableCard({
   title,
-  subtitle,
   icon,
+  id,
   selected,
   onPress,
   accent = 'accent',
@@ -35,28 +36,35 @@ export function SelectableCard({
         },
         selected ? glow(hex, 'card') : null,
       ]}
-      className="flex-row items-center rounded-2xl border p-4 active:opacity-90"
+      className={`${id === "classic" ? 'col-span-2' : ''} flex-col gap-2 items-center justify-center rounded-2xl border p-4 active:opacity-90 relative`}
     >
       {icon ? (
         <View
-          style={{ backgroundColor: `${hex}1F`, borderColor: `${hex}33` }}
-          className="mr-3 h-12 w-12 items-center justify-center rounded-2xl border"
+          style={{backgroundColor: `${hex}1F`, borderColor: `${hex}33`}}
+          className='h-12 w-12 items-center justify-center rounded-2xl border'
         >
           {icon}
         </View>
       ) : null}
-      <View className="flex-1">
-        <Text className="font-sans-sb text-base text-white">{title}</Text>
-        {subtitle ? (
-          <Text className="mt-0.5 font-sans text-xs text-text-secondary">{subtitle}</Text>
-        ) : null}
+      <View className='flex-1'>
+        <Text className='font-sans-sb text-base text-white'>{title}</Text>
       </View>
       {selected ? (
-        <CheckCircle size={26} color={hex} weight="fill" />
+        <CheckCircle
+          size={26}
+          color={hex}
+          weight='fill'
+          style={{position: 'absolute', top: 8, right: 8}}
+        />
       ) : (
         <View
-          style={{ borderColor: colors.surface3 }}
-          className="h-6 w-6 rounded-full border-2"
+          style={{
+            borderColor: colors.surface3,
+            position: 'absolute',
+            top: 8,
+            right: 8,
+          }}
+          className='h-6 w-6 rounded-full border-2'
         />
       )}
     </Pressable>

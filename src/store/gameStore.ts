@@ -19,6 +19,7 @@ const DEFAULT_CONFIG: GameConfig = {
   categoryIds: ['food'],
   playerCount: 4,
   specialCount: 1,
+  ghostClassic: false,
 };
 
 interface GameState {
@@ -39,6 +40,7 @@ interface GameState {
   toggleCategory: (categoryId: string) => void;
   setPlayerCount: (n: number) => void;
   setSpecialCount: (n: number) => void;
+  setGhostClassic: (on: boolean) => void;
   patchConfig: (patch: Partial<GameConfig>) => void;
 
   // --- flow actions ---
@@ -84,10 +86,12 @@ export const useGameStore = create<GameState>((set, get) => ({
     set((s) => ({
       config: { ...s.config, specialCount: Math.max(1, Math.min(n, s.config.playerCount - 1)) },
     })),
+  setGhostClassic: (on) => set((s) => ({ config: { ...s.config, ghostClassic: on } })),
   patchConfig: (patch) => set((s) => ({ config: { ...s.config, ...patch } })),
 
   startGame: () => {
     const { config } = get();
+    useSettingsStore.getState().rememberSetup(config.mode, config.categoryIds);
     const result = assignRoles(config, buildPools(config));
     set({
       roles: result.roles,
@@ -115,9 +119,12 @@ export const useGameStore = create<GameState>((set, get) => ({
     });
   },
 
-  reset: () =>
+  reset: () => {
+    const { lastCategories, lastMode } = useSettingsStore.getState();
+    const categoryIds = lastCategories.length ? lastCategories : DEFAULT_CONFIG.categoryIds;
+    const mode = (lastMode as GameConfig['mode']) ?? DEFAULT_CONFIG.mode;
     set({
-      config: DEFAULT_CONFIG,
+      config: { ...DEFAULT_CONFIG, mode, categoryIds },
       roles: [],
       word: '',
       fakeWord: null,
@@ -125,5 +132,6 @@ export const useGameStore = create<GameState>((set, get) => ({
       effectiveSpecialCount: 0,
       durationSec: 180,
       winner: null,
-    }),
+    });
+  },
 }));

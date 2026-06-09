@@ -54,7 +54,7 @@ export default function CategoryDetail() {
   return (
     <ScreenGradient>
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
-        <View className="flex-1 px-6 pt-4">
+        <View className="flex-1 px-3 pt-4">
           <ScreenHeader
             title={category.title}
             subtitle={`${enabled.length}/${category.words.length} слов в игре`}
