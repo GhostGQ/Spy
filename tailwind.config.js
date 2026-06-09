@@ -6,22 +6,35 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Dark base
-        bg: '#0E0F13',
-        surface: '#191B22',
-        'surface-2': '#23262F',
-        border: '#2E323D',
-        muted: '#8A8F9C',
-        // Accents (per design palette)
-        accent: '#F5C518', // yellow — progress / primary
-        time: '#FF8A3D', // orange — timer
-        streak: '#34D27B', // green — civilians / streak
-        level: '#9B7CFF', // purple — level
-        info: '#3D9BFF', // blue — achievements / info
-        danger: '#FF5A5A', // red — spies / exit
+        // Dark navy/indigo base (gaming design system)
+        bg: '#13152E', // deepest — page gradient end
+        'bg-elevated': '#1A1D3A', // gradient start
+        surface: '#1E2248', // card
+        'surface-2': '#252A52', // elevated card
+        'surface-3': '#2A2F5A', // input / control surface
+        border: '#2A2F5A',
+        muted: '#6B7394',
+        'text-secondary': '#B8BDD8',
+        // Accents (token names kept for backward compat; values from design system)
+        accent: '#3B82F6', // electric blue — primary
+        'accent-bright': '#60A5FA',
+        cyan: '#2DD4F7',
+        purple: '#7C3AED',
+        'purple-light': '#A78BFA',
+        level: '#8B5CF6', // purple (kept name)
+        info: '#60A5FA',
+        streak: '#34D399', // green
+        danger: '#F87171', // red
+        time: '#FB923C', // orange (legacy timer screen)
+        star: '#FBBF24',
       },
       fontFamily: {
-        sans: ['System'],
+        display: ['Rajdhani_700Bold'],
+        'display-sb': ['Rajdhani_600SemiBold'],
+        sans: ['Inter_400Regular'],
+        'sans-md': ['Inter_500Medium'],
+        'sans-sb': ['Inter_600SemiBold'],
+        'sans-b': ['Inter_700Bold'],
       },
     },
   },

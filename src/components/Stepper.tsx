@@ -1,7 +1,8 @@
-import { Ionicons } from '@expo/vector-icons';
+import { Minus, Plus } from 'phosphor-react-native';
 import { Pressable, Text, View } from 'react-native';
 
 import { accentHex, type AccentToken } from '@/theme/colors';
+import { glow } from '@/theme/glow';
 
 interface Props {
   label: string;
@@ -30,22 +31,34 @@ export function Stepper({
     <Pressable
       disabled={!enabled}
       onPress={() => onChange(value + dir)}
-      style={{ opacity: enabled ? 1 : 0.3, backgroundColor: `${hex}22` }}
-      className="h-12 w-12 items-center justify-center rounded-2xl active:opacity-70"
+      style={[
+        { opacity: enabled ? 1 : 0.3, backgroundColor: `${hex}22`, borderColor: `${hex}40` },
+        enabled ? glow(hex, 'soft') : null,
+      ]}
+      className="h-12 w-12 items-center justify-center rounded-2xl border active:opacity-70"
     >
-      <Ionicons name={dir === 1 ? 'add' : 'remove'} size={24} color={hex} />
+      {dir === 1 ? (
+        <Plus size={22} color={hex} weight="bold" />
+      ) : (
+        <Minus size={22} color={hex} weight="bold" />
+      )}
     </Pressable>
   );
 
   return (
     <View className="flex-row items-center justify-between">
       <View className="flex-1 pr-3">
-        <Text className="text-base font-semibold text-white">{label}</Text>
-        {hint ? <Text className="mt-0.5 text-xs text-muted">{hint}</Text> : null}
+        <Text className="font-sans-sb text-base text-white">{label}</Text>
+        {hint ? <Text className="mt-0.5 font-sans text-xs text-muted">{hint}</Text> : null}
       </View>
       <View className="flex-row items-center">
         {btn(-1, canDec)}
-        <Text className="mx-4 w-8 text-center text-2xl font-extrabold text-white">{value}</Text>
+        <Text
+          style={{ color: hex }}
+          className="mx-4 w-8 text-center font-display text-3xl"
+        >
+          {value}
+        </Text>
         {btn(1, canInc)}
       </View>
     </View>

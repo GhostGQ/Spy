@@ -1,21 +1,25 @@
-import { Ionicons } from '@expo/vector-icons';
+import type { ReactNode } from 'react';
+import { CheckCircle } from 'phosphor-react-native';
 import { Pressable, Text, View } from 'react-native';
 
-import { accentHex, type AccentToken } from '@/theme/colors';
+import { accentHex, colors, type AccentToken } from '@/theme/colors';
+import { glow } from '@/theme/glow';
 
 interface Props {
   title: string;
   subtitle?: string;
-  emoji?: string;
+  /** Rendered icon node shown in the leading chip. */
+  icon?: ReactNode;
   selected: boolean;
   onPress: () => void;
   accent?: AccentToken;
 }
 
+/** Glassy selectable row with a glowing accent state (design system). */
 export function SelectableCard({
   title,
   subtitle,
-  emoji,
+  icon,
   selected,
   onPress,
   accent = 'accent',
@@ -24,21 +28,36 @@ export function SelectableCard({
   return (
     <Pressable
       onPress={onPress}
-      style={{
-        borderColor: selected ? hex : '#2E323D',
-        backgroundColor: selected ? `${hex}1A` : '#191B22',
-      }}
+      style={[
+        {
+          borderColor: selected ? hex : colors.borderSubtle,
+          backgroundColor: selected ? colors.surface2 : colors.surface,
+        },
+        selected ? glow(hex, 'card') : null,
+      ]}
       className="flex-row items-center rounded-2xl border p-4 active:opacity-90"
     >
-      {emoji ? <Text className="mr-3 text-2xl">{emoji}</Text> : null}
+      {icon ? (
+        <View
+          style={{ backgroundColor: `${hex}1F`, borderColor: `${hex}33` }}
+          className="mr-3 h-12 w-12 items-center justify-center rounded-2xl border"
+        >
+          {icon}
+        </View>
+      ) : null}
       <View className="flex-1">
-        <Text className="text-base font-bold text-white">{title}</Text>
-        {subtitle ? <Text className="mt-0.5 text-xs text-muted">{subtitle}</Text> : null}
+        <Text className="font-sans-sb text-base text-white">{title}</Text>
+        {subtitle ? (
+          <Text className="mt-0.5 font-sans text-xs text-text-secondary">{subtitle}</Text>
+        ) : null}
       </View>
       {selected ? (
-        <Ionicons name="checkmark-circle" size={24} color={hex} />
+        <CheckCircle size={26} color={hex} weight="fill" />
       ) : (
-        <View className="h-6 w-6 rounded-full border-2 border-border" />
+        <View
+          style={{ borderColor: colors.surface3 }}
+          className="h-6 w-6 rounded-full border-2"
+        />
       )}
     </Pressable>
   );

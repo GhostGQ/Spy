@@ -1,8 +1,12 @@
+import type { ModeIconKey } from '@/components/icons/ModeIcons';
 import type { ModeId, WinnerOption } from '@/game/types';
 
 export interface ModeMeta {
   id: ModeId;
   title: string;
+  /** Custom SVG icon key (setup screen). */
+  iconKey: ModeIconKey;
+  /** Legacy emoji (still used by the rules screen until it is redesigned). */
   emoji: string;
   short: string;
   description: string;
@@ -18,6 +22,7 @@ export const MODES: ModeMeta[] = [
   {
     id: 'classic',
     title: 'Классический',
+    iconKey: 'spy',
     emoji: '🕵️',
     short: 'Мирные знают слово, шпионы — нет',
     description:
@@ -33,6 +38,7 @@ export const MODES: ModeMeta[] = [
   {
     id: 'chaos',
     title: 'Хаос',
+    iconKey: 'chaos',
     emoji: '🌀',
     short: 'Число шпионов скрыто и случайно',
     description:
@@ -48,6 +54,7 @@ export const MODES: ModeMeta[] = [
   {
     id: 'ghost',
     title: 'Призрак',
+    iconKey: 'ghost',
     emoji: '👻',
     short: 'Призраки не знают, что они призраки',
     description:
