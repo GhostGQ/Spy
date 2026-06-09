@@ -63,7 +63,7 @@ function CategoryTile({
       >
         <CategoryIcon id={id} size={32} color={selected ? colors.accent : colors.textSecondary} />
       </View>
-      <Text className="mt-3 font-sans-sb text-base text-white">{title}</Text>
+      <Text className="mt-3 font-sans-sb text-base text-white text-center">{title}</Text>
       <Text className="mt-0.5 font-sans text-xs text-muted">
         {enabled}/{total} слов
       </Text>

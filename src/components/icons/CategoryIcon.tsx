@@ -1,36 +1,37 @@
 import {
   Briefcase,
   Buildings,
-  Car,
   FilmSlate,
   ForkKnife,
-  GlobeHemisphereWest,
   type Icon,
   type IconProps,
   GameControllerIcon,
-  LightningIcon,
   MapPinLineIcon,
-  MusicNotes,
-  PawPrint,
   SoccerBall,
-  Trophy,
+  Heart,
+  TrademarkRegistered,
+  Sparkle,
+  Sword,
+  Scroll,
+  Star,
 } from 'phosphor-react-native';
 
 import {colors} from '@/theme/colors';
 
 const MAP: Record<string, Icon> = {
   locations: MapPinLineIcon,
-  games: GameControllerIcon,
-  superpower: LightningIcon,
   food: ForkKnife,
   cities: Buildings,
-  animals: PawPrint,
   professions: Briefcase,
-  sport: Trophy,
+  relationships: Heart,
+  games: GameControllerIcon,
   movies: FilmSlate,
-  transport: Car,
-  music: MusicNotes,
-  countries: GlobeHemisphereWest,
+
+  brands: TrademarkRegistered,
+  anime: Sparkle,
+  game_characters: Sword,
+  historical_figures: Scroll,
+  celebrities: Star,
 };
 
 interface Props {
