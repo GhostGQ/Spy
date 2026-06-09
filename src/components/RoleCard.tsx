@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import { Fingerprint, User } from 'phosphor-react-native';
 import { Text, View } from 'react-native';
 import Animated, {
   interpolate,
@@ -7,9 +7,10 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
+import { SpyIcon } from '@/components/icons/ModeIcons';
 import type { Role } from '@/game/types';
-import { SpyIllustration } from '@/components/SpyIllustration';
 import { colors } from '@/theme/colors';
+import { glow } from '@/theme/glow';
 
 interface Props {
   /** Role shown on the FRONT (kept frozen by the parent while hiding). */
@@ -35,7 +36,12 @@ const faceBase = {
 
 /**
  * Near-fullscreen flip card. The parent makes the whole card tappable.
- * Back (face-down) when `revealed` is false; front (role + word) when true.
+ * Back (face-down) when `revealed` is false; front (icon + word) when true.
+ *
+ * IMPORTANT: the front icon/accent are derived from what the player is *told*
+ * (no word ⇒ "Шпион"), never from `role.kind`. In ghost mode a ghost holds a
+ * fake word, so it looks identical to a civilian — otherwise the ghost would
+ * see a different icon and realise it is the ghost.
  */
 export function RoleCard({ role, playerNumber, revealed }: Props) {
   const progress = useDerivedValue(
@@ -59,8 +65,8 @@ export function RoleCard({ role, playerNumber, revealed }: Props) {
     opacity: progress.value < 0.5 ? 1 : 0,
   }));
 
-  const isSpy = role.kind === 'spy';
-  const accent = isSpy ? colors.danger : colors.streak;
+  const shownSpy = role.word === null; // spies have no word; ghosts hold a fake one
+  const accent = shownSpy ? colors.danger : colors.streak;
 
   return (
     <View style={{ flex: 1, width: '100%' }}>
@@ -69,59 +75,63 @@ export function RoleCard({ role, playerNumber, revealed }: Props) {
         style={[
           faceBase,
           backStyle,
-          { backgroundColor: colors.surface2, borderWidth: 1, borderColor: colors.border },
+          { backgroundColor: colors.surface2, borderWidth: 1, borderColor: colors.borderSubtle },
         ]}
       >
-        <SpyIllustration size={180} />
-        <Text className="mt-6 text-4xl font-extrabold text-white">Игрок {playerNumber}</Text>
-        <View className="mt-4 flex-row items-center">
-          <Ionicons name="finger-print-outline" size={18} color={colors.muted} />
-          <Text className="ml-2 text-base text-muted">Нажмите, чтобы открыть</Text>
+        <View
+          style={[
+            { backgroundColor: `${colors.accent}1F`, borderColor: `${colors.accent}40` },
+            glow(colors.accent, 'card'),
+          ]}
+          className="h-32 w-32 items-center justify-center rounded-full border"
+        >
+          <Fingerprint size={62} color={colors.accentBright} weight="duotone" />
         </View>
+        <Text className="mt-8 font-display text-4xl uppercase tracking-wide text-white">
+          Игрок {playerNumber}
+        </Text>
       </Animated.View>
 
-      {/* Front (revealed) */}
+      {/* Front (revealed) — only the word (or «Шпион») */}
       <Animated.View
         style={[
           faceBase,
           frontStyle,
           { backgroundColor: colors.surface, borderWidth: 2, borderColor: accent },
+          glow(accent, 'card'),
         ]}
       >
-        {/* picture */}
         <View
-          style={{ backgroundColor: `${accent}1A` }}
-          className="mb-6 h-28 w-28 items-center justify-center rounded-full"
+          style={[
+            { backgroundColor: `${accent}1F`, borderColor: `${accent}40` },
+            glow(accent, 'soft'),
+          ]}
+          className="mb-10 h-28 w-28 items-center justify-center rounded-full border"
         >
-          <Ionicons
-            name={isSpy ? 'eye-off' : role.kind === 'ghost' ? 'sparkles' : 'happy'}
-            size={56}
-            color={accent}
-          />
+          {shownSpy ? (
+            <SpyIcon size={60} color={accent} />
+          ) : (
+            <User size={58} color={accent} weight="bold" />
+          )}
         </View>
 
-        <Text className="text-sm font-medium uppercase tracking-widest text-muted">Вы —</Text>
-        <Text style={{ color: accent }} className="mt-1 text-5xl font-extrabold">
-          {role.label}
+        <Text
+          adjustsFontSizeToFit
+          numberOfLines={2}
+          style={{
+            color: shownSpy ? accent : '#FFFFFF',
+            fontFamily: 'Tektur_700Bold',
+            fontSize: 52,
+            lineHeight: 56,
+            textAlign: 'center',
+            letterSpacing: 1,
+            textShadowColor: `${accent}AA`,
+            textShadowRadius: 20,
+            textShadowOffset: { width: 0, height: 0 },
+          }}
+        >
+          {role.word ?? 'Шпион'}
         </Text>
-
-        {role.word ? (
-          <View className="mt-8 items-center">
-            <Text className="text-sm uppercase tracking-widest text-muted">Загаданное слово</Text>
-            <Text className="mt-2 text-center text-4xl font-extrabold text-white">{role.word}</Text>
-          </View>
-        ) : (
-          <View className="mt-8 px-6">
-            <Text className="text-center text-base leading-6 text-muted">
-              Вы не знаете слова. Слушайте других и постарайтесь не выдать себя.
-            </Text>
-          </View>
-        )}
-
-        <View style={{ position: 'absolute', bottom: 24 }} className="flex-row items-center">
-          <Ionicons name="eye-off-outline" size={16} color={colors.muted} />
-          <Text className="ml-2 text-sm text-muted">Нажмите, чтобы скрыть</Text>
-        </View>
       </Animated.View>
     </View>
   );
