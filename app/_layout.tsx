@@ -4,7 +4,7 @@ import {
   Inter_600SemiBold,
   Inter_700Bold,
 } from '@expo-google-fonts/inter';
-import { Rajdhani_600SemiBold, Rajdhani_700Bold, useFonts } from '@expo-google-fonts/rajdhani';
+import { Tektur_600SemiBold, Tektur_700Bold, useFonts } from '@expo-google-fonts/tektur';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
@@ -22,8 +22,8 @@ export default function RootLayout() {
     Inter_500Medium,
     Inter_600SemiBold,
     Inter_700Bold,
-    Rajdhani_600SemiBold,
-    Rajdhani_700Bold,
+    Tektur_600SemiBold,
+    Tektur_700Bold,
   });
 
   useEffect(() => {

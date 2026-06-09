@@ -29,8 +29,8 @@ module.exports = {
         star: '#FBBF24',
       },
       fontFamily: {
-        display: ['Rajdhani_700Bold'],
-        'display-sb': ['Rajdhani_600SemiBold'],
+        display: ['Tektur_700Bold'],
+        'display-sb': ['Tektur_600SemiBold'],
         sans: ['Inter_400Regular'],
         'sans-md': ['Inter_500Medium'],
         'sans-sb': ['Inter_600SemiBold'],
