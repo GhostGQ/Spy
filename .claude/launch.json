@@ -1,0 +1,13 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "expo-web",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["expo", "start", "--web", "--offline"],
+      "port": 8081,
+      "autoPort": true,
+      "env": { "EXPO_OFFLINE": "1" }
+    }
+  ]
+}
