@@ -33,6 +33,8 @@ export const colors = {
 
 /** Page background gradient (top → bottom). */
 export const pageGradient = ['#1A1D3A', '#13152E'] as const;
+/** Cinematic hero/splash gradient (diagonal, subtle purple). */
+export const splashGradient = ['#1E2248', '#13152E', '#1A1040'] as const;
 /** Primary CTA gradient (left → right). */
 export const ctaGradient = ['#3B82F6', '#2DD4F7'] as const;
 /** Secondary CTA gradient. */
