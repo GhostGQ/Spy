@@ -9,9 +9,9 @@ import { ScreenGradient } from '@/components/ScreenGradient';
 import { colors } from '@/theme/colors';
 
 // TODO(production): заполнить реальными реквизитами перед релизом.
-const DEVELOPER = '[Название разработчика]';
-const CONTACT_EMAIL = '[email@example.com]';
-const EFFECTIVE_DATE = '[дата]';
+const DEVELOPER = 'GHostGQ Studio';
+const CONTACT_EMAIL = 'borisov.damir.2803@gmail.com';
+const EFFECTIVE_DATE = '15.06.2026';
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
