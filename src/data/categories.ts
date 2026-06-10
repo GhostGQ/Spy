@@ -1,3 +1,4 @@
+import { CATEGORY_PRODUCT_IDS, FREE_CATEGORY_IDS } from '@/config/iap';
 import type { Category } from '@/game/types';
 import i18n from '@/i18n';
 
@@ -10,14 +11,20 @@ export interface WordPair {
 export interface CategoryData {
   id: string;
   words: WordPair[];
+  /** Whether this category requires a purchase to unlock. */
+  premium: boolean;
+  /** RevenueCat product id, present for premium categories. */
+  productId?: string;
 }
+
+const FREE_IDS = new Set<string>(FREE_CATEGORY_IDS);
 
 /**
  * Стартовый набор категорий. Названия категорий берутся из словарей i18n по
  * `id` (categories.<id>); иконки задаются по `id` в CategoryIcon. Каждое слово —
  * пара переводов; русский вариант служит стабильным ключом (disabledWords).
  */
-export const CATEGORIES_DATA: CategoryData[] = [
+const RAW_CATEGORIES: { id: string; words: WordPair[] }[] = [
   {
     id: 'locations',
     words: [
@@ -224,6 +231,12 @@ export const CATEGORIES_DATA: CategoryData[] = [
   },
 ];
 
+export const CATEGORIES_DATA: CategoryData[] = RAW_CATEGORIES.map((c) => ({
+  ...c,
+  premium: !FREE_IDS.has(c.id),
+  productId: CATEGORY_PRODUCT_IDS[c.id],
+}));
+
 function activeLang(): 'ru' | 'en' {
   return i18n.language === 'en' ? 'en' : 'ru';
 }
@@ -245,6 +258,12 @@ export function categoryTitle(id: string): string {
 
 export function getCategoryData(id: string): CategoryData {
   return CATEGORIES_DATA.find((c) => c.id === id) ?? CATEGORIES_DATA[0];
+}
+
+/** Purchase requirements for a category. */
+export function getCategoryEntitlement(id: string): { premium: boolean; productId?: string } {
+  const data = getCategoryData(id);
+  return { premium: data.premium, productId: data.productId };
 }
 
 /**

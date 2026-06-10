@@ -1,8 +1,10 @@
 import { create } from 'zustand';
 
+import { IAP_ENABLED } from '@/config/iap';
 import { CATEGORIES_DATA, enabledLocalizedWords } from '@/data/categories';
 import { assignRoles, type WordPool } from '@/game/roles';
 import type { GameConfig, ModeId, Role, Winner } from '@/game/types';
+import { usePurchaseStore } from '@/store/purchaseStore';
 import { useSettingsStore } from '@/store/settingsStore';
 
 /** Build the enabled-word pools for the currently selected categories. */
@@ -16,7 +18,7 @@ function buildPools(config: GameConfig): WordPool[] {
 
 const DEFAULT_CONFIG: GameConfig = {
   mode: 'classic',
-  categoryIds: ['food'],
+  categoryIds: [],
   playerCount: 4,
   specialCount: 1,
   ghostClassic: false,
@@ -123,10 +125,17 @@ export const useGameStore = create<GameState>((set, get) => ({
     const { lastCategories, lastMode } = useSettingsStore.getState();
     // Keep only ids that still exist in the current category data — stale ids
     // from older app versions would otherwise inflate the selected count.
-    const validIds = new Set(CATEGORIES_DATA.map((c) => c.id));
+    // While IAP is disabled, premium categories aren't shown, so drop them too.
+    const validIds = new Set(
+      CATEGORIES_DATA.filter((c) => IAP_ENABLED || !c.premium).map((c) => c.id)
+    );
     const restored = lastCategories.filter((id) => validIds.has(id));
     const categoryIds = restored.length ? restored : DEFAULT_CONFIG.categoryIds;
-    const mode = (lastMode as GameConfig['mode']) ?? DEFAULT_CONFIG.mode;
+    const restoredMode = (lastMode as GameConfig['mode']) ?? DEFAULT_CONFIG.mode;
+    // Don't restore a premium mode the user no longer has access to.
+    const mode = usePurchaseStore.getState().isModeLocked(restoredMode)
+      ? DEFAULT_CONFIG.mode
+      : restoredMode;
     set({
       config: { ...DEFAULT_CONFIG, mode, categoryIds },
       roles: [],

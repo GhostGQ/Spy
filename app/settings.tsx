@@ -1,5 +1,6 @@
 import {router} from 'expo-router';
 import {
+  ArrowsClockwise,
   CaretRight,
   Check,
   FileText,
@@ -11,14 +12,16 @@ import {
 } from 'phosphor-react-native';
 import type {ReactNode} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Pressable, ScrollView, Switch, Text, View} from 'react-native';
+import {Alert, Pressable, ScrollView, Switch, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {Card} from '@/components/Card';
 import {ScreenGradient} from '@/components/ScreenGradient';
+import {IAP_ENABLED} from '@/config/iap';
 import i18n, {type AppLanguage} from '@/i18n';
 import {hapticSelection} from '@/lib/haptics';
 import {colors} from '@/theme/colors';
+import {usePurchaseStore} from '@/store/purchaseStore';
 import {useSettingsStore} from '@/store/settingsStore';
 
 function Row({
@@ -128,6 +131,13 @@ export default function Settings() {
   const {t} = useTranslation();
   const {soundEnabled, hapticsEnabled, setSound, setHaptics, setLanguage} =
     useSettingsStore();
+  const restorePurchases = usePurchaseStore((s) => s.restorePurchases);
+
+  const handleRestorePurchases = async () => {
+    await restorePurchases();
+    const {error} = usePurchaseStore.getState();
+    Alert.alert(error ? t('purchase.restoreError') : t('purchase.restoreSuccess'));
+  };
   // Reflects the live i18n language (covers the device-locale default before the
   // user has explicitly picked one).
   const activeLang: AppLanguage = i18n.language === 'ru' ? 'ru' : 'en';
@@ -249,6 +259,25 @@ export default function Settings() {
                 label={t('settings.privacy')}
                 onPress={() => router.push('/privacy')}
               />
+              {IAP_ENABLED ? (
+                <>
+                  <View
+                    style={{backgroundColor: colors.divider}}
+                    className='h-px'
+                  />
+                  <LinkRow
+                    icon={
+                      <ArrowsClockwise
+                        size={20}
+                        color={colors.accentBright}
+                        weight='bold'
+                      />
+                    }
+                    label={t('purchase.restorePurchases')}
+                    onPress={() => void handleRestorePurchases()}
+                  />
+                </>
+              ) : null}
             </Card>
 
             <Card className='mt-4'>

@@ -1,15 +1,19 @@
 import { router } from 'expo-router';
-import { BookOpen, GearSix, Play } from 'phosphor-react-native';
+import { BookOpen, GearSix, Play, Sparkle } from 'phosphor-react-native';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { FullAccessSheet } from '@/components/FullAccessSheet';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { ScreenGradient } from '@/components/ScreenGradient';
 import { SpyHero } from '@/components/SpyHero';
+import { IAP_ENABLED } from '@/config/iap';
 import { colors } from '@/theme/colors';
 import { glow } from '@/theme/glow';
 import { useGameStore } from '@/store/gameStore';
+import { usePurchaseStore } from '@/store/purchaseStore';
 
 function SecondaryButton({
   icon,
@@ -35,6 +39,10 @@ function SecondaryButton({
 export default function MainMenu() {
   const { t } = useTranslation();
   const reset = useGameStore((s) => s.reset);
+  const allUnlocked = usePurchaseStore((s) => s.allUnlocked);
+  const [fullAccessOpen, setFullAccessOpen] = useState(false);
+
+  const showFullAccessCta = IAP_ENABLED && !allUnlocked;
 
   const startGame = () => {
     reset();
@@ -45,6 +53,16 @@ export default function MainMenu() {
     <ScreenGradient variant="splash">
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
         <View className="flex-1 justify-between px-3 py-6">
+          {showFullAccessCta ? (
+            <PrimaryButton
+              label={t('purchase.unlockFullAccess')}
+              iconNode={<Sparkle size={20} color="#FFFFFF" weight="fill" />}
+              size="md"
+              accent="purple"
+              onPress={() => setFullAccessOpen(true)}
+            />
+          ) : null}
+
           {/* Brand / hero */}
           <View className="flex-1 items-center justify-center">
             <View
@@ -90,6 +108,7 @@ export default function MainMenu() {
           </View>
         </View>
       </SafeAreaView>
+      <FullAccessSheet visible={fullAccessOpen} onClose={() => setFullAccessOpen(false)} />
     </ScreenGradient>
   );
 }
