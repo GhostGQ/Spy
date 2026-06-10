@@ -6,6 +6,13 @@
  */
 export const IAP_ENABLED = false;
 
+/**
+ * Unlocks every premium category and mode without purchases or "coming soon"
+ * placeholders, regardless of `IAP_ENABLED`. Use for closed-testing builds
+ * that need full feature access; flip back to `false` for production builds.
+ */
+export const TESTING_FULL_ACCESS = true;
+
 /** Categories that remain free regardless of purchase state. */
 export const FREE_CATEGORY_IDS = ['locations'] as const;
 

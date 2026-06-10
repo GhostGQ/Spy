@@ -9,7 +9,7 @@ import { FullAccessSheet } from '@/components/FullAccessSheet';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { ScreenGradient } from '@/components/ScreenGradient';
 import { SpyHero } from '@/components/SpyHero';
-import { IAP_ENABLED } from '@/config/iap';
+import { IAP_ENABLED, TESTING_FULL_ACCESS } from '@/config/iap';
 import { colors } from '@/theme/colors';
 import { glow } from '@/theme/glow';
 import { useGameStore } from '@/store/gameStore';
@@ -42,7 +42,7 @@ export default function MainMenu() {
   const allUnlocked = usePurchaseStore((s) => s.allUnlocked);
   const [fullAccessOpen, setFullAccessOpen] = useState(false);
 
-  const showFullAccessCta = IAP_ENABLED && !allUnlocked;
+  const showFullAccessCta = IAP_ENABLED && !TESTING_FULL_ACCESS && !allUnlocked;
 
   const startGame = () => {
     reset();

@@ -18,7 +18,7 @@ import type {ModeId} from '@/game/types';
 import {useGameStore} from '@/store/gameStore';
 import {usePurchaseStore} from '@/store/purchaseStore';
 import {accentHex, colors, type AccentToken} from '@/theme/colors';
-import {IAP_ENABLED, PREMIUM_MODE_IDS} from '@/config/iap';
+import {IAP_ENABLED, PREMIUM_MODE_IDS, TESTING_FULL_ACCESS} from '@/config/iap';
 
 /** Distinct accent per mode for a livelier, gaming feel. */
 const MODE_ACCENT: Record<ModeId, AccentToken> = {
@@ -134,7 +134,7 @@ export default function Setup() {
                                 title={m.title}
                                 selected={selected}
                                 locked={isModeLocked(m.id)}
-                                comingSoon={!IAP_ENABLED && (PREMIUM_MODE_IDS as readonly string[]).includes(m.id)}
+                                comingSoon={!IAP_ENABLED && !TESTING_FULL_ACCESS && (PREMIUM_MODE_IDS as readonly string[]).includes(m.id)}
                                 comingSoonLabel={t('categories.comingSoon')}
                                 onPress={() => onPressMode(m.id)}
                                 accent={acc}

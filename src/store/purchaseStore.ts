@@ -10,6 +10,7 @@ import {
   FREE_CATEGORY_IDS,
   IAP_ENABLED,
   PREMIUM_MODE_IDS,
+  TESTING_FULL_ACCESS,
 } from '@/config/iap';
 import * as purchases from '@/iap/purchases';
 import type { PurchaseProduct } from '@/iap/types';
@@ -62,7 +63,7 @@ export const usePurchaseStore = create<PurchaseState>()(
       },
 
       hasAccess: (categoryId) => {
-        if (!IAP_ENABLED) return true;
+        if (!IAP_ENABLED || TESTING_FULL_ACCESS) return true;
         if (FREE_IDS.has(categoryId)) return true;
         const { allUnlocked, unlockedCategoryIds } = get();
         return allUnlocked || unlockedCategoryIds.includes(categoryId);
@@ -74,7 +75,7 @@ export const usePurchaseStore = create<PurchaseState>()(
       },
 
       isModeLocked: (modeId) => {
-        if (!IAP_ENABLED) return false;
+        if (!IAP_ENABLED || TESTING_FULL_ACCESS) return false;
         if (!PREMIUM_MODES.has(modeId)) return false;
         return !get().allUnlocked;
       },

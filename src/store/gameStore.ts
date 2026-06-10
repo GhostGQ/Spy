@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { IAP_ENABLED } from '@/config/iap';
+import { IAP_ENABLED, TESTING_FULL_ACCESS } from '@/config/iap';
 import { CATEGORIES_DATA, enabledLocalizedWords } from '@/data/categories';
 import { assignRoles, type WordPool } from '@/game/roles';
 import type { GameConfig, ModeId, Role, Winner } from '@/game/types';
@@ -127,7 +127,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     // from older app versions would otherwise inflate the selected count.
     // While IAP is disabled, premium categories aren't shown, so drop them too.
     const validIds = new Set(
-      CATEGORIES_DATA.filter((c) => IAP_ENABLED || !c.premium).map((c) => c.id)
+      CATEGORIES_DATA.filter((c) => IAP_ENABLED || TESTING_FULL_ACCESS || !c.premium).map((c) => c.id)
     );
     const restored = lastCategories.filter((id) => validIds.has(id));
     const categoryIds = restored.length ? restored : DEFAULT_CONFIG.categoryIds;

@@ -10,7 +10,7 @@ import { PrimaryButton } from '@/components/PrimaryButton';
 import { ScreenGradient } from '@/components/ScreenGradient';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { CategoryIcon } from '@/components/icons/CategoryIcon';
-import { ALL_CATEGORIES_PRODUCT_ID, IAP_ENABLED } from '@/config/iap';
+import { ALL_CATEGORIES_PRODUCT_ID, IAP_ENABLED, TESTING_FULL_ACCESS } from '@/config/iap';
 import { CATEGORIES_DATA, categoryTitle, enabledCount } from '@/data/categories';
 import { hapticSelection } from '@/lib/haptics';
 import { colors } from '@/theme/colors';
@@ -188,7 +188,7 @@ export default function Categories() {
           <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 16}}>
             <View className="flex-row flex-wrap justify-between gap-y-3">
               {visibleCategories.map((c) => {
-                const comingSoon = !IAP_ENABLED && c.premium;
+                const comingSoon = !IAP_ENABLED && !TESTING_FULL_ACCESS && c.premium;
                 const locked = !comingSoon && c.premium && !hasAccess(c.id);
                 const priceLabel = locked && c.productId ? getPriceLabel(c.productId) : undefined;
                 return (
