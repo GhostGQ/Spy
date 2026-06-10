@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Шпион",
-    "slug": "Spy",
+    "slug": "spy",
     "scheme": "spy",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -19,6 +19,9 @@
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
@@ -50,6 +53,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "de5de92e-6905-437c-bc96-13e9eac5297b"
+      }
+    },
+    "owner": "spy-ghost"
   }
 }
