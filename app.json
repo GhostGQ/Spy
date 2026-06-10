@@ -8,10 +8,22 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0E0F13",
+    "description": "Шпион — локальная party-игра для компании. Передавайте устройство по кругу, узнайте свою роль и попробуйте вычислить шпиона.",
+    "primaryColor": "#0E0F13",
+    "githubUrl": "https://github.com/GhostGQ/Spy",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ghostgq.spy",
+      "adaptiveIcon": {
+        "backgroundColor": "#0E0F13",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      }
     },
     "android": {
+      "package": "com.ghostgq.spy",
+      "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#0E0F13",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -25,7 +37,16 @@
       "bundler": "metro"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#0E0F13"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
