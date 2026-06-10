@@ -1,5 +1,6 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -11,6 +12,7 @@ import { colors } from '@/theme/colors';
 import { useGameStore } from '@/store/gameStore';
 
 export default function Roles() {
+  const { t } = useTranslation();
   const roles = useGameStore((s) => s.roles);
   const [index, setIndex] = useState(0);
   const [revealed, setRevealed] = useState(false);
@@ -24,9 +26,9 @@ export default function Roles() {
       <ScreenGradient>
         <SafeAreaView className="flex-1 items-center justify-center px-6">
           <Text className="mb-4 text-center font-sans text-base text-muted">
-            Роли ещё не розданы.
+            {t('roles.notDealt')}
           </Text>
-          <PrimaryButton label="К созданию игры" onPress={() => router.replace('/game/setup')} />
+          <PrimaryButton label={t('roles.toSetup')} onPress={() => router.replace('/game/setup')} />
         </SafeAreaView>
       </ScreenGradient>
     );
@@ -54,10 +56,10 @@ export default function Roles() {
   };
 
   const hint = !revealed
-    ? 'Нажмите на карту, чтобы открыть роль'
+    ? t('roles.hintReveal')
     : isLast
-      ? 'Нажмите ещё раз, чтобы начать обсуждение'
-      : 'Нажмите ещё раз, чтобы скрыть и передать';
+      ? t('roles.hintLast')
+      : t('roles.hintNext');
 
   return (
     <ScreenGradient>
@@ -78,7 +80,7 @@ export default function Roles() {
             ))}
           </View>
           <Text className="mb-3 text-center font-sans text-sm text-text-secondary">
-            Игрок {index + 1} из {total}
+            {t('roles.playerOf', { current: index + 1, total })}
           </Text>
 
           {/* full-bleed tappable card */}

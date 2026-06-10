@@ -120,18 +120,18 @@ export function assignRoles(config: GameConfig, pools: WordPool[]): AssignResult
         id: index,
         player: index + 1,
         kind,
-        label: 'Мирный',
+        labelKey: 'civilian',
         word: kind === 'ghost' ? (fakeWord as string) : word,
       };
     }
     if (kind === 'spy') {
-      return { id: index, player: index + 1, kind, label: 'Шпион', word: null };
+      return { id: index, player: index + 1, kind, labelKey: 'spy', word: null };
     }
     if (kind === 'ghost') {
       // Ghost thinks it's a civilian but holds the fake word.
-      return { id: index, player: index + 1, kind, label: 'Мирный', word: fakeWord as string };
+      return { id: index, player: index + 1, kind, labelKey: 'civilian', word: fakeWord as string };
     }
-    return { id: index, player: index + 1, kind, label: 'Мирный', word };
+    return { id: index, player: index + 1, kind, labelKey: 'civilian', word };
   });
 
   return { roles, word, fakeWord, specialCount, categoryId };

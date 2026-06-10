@@ -17,8 +17,12 @@ export interface Role {
   /** Player order number shown on screen (1-based). */
   player: number;
   kind: RoleKind;
-  /** What the player is told they are, e.g. «Мирный» / «Шпион». */
-  label: string;
+  /**
+   * What the player is *told* they are (resolved to text at display time via
+   * i18n `roles.<labelKey>`). In the pure ghost game a ghost is told it's a
+   * civilian, so labelKey differs from `kind`.
+   */
+  labelKey: 'civilian' | 'spy';
   /** The word shown to this player, or null if none (spies). */
   word: string | null;
 }

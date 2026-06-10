@@ -1,6 +1,7 @@
 import { router } from 'expo-router';
 import { Flag, House, Pause, PauseCircle, Play, SignOut } from 'phosphor-react-native';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Modal, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -13,6 +14,7 @@ import { glow } from '@/theme/glow';
 import { useGameStore } from '@/store/gameStore';
 
 export default function Timer() {
+  const { t } = useTranslation();
   const total = useGameStore((s) => s.durationSec);
   const reset = useGameStore((s) => s.reset);
   const [remaining, setRemaining] = useState(total);
@@ -85,18 +87,18 @@ export default function Timer() {
             >
               <View className="mb-5 items-center">
                 <PauseCircle size={48} color={colors.accent} weight="fill" />
-                <Text className="mt-2 font-display text-2xl uppercase text-white">Пауза</Text>
-                <Text className="mt-1 font-sans text-sm text-muted">Таймер остановлен</Text>
+                <Text className="mt-2 font-display text-2xl uppercase text-white">{t('timer.pauseTitle')}</Text>
+                <Text className="mt-1 font-sans text-sm text-muted">{t('timer.pauseSubtitle')}</Text>
               </View>
               <PrimaryButton
-                label="Продолжить игру"
+                label={t('timer.resume')}
                 iconNode={<Play size={20} color="#FFFFFF" weight="fill" />}
                 accent="streak"
                 onPress={() => setPaused(false)}
               />
               <View className="h-3" />
               <PrimaryButton
-                label="Завершить игру"
+                label={t('timer.finish')}
                 iconNode={<Flag size={20} color={colors.danger} weight="fill" />}
                 accent="danger"
                 variant="soft"
@@ -115,20 +117,20 @@ export default function Timer() {
             >
               <View className="mb-5 items-center">
                 <SignOut size={44} color={colors.danger} weight="bold" />
-                <Text className="mt-2 font-display text-2xl uppercase text-white">Выйти в меню?</Text>
+                <Text className="mt-2 font-display text-2xl uppercase text-white">{t('timer.exitTitle')}</Text>
                 <Text className="mt-1 text-center font-sans text-sm text-muted">
-                  Текущая партия будет прервана без подведения итогов.
+                  {t('timer.exitBody')}
                 </Text>
               </View>
               <PrimaryButton
-                label="Остаться"
+                label={t('timer.stay')}
                 iconNode={<Play size={20} color="#FFFFFF" weight="fill" />}
                 accent="streak"
                 onPress={() => setExitOpen(false)}
               />
               <View className="h-3" />
               <PrimaryButton
-                label="В главное меню"
+                label={t('timer.toMenu')}
                 iconNode={<House size={20} color={colors.danger} weight="bold" />}
                 accent="danger"
                 variant="soft"

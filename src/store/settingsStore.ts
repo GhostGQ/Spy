@@ -2,9 +2,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
+import i18n, { type AppLanguage } from '@/i18n';
+
 interface SettingsState {
   soundEnabled: boolean;
   hapticsEnabled: boolean;
+  /** Chosen UI language. `null` ⇒ follow the device locale (initial state). */
+  language: AppLanguage | null;
   /** Remembered last selections to pre-fill the setup screen. */
   lastMode: string | null;
   lastCategories: string[];
@@ -15,6 +19,7 @@ interface SettingsState {
 
   setSound: (v: boolean) => void;
   setHaptics: (v: boolean) => void;
+  setLanguage: (lang: AppLanguage) => void;
   rememberSetup: (mode: string, categories: string[]) => void;
   /** Toggle a single word on/off within a category. */
   toggleWord: (categoryId: string, word: string) => void;
@@ -27,6 +32,7 @@ export const useSettingsStore = create<SettingsState>()(
     (set) => ({
       soundEnabled: true,
       hapticsEnabled: true,
+      language: null,
       lastMode: null,
       lastCategories: [],
       disabledWords: {},
@@ -34,6 +40,10 @@ export const useSettingsStore = create<SettingsState>()(
 
       setSound: (v) => set({ soundEnabled: v }),
       setHaptics: (v) => set({ hapticsEnabled: v }),
+      setLanguage: (lang) => {
+        set({ language: lang });
+        i18n.changeLanguage(lang);
+      },
       rememberSetup: (mode, categories) => set({ lastMode: mode, lastCategories: categories }),
 
       toggleWord: (categoryId, word) =>
@@ -56,20 +66,19 @@ export const useSettingsStore = create<SettingsState>()(
       partialize: (s) => ({
         soundEnabled: s.soundEnabled,
         hapticsEnabled: s.hapticsEnabled,
+        language: s.language,
         lastMode: s.lastMode,
         lastCategories: s.lastCategories,
         disabledWords: s.disabledWords,
       }),
       onRehydrateStorage: () => (state) => {
-        if (state) state._hydrated = true;
+        if (state) {
+          state._hydrated = true;
+          // Apply the persisted language (if the user picked one) over the
+          // device-locale default that i18n initialized with.
+          if (state.language) i18n.changeLanguage(state.language);
+        }
       },
     }
   )
 );
-
-/** Words of a category that are currently enabled (not disabled). */
-export function enabledWords(allWords: string[], disabled: string[] | undefined): string[] {
-  if (!disabled || disabled.length === 0) return allWords;
-  const off = new Set(disabled);
-  return allWords.filter((w) => !off.has(w));
-}

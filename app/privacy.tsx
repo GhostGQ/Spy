@@ -1,5 +1,6 @@
 import { router } from 'expo-router';
 import { X } from 'phosphor-react-native';
+import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -8,7 +9,6 @@ import { ScreenGradient } from '@/components/ScreenGradient';
 import { colors } from '@/theme/colors';
 
 // TODO(production): заполнить реальными реквизитами перед релизом.
-const APP_NAME = 'Шпион';
 const DEVELOPER = '[Название разработчика]';
 const CONTACT_EMAIL = '[email@example.com]';
 const EFFECTIVE_DATE = '[дата]';
@@ -27,12 +27,19 @@ function Body({ children }: { children: React.ReactNode }) {
 }
 
 export default function Privacy() {
+  const { t } = useTranslation();
+  const vars = {
+    app: t('legal.appName'),
+    developer: DEVELOPER,
+    email: CONTACT_EMAIL,
+  };
+
   return (
     <ScreenGradient>
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
         <View className="flex-row items-center px-3 pb-2 pt-4">
           <Text className="flex-1 font-display text-2xl uppercase text-white">
-            Политика конфиденциальности
+            {t('legal.privacy.title')}
           </Text>
           <Pressable
             onPress={() => router.back()}
@@ -46,81 +53,39 @@ export default function Privacy() {
 
         <ScrollView className="px-6" contentContainerStyle={{ paddingBottom: 32 }}>
           <Text className="mb-4 px-1 font-sans text-xs text-muted">
-            Настоящая Политика конфиденциальности описывает, как мобильное приложение «{APP_NAME}»
-            (далее — «Приложение»), разработанное {DEVELOPER} (далее — «Разработчик»), обращается с
-            данными пользователей.
+            {t('legal.privacy.intro', vars)}
           </Text>
 
-          <Section title="1. Общие положения">
-            <Body>
-              Мы уважаем вашу конфиденциальность. Настоящая Политика объясняет, какие данные
-              используются Приложением и как они хранятся. Используя Приложение, вы соглашаетесь с
-              условиями данной Политики.
-            </Body>
+          <Section title={t('legal.privacy.s1title')}>
+            <Body>{t('legal.privacy.s1body', vars)}</Body>
           </Section>
-
-          <Section title="2. Какие данные мы собираем">
-            <Body>
-              Приложение не собирает и не запрашивает персональные данные. Для использования
-              «{APP_NAME}» не требуется регистрация, учётная запись, адрес электронной почты или
-              доступ к вашим контактам, геолокации, камере либо микрофону.
-            </Body>
+          <Section title={t('legal.privacy.s2title')}>
+            <Body>{t('legal.privacy.s2body', vars)}</Body>
           </Section>
-
-          <Section title="3. Локальное хранение данных">
-            <Body>
-              Приложение сохраняет только пользовательские настройки (например, звук и вибрация) и
-              последние выбранные категории игры. Эти данные хранятся исключительно локально на
-              вашем устройстве и не покидают его, не передаются Разработчику или третьим лицам.
-            </Body>
+          <Section title={t('legal.privacy.s3title')}>
+            <Body>{t('legal.privacy.s3body', vars)}</Body>
           </Section>
-
-          <Section title="4. Передача данных третьим лицам">
-            <Body>
-              Мы не передаём какие-либо данные третьим лицам. Приложение не использует серверы,
-              системы аналитики, рекламные сети или сторонние SDK для сбора данных.
-            </Body>
+          <Section title={t('legal.privacy.s4title')}>
+            <Body>{t('legal.privacy.s4body', vars)}</Body>
           </Section>
-
-          <Section title="5. Разрешения устройства">
-            <Body>
-              Приложение использует только функцию тактильной отдачи (вибрацию) для откликов
-              интерфейса, и её можно отключить в настройках. Доступ к камере, микрофону,
-              геолокации, контактам и другим чувствительным данным не запрашивается.
-            </Body>
+          <Section title={t('legal.privacy.s5title')}>
+            <Body>{t('legal.privacy.s5body', vars)}</Body>
           </Section>
-
-          <Section title="6. Дети">
-            <Body>
-              Приложение подходит для семейного использования. Поскольку персональные данные не
-              собираются, использование Приложения не предполагает обработки информации о детях.
-            </Body>
+          <Section title={t('legal.privacy.s6title')}>
+            <Body>{t('legal.privacy.s6body', vars)}</Body>
           </Section>
-
-          <Section title="7. Удаление данных">
-            <Body>
-              Все сохранённые настройки хранятся локально. Удаление Приложения с устройства
-              автоматически и безвозвратно стирает все связанные с ним локальные данные.
-            </Body>
+          <Section title={t('legal.privacy.s7title')}>
+            <Body>{t('legal.privacy.s7body', vars)}</Body>
           </Section>
-
-          <Section title="8. Изменения политики">
-            <Body>
-              Разработчик может время от времени обновлять настоящую Политику. Актуальная редакция
-              всегда доступна в Приложении. Продолжая использовать Приложение, вы соглашаетесь с
-              обновлённой Политикой.
-            </Body>
+          <Section title={t('legal.privacy.s8title')}>
+            <Body>{t('legal.privacy.s8body', vars)}</Body>
           </Section>
-
-          <Section title="9. Контакты">
-            <Body>
-              По любым вопросам, связанным с настоящей Политикой конфиденциальности, вы можете
-              связаться с Разработчиком по адресу: {CONTACT_EMAIL}.
-            </Body>
+          <Section title={t('legal.privacy.s9title')}>
+            <Body>{t('legal.privacy.s9body', vars)}</Body>
           </Section>
 
           <Text className="mt-2 px-1 font-sans text-xs text-muted">
-            Дата вступления в силу: {EFFECTIVE_DATE}.
+            {t('legal.effectiveDate', { date: EFFECTIVE_DATE })}
           </Text>
         </ScrollView>
       </SafeAreaView>
