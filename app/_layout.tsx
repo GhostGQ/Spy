@@ -14,6 +14,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import '../global.css';
 import '@/i18n';
 import { colors } from '@/theme/colors';
+import { usePurchaseStore } from '@/store/purchaseStore';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
@@ -30,6 +31,10 @@ export default function RootLayout() {
   useEffect(() => {
     if (fontsLoaded || fontError) SplashScreen.hideAsync().catch(() => {});
   }, [fontsLoaded, fontError]);
+
+  useEffect(() => {
+    void usePurchaseStore.getState().init();
+  }, []);
 
   if (!fontsLoaded && !fontError) return null;
 

@@ -85,6 +85,7 @@ const en = {
     title: 'Category',
     subtitle: 'Tap to select · hold for words',
     wordsShort: 'words',
+    comingSoon: 'Coming soon',
     selectedLabel: 'Categories selected: ',
     needWord: 'Enable at least one word from the category',
     start: 'Start game',
@@ -227,6 +228,25 @@ const en = {
       s9body:
         'For any questions regarding this Privacy Policy, you can contact the Developer at: {{email}}.',
     },
+  },
+
+  purchase: {
+    locked: 'Locked',
+    unlock: 'Unlock',
+    unlockAll: 'Unlock all categories',
+    restorePurchases: 'Restore purchases',
+    restoreSuccess: 'Purchases restored',
+    restoreError: 'Failed to restore purchases',
+    loading: 'Loading…',
+    error: 'Purchase failed',
+    fullAccessTitle: 'Full access',
+    fullAccessCategories: 'All categories unlocked',
+    fullAccessModes: 'Chaos and Ghost modes unlocked',
+    fullAccessNoAds: 'No ads',
+    activate: 'Activate',
+    activated: 'Activated',
+    unlockFullAccess: 'Unlock full access',
+    fullAccessSavings: 'Cheaper than buying each category separately',
   },
 };
 

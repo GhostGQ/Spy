@@ -1,9 +1,11 @@
 import {router} from 'expo-router';
 import {ArrowRight} from 'phosphor-react-native';
+import {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {ScrollView, Switch, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
+import {FullAccessSheet} from '@/components/FullAccessSheet';
 import {PrimaryButton} from '@/components/PrimaryButton';
 import {ScreenGradient} from '@/components/ScreenGradient';
 import {ScreenHeader} from '@/components/ScreenHeader';
@@ -14,7 +16,9 @@ import {getModes, getMode} from '@/data/modes';
 import {maxSpecialMajority} from '@/game/roles';
 import type {ModeId} from '@/game/types';
 import {useGameStore} from '@/store/gameStore';
+import {usePurchaseStore} from '@/store/purchaseStore';
 import {accentHex, colors, type AccentToken} from '@/theme/colors';
+import {IAP_ENABLED, PREMIUM_MODE_IDS} from '@/config/iap';
 
 /** Distinct accent per mode for a livelier, gaming feel. */
 const MODE_ACCENT: Record<ModeId, AccentToken> = {
@@ -52,6 +56,16 @@ export default function Setup() {
   const setPlayerCount = useGameStore(s => s.setPlayerCount);
   const setSpecialCount = useGameStore(s => s.setSpecialCount);
   const setGhostClassic = useGameStore(s => s.setGhostClassic);
+  const isModeLocked = usePurchaseStore(s => s.isModeLocked);
+  const [fullAccessOpen, setFullAccessOpen] = useState(false);
+
+  const onPressMode = (id: ModeId) => {
+    if (isModeLocked(id)) {
+      setFullAccessOpen(true);
+      return;
+    }
+    setMode(id);
+  };
 
   const mode = getMode(config.mode);
   const modes = getModes();
@@ -93,12 +107,13 @@ export default function Setup() {
                             key={m.id}
                             title={m.title}
                             selected={selected}
-                            onPress={() => setMode(m.id)}
+                            locked={isModeLocked(m.id)}
+                            onPress={() => onPressMode(m.id)}
                             accent={acc}
                             icon={
                               <ModeIcon
                                 name={m.iconKey}
-                                size={32}
+                                size={38}
                                 color={
                                   selected
                                     ? accentHex[acc]
@@ -118,7 +133,10 @@ export default function Setup() {
                               <SelectableCard
                                 title={m.title}
                                 selected={selected}
-                                onPress={() => setMode(m.id)}
+                                locked={isModeLocked(m.id)}
+                                comingSoon={!IAP_ENABLED && (PREMIUM_MODE_IDS as readonly string[]).includes(m.id)}
+                                comingSoonLabel={t('categories.comingSoon')}
+                                onPress={() => onPressMode(m.id)}
                                 accent={acc}
                                 icon={
                                   <ModeIcon
@@ -217,6 +235,7 @@ export default function Setup() {
           </View>
         </View>
       </SafeAreaView>
+      <FullAccessSheet visible={fullAccessOpen} onClose={() => setFullAccessOpen(false)} />
     </ScreenGradient>
   );
 }
