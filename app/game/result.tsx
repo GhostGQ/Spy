@@ -1,5 +1,6 @@
 import { router } from 'expo-router';
 import { Detective, Ghost, SkipForward, Trophy, Users, UsersThree } from 'phosphor-react-native';
+import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -28,6 +29,7 @@ function winnerIcon(key: Winner, color: string) {
 }
 
 export default function Result() {
+  const { t } = useTranslation();
   const config = useGameStore((s) => s.config);
   const setWinner = useGameStore((s) => s.setWinner);
   const winners = getWinners(config);
@@ -51,9 +53,9 @@ export default function Result() {
             >
               <Trophy size={44} color={colors.accent} weight="fill" />
             </View>
-            <Text className="mt-5 font-display text-3xl uppercase text-white">Кто победил?</Text>
+            <Text className="mt-5 font-display text-3xl uppercase text-white">{t('result.title')}</Text>
             <Text className="mt-2 text-center font-sans text-sm text-text-secondary">
-              Обсуждение завершено. Выберите итог раунда.
+              {t('result.subtitle')}
             </Text>
           </View>
 

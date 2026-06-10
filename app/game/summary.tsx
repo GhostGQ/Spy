@@ -1,6 +1,7 @@
 import { router } from 'expo-router';
 import { ArrowsClockwise, GameController, Ghost, House, Key, SkipForward, Trophy, User } from 'phosphor-react-native';
 import type { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -16,10 +17,11 @@ import { colors } from '@/theme/colors';
 import { glow } from '@/theme/glow';
 import { useGameStore } from '@/store/gameStore';
 
-const KIND_META: Record<Role['kind'], { label: string; color: string }> = {
-  civilian: { label: 'Мирный', color: colors.streak },
-  spy: { label: 'Шпион', color: colors.danger },
-  ghost: { label: 'Призрак', color: colors.level },
+/** Color per true role kind; labels are localized at render via i18n. */
+const KIND_COLOR: Record<Role['kind'], string> = {
+  civilian: colors.streak,
+  spy: colors.danger,
+  ghost: colors.level,
 };
 
 function roleIcon(kind: Role['kind'], color: string) {
@@ -39,6 +41,7 @@ function InfoRow({ icon, label, value, valueNode }: { icon: ReactNode; label: st
 }
 
 export default function Summary() {
+  const { t } = useTranslation();
   const config = useGameStore((s) => s.config);
   const roles = useGameStore((s) => s.roles);
   const word = useGameStore((s) => s.word);
@@ -67,7 +70,7 @@ export default function Summary() {
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
         <View className="flex-1 px-3 pt-4">
           <Text className="mb-1 text-center font-display text-3xl uppercase text-white">
-            Итоги партии
+            {t('summary.title')}
           </Text>
 
           <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 16 }}>
@@ -91,7 +94,7 @@ export default function Summary() {
                 className="mt-4 items-center rounded-3xl border bg-surface p-5"
               >
                 <SkipForward size={28} color={colors.muted} weight="fill" />
-                <Text className="mt-2 font-sans-sb text-base text-muted">Победитель не выбран</Text>
+                <Text className="mt-2 font-sans-sb text-base text-muted">{t('summary.noWinner')}</Text>
               </View>
             )}
 
@@ -99,7 +102,7 @@ export default function Summary() {
             <Card className="mt-4">
               <InfoRow
                 icon={<GameController size={18} color={colors.muted} weight="bold" />}
-                label="Режим"
+                label={t('summary.mode')}
                 valueNode={
                   <View className="flex-row items-center">
                     <ModeIcon name={mode.iconKey} size={18} color={colors.accentBright} />
@@ -110,7 +113,7 @@ export default function Summary() {
               <View style={{ backgroundColor: colors.divider }} className="h-px" />
               <InfoRow
                 icon={<CategoryIcon id={category.id} size={18} color={colors.muted} />}
-                label="Категория"
+                label={t('summary.category')}
                 valueNode={
                   <View className="flex-row items-center">
                     <CategoryIcon id={category.id} size={18} color={colors.accentBright} />
@@ -119,35 +122,37 @@ export default function Summary() {
                 }
               />
               <View style={{ backgroundColor: colors.divider }} className="h-px" />
-              <InfoRow icon={<Key size={18} color={colors.muted} weight="bold" />} label="Загаданное слово" value={word} />
+              <InfoRow icon={<Key size={18} color={colors.muted} weight="bold" />} label={t('summary.secretWord')} value={word} />
               {config.mode === 'ghost' && fakeWord ? (
                 <>
                   <View style={{ backgroundColor: colors.divider }} className="h-px" />
-                  <InfoRow icon={<Ghost size={18} color={colors.muted} weight="fill" />} label="Слово призраков" value={fakeWord} />
+                  <InfoRow icon={<Ghost size={18} color={colors.muted} weight="fill" />} label={t('summary.ghostWord')} value={fakeWord} />
                 </>
               ) : null}
             </Card>
 
             {/* Roles list */}
             <Text className="mb-2 mt-5 px-1 font-display text-xs uppercase tracking-widest text-muted">
-              Роли игроков
+              {t('summary.playersRoles')}
             </Text>
             <Card>
               {roles.map((r, i) => {
-                const meta = KIND_META[r.kind];
+                const color = KIND_COLOR[r.kind];
                 return (
                   <View key={r.id}>
                     {i > 0 ? <View style={{ backgroundColor: colors.divider }} className="h-px" /> : null}
                     <View className="flex-row items-center py-3">
                       <View
-                        style={{ backgroundColor: `${meta.color}1F`, borderColor: `${meta.color}40` }}
+                        style={{ backgroundColor: `${color}1F`, borderColor: `${color}40` }}
                         className="mr-3 h-10 w-10 items-center justify-center rounded-2xl border"
                       >
-                        {roleIcon(r.kind, meta.color)}
+                        {roleIcon(r.kind, color)}
                       </View>
-                      <Text className="flex-1 font-sans-sb text-base text-white">Игрок {r.player}</Text>
-                      <Text style={{ color: meta.color }} className="font-sans-b text-base">
-                        {meta.label}
+                      <Text className="flex-1 font-sans-sb text-base text-white">
+                        {t('roles.player', { number: r.player })}
+                      </Text>
+                      <Text style={{ color }} className="font-sans-b text-base">
+                        {t(`roles.${r.kind}`)}
                       </Text>
                     </View>
                   </View>
@@ -158,7 +163,7 @@ export default function Summary() {
 
           <View className="pb-4 pt-2">
             <PrimaryButton
-              label="Сыграть ещё раз"
+              label={t('summary.playAgain')}
               iconNode={<ArrowsClockwise size={22} color="#FFFFFF" weight="bold" />}
               size="lg"
               accent="accent"
@@ -166,7 +171,7 @@ export default function Summary() {
             />
             <View className="h-3" />
             <PrimaryButton
-              label="Главное меню"
+              label={t('summary.mainMenu')}
               iconNode={<House size={20} color={colors.accentBright} weight="bold" />}
               variant="soft"
               accent="info"

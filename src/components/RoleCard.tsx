@@ -1,4 +1,5 @@
 import { Fingerprint, User } from 'phosphor-react-native';
+import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 import Animated, {
   interpolate,
@@ -44,6 +45,7 @@ const faceBase = {
  * see a different icon and realise it is the ghost.
  */
 export function RoleCard({ role, playerNumber, revealed }: Props) {
+  const { t } = useTranslation();
   const progress = useDerivedValue(
     () => withTiming(revealed ? 1 : 0, { duration: 450 }),
     [revealed]
@@ -88,7 +90,7 @@ export function RoleCard({ role, playerNumber, revealed }: Props) {
           <Fingerprint size={62} color={colors.accentBright} weight="duotone" />
         </View>
         <Text className="mt-8 font-display text-4xl uppercase tracking-wide text-white">
-          Игрок {playerNumber}
+          {t('roles.player', { number: playerNumber })}
         </Text>
       </Animated.View>
 
@@ -130,7 +132,7 @@ export function RoleCard({ role, playerNumber, revealed }: Props) {
             textShadowOffset: { width: 0, height: 0 },
           }}
         >
-          {role.word ?? 'Шпион'}
+          {role.word ?? t('roles.spy')}
         </Text>
       </Animated.View>
     </View>

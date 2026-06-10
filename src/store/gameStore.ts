@@ -1,16 +1,16 @@
 import { create } from 'zustand';
 
-import { CATEGORIES, getCategory } from '@/data/categories';
+import { CATEGORIES_DATA, enabledLocalizedWords } from '@/data/categories';
 import { assignRoles, type WordPool } from '@/game/roles';
 import type { GameConfig, ModeId, Role, Winner } from '@/game/types';
-import { enabledWords, useSettingsStore } from '@/store/settingsStore';
+import { useSettingsStore } from '@/store/settingsStore';
 
 /** Build the enabled-word pools for the currently selected categories. */
 function buildPools(config: GameConfig): WordPool[] {
   const disabled = useSettingsStore.getState().disabledWords;
   return config.categoryIds.map((id) => ({
     categoryId: id,
-    words: enabledWords(getCategory(id).words, disabled[id]),
+    words: enabledLocalizedWords(id, disabled[id]),
   }));
 }
 
@@ -123,7 +123,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     const { lastCategories, lastMode } = useSettingsStore.getState();
     // Keep only ids that still exist in the current category data — stale ids
     // from older app versions would otherwise inflate the selected count.
-    const validIds = new Set(CATEGORIES.map((c) => c.id));
+    const validIds = new Set(CATEGORIES_DATA.map((c) => c.id));
     const restored = lastCategories.filter((id) => validIds.has(id));
     const categoryIds = restored.length ? restored : DEFAULT_CONFIG.categoryIds;
     const mode = (lastMode as GameConfig['mode']) ?? DEFAULT_CONFIG.mode;

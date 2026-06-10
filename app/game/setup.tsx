@@ -1,5 +1,6 @@
 import {router} from 'expo-router';
 import {ArrowRight} from 'phosphor-react-native';
+import {useTranslation} from 'react-i18next';
 import {ScrollView, Switch, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
@@ -9,7 +10,7 @@ import {ScreenHeader} from '@/components/ScreenHeader';
 import {SelectableCard} from '@/components/SelectableCard';
 import {Stepper} from '@/components/Stepper';
 import {ChaosIcon, ModeIcon} from '@/components/icons/ModeIcons';
-import {MODES, getMode} from '@/data/modes';
+import {getModes, getMode} from '@/data/modes';
 import {maxSpecialMajority} from '@/game/roles';
 import type {ModeId} from '@/game/types';
 import {useGameStore} from '@/store/gameStore';
@@ -45,6 +46,7 @@ function GlassCard({children}: {children: React.ReactNode}) {
 }
 
 export default function Setup() {
+  const {t} = useTranslation();
   const config = useGameStore(s => s.config);
   const setMode = useGameStore(s => s.setMode);
   const setPlayerCount = useGameStore(s => s.setPlayerCount);
@@ -52,21 +54,22 @@ export default function Setup() {
   const setGhostClassic = useGameStore(s => s.setGhostClassic);
 
   const mode = getMode(config.mode);
+  const modes = getModes();
   const maxSpecial = maxSpecialMajority(config.playerCount);
 
   const isGhost = config.mode === 'ghost';
   const ghostClassic = isGhost && config.ghostClassic;
   // Classic-ghost reserves one slot for the single ghost, so spies cap lower.
   const stepMax = ghostClassic ? Math.max(1, maxSpecial) : maxSpecial;
-  const stepLabel = ghostClassic ? 'Шпионы' : mode.specialCountLabel;
+  const stepLabel = ghostClassic ? t('setup.spies') : mode.specialCountLabel;
 
   return (
     <ScreenGradient>
       <SafeAreaView className='flex-1' edges={['top', 'bottom']}>
         <View className='flex-1 px-3 pt-4'>
           <ScreenHeader
-            title='Создание игры'
-            subtitle='Настройте партию'
+            title={t('setup.title')}
+            subtitle={t('setup.subtitle')}
             onBack={() => router.back()}
           />
 
@@ -75,11 +78,11 @@ export default function Setup() {
             contentContainerStyle={{paddingBottom: 16}}
           >
             <View className='flex-1'>
-              <Label>Режим</Label>
+              <Label>{t('setup.modeLabel')}</Label>
               <View className='gap-2.5'>
                 {(() => {
-                  const fullWidth = MODES.filter(m => m.id === 'classic');
-                  const halfWidth = MODES.filter(m => m.id !== 'classic');
+                  const fullWidth = modes.filter(m => m.id === 'classic');
+                  const halfWidth = modes.filter(m => m.id !== 'classic');
                   return (
                     <>
                       {fullWidth.map(m => {
@@ -138,10 +141,10 @@ export default function Setup() {
                 })()}
               </View>
 
-              <Label>Игроки</Label>
+              <Label>{t('setup.playersLabel')}</Label>
               <GlassCard>
                 <Stepper
-                  label='Количество игроков'
+                  label={t('setup.playersCount')}
                   value={config.playerCount}
                   onChange={setPlayerCount}
                   min={3}
@@ -150,7 +153,7 @@ export default function Setup() {
                 />
               </GlassCard>
 
-              <Label>Дополнительно</Label>
+              <Label>{t('setup.additionalLabel')}</Label>
               {mode.configurableSpecialCount ? (
                 <GlassCard>
                   <Stepper
@@ -175,8 +178,7 @@ export default function Setup() {
                       <ChaosIcon size={24} color={colors.cyan} />
                     </View>
                     <Text className='flex-1 font-sans text-sm leading-6 text-text-secondary'>
-                      В режиме «Хаос» количество шпионов скрыто и определится
-                      случайно при старте.
+                      {t('setup.chaosNote')}
                     </Text>
                   </View>
                 </GlassCard>
@@ -187,7 +189,7 @@ export default function Setup() {
                   <View className='flex-row items-center'>
                     <View className='flex-1 pr-3'>
                       <Text className='font-sans-sb text-base text-white'>
-                        Классический призрак
+                        {t('setup.ghostClassic')}
                       </Text>
                     </View>
                     <Switch
@@ -207,7 +209,7 @@ export default function Setup() {
 
           <View className='pb-2 pt-3'>
             <PrimaryButton
-              label='Выбрать категорию'
+              label={t('setup.next')}
               iconNode={<ArrowRight size={22} color='#FFFFFF' weight='bold' />}
               size='lg'
               onPress={() => router.push('/game/categories')}

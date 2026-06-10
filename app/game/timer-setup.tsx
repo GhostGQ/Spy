@@ -1,5 +1,6 @@
 import {router} from 'expo-router';
 import {Minus, Play, Plus, Timer} from 'phosphor-react-native';
+import {useTranslation} from 'react-i18next';
 import {Pressable, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
@@ -15,13 +16,8 @@ const QUICK = [1, 3, 5];
 const MIN_MIN = 1;
 const MAX_MIN = 10;
 
-function pluralMin(n: number) {
-  if (n === 1) return 'минута';
-  if (n >= 2 && n <= 4) return 'минуты';
-  return 'минут';
-}
-
 export default function TimerSetup() {
+  const {t} = useTranslation();
   const durationSec = useGameStore(s => s.durationSec);
   const setDuration = useGameStore(s => s.setDuration);
 
@@ -41,8 +37,8 @@ export default function TimerSetup() {
       <SafeAreaView className='flex-1' edges={['top', 'bottom']}>
         <View className='flex-1 px-6 pt-4'>
           <ScreenHeader
-            title='Обсуждение'
-            subtitle='Сколько длится раунд?'
+            title={t('timer.title')}
+            subtitle={t('timer.subtitle')}
             showBack={false}
           />
 
@@ -96,7 +92,7 @@ export default function TimerSetup() {
                       {minutes}
                     </Text>
                     <Text className='mt-1 font-sans text-sm text-muted'>
-                      {pluralMin(minutes)}
+                      {t('timer.minutes', {count: minutes})}
                     </Text>
                   </View>
 
@@ -122,7 +118,7 @@ export default function TimerSetup() {
               {/* Quick presets */}
               <View>
                 <Text className='mb-3 text-center font-display text-xs uppercase tracking-widest text-muted'>
-                  Быстрый выбор
+                  {t('timer.quickPick')}
                 </Text>
                 <View className='flex-row justify-center gap-3'>
                   {QUICK.map(m => {
@@ -146,7 +142,7 @@ export default function TimerSetup() {
                           style={{color: active ? hex : colors.textSecondary}}
                           className='font-sans-sb text-base'
                         >
-                          {m} мин
+                          {m} {t('timer.minShort')}
                         </Text>
                       </Pressable>
                     );
@@ -158,7 +154,7 @@ export default function TimerSetup() {
 
           <View className='pb-4'>
             <PrimaryButton
-              label='Запустить обсуждение'
+              label={t('timer.start')}
               iconNode={<Play size={22} color='#FFFFFF' weight='fill' />}
               size='lg'
               accent='time'

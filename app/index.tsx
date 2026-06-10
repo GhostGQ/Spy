@@ -1,5 +1,6 @@
 import { router } from 'expo-router';
 import { BookOpen, GearSix, Play } from 'phosphor-react-native';
+import { useTranslation } from 'react-i18next';
 import { Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -32,6 +33,7 @@ function SecondaryButton({
 }
 
 export default function MainMenu() {
+  const { t } = useTranslation();
   const reset = useGameStore((s) => s.reset);
 
   const startGame = () => {
@@ -55,17 +57,17 @@ export default function MainMenu() {
               style={{ textShadowColor: 'rgba(96,165,250,0.55)', textShadowRadius: 18, letterSpacing: 2 }}
               className="mt-6 font-display text-6xl text-white"
             >
-              ШПИОН
+              {t('menu.title')}
             </Text>
             <Text className="mt-3 font-sans text-base text-text-secondary">
-              Найди того, кто не знает слова
+              {t('menu.subtitle')}
             </Text>
           </View>
 
           {/* Actions */}
           <View>
             <PrimaryButton
-              label="Играть"
+              label={t('menu.play')}
               iconNode={<Play size={22} color="#FFFFFF" weight="fill" />}
               size="lg"
               onPress={startGame}
@@ -73,17 +75,17 @@ export default function MainMenu() {
             <View className="mt-3 flex-row gap-3">
               <SecondaryButton
                 icon={<BookOpen size={20} color={colors.accentBright} weight="bold" />}
-                label="Правила"
+                label={t('menu.rules')}
                 onPress={() => router.push('/rules')}
               />
               <SecondaryButton
                 icon={<GearSix size={20} color={colors.accentBright} weight="bold" />}
-                label="Настройки"
+                label={t('menu.settings')}
                 onPress={() => router.push('/settings')}
               />
             </View>
             <Text className="mt-5 text-center font-sans text-xs text-muted">
-              Локальная игра · 3–12 игроков · одно устройство
+              {t('menu.tagline')}
             </Text>
           </View>
         </View>
