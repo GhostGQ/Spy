@@ -225,7 +225,7 @@ export default function Setup() {
             </View>
           </ScrollView>
 
-          <View className='pb-2 pt-3'>
+          <View className='pb-4 pt-3'>
             <PrimaryButton
               label={t('setup.next')}
               iconNode={<ArrowRight size={22} color='#FFFFFF' weight='bold' />}
