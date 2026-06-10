@@ -1,6 +1,6 @@
 import { Fingerprint, User } from 'phosphor-react-native';
 import { useTranslation } from 'react-i18next';
-import { Text, View } from 'react-native';
+import { Platform, Text, View } from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -127,9 +127,15 @@ export function RoleCard({ role, playerNumber, revealed }: Props) {
             lineHeight: 48,
             textAlign: 'center',
             letterSpacing: 1,
-            textShadowColor: `${accent}AA`,
-            textShadowRadius: 20,
-            textShadowOffset: { width: 0, height: 0 },
+            // Large-radius text-shadow renders as a solid box behind the text
+            // on react-native-web (Chrome), so the glow is iOS/Android only.
+            ...(Platform.OS === 'web'
+              ? null
+              : {
+                  textShadowColor: `${accent}AA`,
+                  textShadowRadius: 20,
+                  textShadowOffset: { width: 0, height: 0 },
+                }),
           }}
         >
           {role.word ?? t('roles.spy')}
