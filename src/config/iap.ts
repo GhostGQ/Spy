@@ -4,7 +4,7 @@
  * stores. While `false`, every category is accessible and no purchase UI is
  * shown — the app behaves exactly as before this feature was added.
  */
-export const IAP_ENABLED = true;
+export const IAP_ENABLED = false;
 
 /**
  * Unlocks every premium category and mode without purchases or "coming soon"
@@ -14,7 +14,7 @@ export const IAP_ENABLED = true;
 export const TESTING_FULL_ACCESS = false;
 
 /** Categories that remain free regardless of purchase state. */
-export const FREE_CATEGORY_IDS = ['locations'] as const;
+export const FREE_CATEGORY_IDS = ['locations', 'food', 'cities'] as const;
 
 /** Product id for the "unlock everything" bundle. */
 export const ALL_CATEGORIES_PRODUCT_ID = 'all_categories';
@@ -34,10 +34,16 @@ export const CATEGORY_PRODUCT_IDS: Record<string, string> = {
   relationships: 'relationships_pack',
 };
 
-/** RevenueCat public SDK keys, set once configured. */
+/**
+ * RevenueCat public SDK keys, set once configured.
+ *
+ * A `test_…` key targets RevenueCat's Test Store (fake products, no real
+ * billing) and is platform-agnostic, so it is used for both platforms. Swap in
+ * the real store keys (`goog_…` / `appl_…`) before shipping to production.
+ */
 export const REVENUECAT_API_KEYS = {
-  ios: '',
-  android: '',
+  ios: 'test_qabBvLexYrgJgspyaAFrbhKcvgd',
+  android: 'test_qabBvLexYrgJgspyaAFrbhKcvgd',
 };
 
 /** Fallback display price for a single category pack, used until RevenueCat returns one. */
@@ -47,4 +53,4 @@ export const CATEGORY_PRICE = '$1.49';
 export const ALL_ACCESS_PRICE = '$9.99';
 
 /** Game modes that require the "full access" purchase. */
-export const PREMIUM_MODE_IDS = ['chaos', 'ghost'] as const;
+export const PREMIUM_MODE_IDS = ['ghost'] as const;

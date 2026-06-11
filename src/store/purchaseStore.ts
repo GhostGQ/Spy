@@ -60,6 +60,22 @@ export const usePurchaseStore = create<PurchaseState>()(
         set({
           products: Object.fromEntries(products.map((p) => [p.productId, p])),
         });
+        // Sync already-owned entitlements so access survives reinstalls without
+        // forcing the user to tap "Restore" — RevenueCat is the source of truth.
+        try {
+          const active = new Set(await purchases.getActiveEntitlements());
+          if (active.size > 0) {
+            const unlockedCategoryIds = Object.entries(CATEGORY_PRODUCT_IDS)
+              .filter(([, productId]) => active.has(productId))
+              .map(([categoryId]) => categoryId);
+            set({
+              unlockedCategoryIds,
+              allUnlocked: active.has(ALL_CATEGORIES_PRODUCT_ID),
+            });
+          }
+        } catch {
+          // Offline / SDK unavailable: keep the persisted cache as-is.
+        }
       },
 
       hasAccess: (categoryId) => {
