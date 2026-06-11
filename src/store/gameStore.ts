@@ -18,7 +18,7 @@ function buildPools(config: GameConfig): WordPool[] {
 
 const DEFAULT_CONFIG: GameConfig = {
   mode: 'classic',
-  categoryIds: [],
+  categoryIds: ['locations'],
   playerCount: 4,
   specialCount: 1,
   ghostClassic: false,

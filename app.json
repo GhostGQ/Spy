@@ -13,7 +13,7 @@
     "githubUrl": "https://github.com/GhostGQ/Spy",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.ghostgq.spy",
+      "bundleIdentifier": "com.spy_ghostgq_studio",
       "adaptiveIcon": {
         "backgroundColor": "#0E0F13",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -25,7 +25,7 @@
       }
     },
     "android": {
-      "package": "com.ghostgq.spy",
+      "package": "com.spy_ghostgq_studio",
       "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#0E0F13",
