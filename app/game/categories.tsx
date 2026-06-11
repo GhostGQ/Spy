@@ -6,6 +6,7 @@ import { Alert, Pressable, ScrollView, Text, useWindowDimensions, View } from 'r
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Card } from '@/components/Card';
+import { ComingSoonOverlay } from '@/components/ComingSoonOverlay';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { ScreenGradient } from '@/components/ScreenGradient';
 import { ScreenHeader } from '@/components/ScreenHeader';
@@ -73,11 +74,11 @@ function CategoryTile({
           height: size,
           borderColor: selected ? colors.accent : colors.borderSubtle,
           backgroundColor: selected ? colors.surface2 : colors.surface,
-          opacity: disabled ? 0.6 : 1,
+          opacity: locked ? 0.6 : 1,
         },
         selected ? glow(colors.accent, 'card') : null,
       ]}
-      className="items-center justify-center rounded-3xl border-2 p-3 active:opacity-90"
+      className="items-center justify-center rounded-3xl border-2 p-3 active:opacity-90 overflow-hidden"
     >
       <View style={{ position: 'absolute', top: 10, right: 10, zIndex: 2 }}>
         {locked ? (
@@ -99,11 +100,7 @@ function CategoryTile({
         <CategoryIcon id={id} size={42} color={selected ? colors.accent : colors.textSecondary} />
       </View>
       <Text className="mt-3 font-sans-sb text-base text-white text-center">{title}</Text>
-      {comingSoon ? (
-        <View style={{ backgroundColor: colors.surface3 }} className="mt-1.5 rounded-full px-2.5 py-1">
-          <Text className="font-sans-b text-xs text-muted">{comingSoonLabel}</Text>
-        </View>
-      ) : locked ? (
+      {locked ? (
         <View
           style={{ backgroundColor: colors.purple }}
           className="mt-1.5 rounded-full px-2.5 py-1"
@@ -115,6 +112,7 @@ function CategoryTile({
           {enabled}/{total} {wordsLabel}
         </Text>
       )}
+      {comingSoon ? <ComingSoonOverlay label={comingSoonLabel} radius={24} /> : null}
     </Pressable>
   );
 }

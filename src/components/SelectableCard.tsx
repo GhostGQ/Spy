@@ -2,6 +2,7 @@ import type {ReactNode} from 'react';
 import {CheckCircle, Lock} from 'phosphor-react-native';
 import {Pressable, Text, View} from 'react-native';
 
+import {ComingSoonOverlay} from '@/components/ComingSoonOverlay';
 import {hapticSelection} from '@/lib/haptics';
 import {accentHex, colors, type AccentToken} from '@/theme/colors';
 import {glow} from '@/theme/glow';
@@ -33,7 +34,6 @@ export function SelectableCard({
   comingSoonLabel,
 }: Props) {
   const hex = accentHex[accent];
-  const disabled = locked || comingSoon;
   return (
     <Pressable
       onPress={() => {
@@ -45,11 +45,11 @@ export function SelectableCard({
         {
           borderColor: selected ? hex : colors.borderSubtle,
           backgroundColor: selected ? colors.surface2 : colors.surface,
-          opacity: disabled ? 0.6 : 1,
+          opacity: locked ? 0.6 : 1,
         },
         selected ? glow(hex, 'card') : null,
       ]}
-      className='flex-col gap-2 items-center justify-center rounded-2xl border p-4 py-6 active:opacity-90 relative'
+      className='flex-col gap-2 items-center justify-center rounded-2xl border p-4 py-6 active:opacity-90 relative overflow-hidden'
     >
       {icon ? (
         <View
@@ -61,9 +61,7 @@ export function SelectableCard({
       ) : null}
       <Text className='font-sans-sb text-base text-white'>{title}</Text>
       {comingSoon ? (
-        <View style={{backgroundColor: colors.surface3}} className='rounded-full px-2.5 py-1'>
-          <Text className='font-sans-b text-xs text-muted'>{comingSoonLabel}</Text>
-        </View>
+        <ComingSoonOverlay label={comingSoonLabel ?? ''} radius={16} />
       ) : locked ? (
         <Lock
           size={22}
