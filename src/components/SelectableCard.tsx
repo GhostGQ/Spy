@@ -49,12 +49,12 @@ export function SelectableCard({
         },
         selected ? glow(hex, 'card') : null,
       ]}
-      className='flex-col gap-2 items-center justify-center rounded-2xl border p-4 py-6 active:opacity-90 relative overflow-hidden'
+      className='flex-col gap-2 items-center justify-center rounded-2xl border p-4 active:opacity-90 relative overflow-hidden'
     >
       {icon ? (
         <View
           style={{backgroundColor: `${hex}1F`, borderColor: `${hex}33`}}
-          className='h-16 w-16 items-center justify-center rounded-2xl border'
+          className='h-14 w-14 items-center justify-center rounded-2xl border'
         >
           {icon}
         </View>

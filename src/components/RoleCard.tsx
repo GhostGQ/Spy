@@ -140,6 +140,17 @@ export function RoleCard({ role, playerNumber, revealed }: Props) {
         >
           {role.word ?? t('roles.spy')}
         </Text>
+
+        {/* Syndicate: the spy sees their teammates' player numbers. */}
+        {shownSpy && role.teammates && role.teammates.length > 0 ? (
+          <Text
+            style={{ color: accent }}
+            className="mt-6 px-6 text-center font-sans-sb text-lg"
+          >
+            {t('roles.teammates')}{' '}
+            {role.teammates.map((n) => t('roles.player', { number: n })).join(', ')}
+          </Text>
+        ) : null}
       </Animated.View>
     </View>
   );

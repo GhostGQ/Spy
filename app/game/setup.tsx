@@ -1,5 +1,5 @@
 import {router} from 'expo-router';
-import {ArrowRight} from 'phosphor-react-native';
+import {ArrowRight, Sparkle} from 'phosphor-react-native';
 import {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {ScrollView, Switch, Text, View} from 'react-native';
@@ -25,7 +25,13 @@ const MODE_ACCENT: Record<ModeId, AccentToken> = {
   classic: 'accent',
   chaos: 'cyan',
   ghost: 'level',
+  syndicate: 'danger',
+  detective: 'purple',
 };
+
+/** Modes shown under the "basic" / "exclusive" (premium) section headers. */
+const BASIC_MODE_IDS: ModeId[] = ['classic', 'chaos'];
+const EXCLUSIVE_MODE_IDS: ModeId[] = ['ghost', 'syndicate', 'detective'];
 
 function Label({children}: {children: string}) {
   return (
@@ -65,17 +71,52 @@ export default function Setup() {
       return;
     }
     setMode(id);
+    // A syndicate needs at least two spies, so the stepper starts at 2.
+    if (id === 'syndicate' && config.specialCount < 2) setSpecialCount(2);
   };
 
   const mode = getMode(config.mode);
   const modes = getModes();
+  const byId = (id: ModeId) => modes.find(m => m.id === id)!;
   const maxSpecial = maxSpecialMajority(config.playerCount);
 
   const isGhost = config.mode === 'ghost';
+  const isSyndicate = config.mode === 'syndicate';
   const ghostClassic = isGhost && config.ghostClassic;
   // Classic-ghost reserves one slot for the single ghost, so spies cap lower.
   const stepMax = ghostClassic ? Math.max(1, maxSpecial) : maxSpecial;
+  const stepMin = isSyndicate ? 2 : 1;
   const stepLabel = ghostClassic ? t('setup.spies') : mode.specialCountLabel;
+  const modeAccentHex = accentHex[MODE_ACCENT[config.mode]];
+
+  const renderMode = (m: ReturnType<typeof getMode>, iconSize: number) => {
+    const selected = config.mode === m.id;
+    const acc = MODE_ACCENT[m.id];
+    const isPremium = (PREMIUM_MODE_IDS as readonly string[]).includes(m.id);
+    // Detective has no mechanic yet — always a blurred "coming soon" teaser.
+    const comingSoon =
+      m.id === 'detective'
+        ? true
+        : !IAP_ENABLED && !TESTING_FULL_ACCESS && isPremium;
+    return (
+      <SelectableCard
+        title={m.title}
+        selected={selected}
+        locked={isModeLocked(m.id)}
+        comingSoon={comingSoon}
+        comingSoonLabel={t('categories.comingSoon')}
+        onPress={() => onPressMode(m.id)}
+        accent={acc}
+        icon={
+          <ModeIcon
+            name={m.iconKey}
+            size={iconSize}
+            color={selected ? accentHex[acc] : colors.textSecondary}
+          />
+        }
+      />
+    );
+  };
 
   return (
     <ScreenGradient>
@@ -92,67 +133,62 @@ export default function Setup() {
             contentContainerStyle={{paddingBottom: 16}}
           >
             <View className='flex-1'>
-              <Label>{t('setup.modeLabel')}</Label>
-              <View className='gap-2.5'>
+              <Label>{t('setup.basicModesLabel')}</Label>
+              <View className='gap-2.5 flex flex-row'>
+                {BASIC_MODE_IDS.map(id => (
+                  <View key={id} className='flex-1'>{renderMode(byId(id), 38)}</View>
+                ))}
+              </View>
+
+              {/* Premium-mode divider (teaser header). */}
+              <View className='my-5 flex-row items-center'>
+                <View
+                  className='h-px flex-1'
+                  style={{backgroundColor: colors.divider}}
+                />
+                <View
+                  className='mx-3 flex-row items-center rounded-full border px-3 py-1.5'
+                  style={{
+                    backgroundColor: `${colors.purple}1F`,
+                    borderColor: `${colors.purple}40`,
+                  }}
+                >
+                  <Sparkle size={15} color={colors.purple} weight='fill' />
+                  <Text
+                    className='ml-1.5 font-display text-[12px] uppercase tracking-widest'
+                    style={{color: colors.purple}}
+                  >
+                    {t('setup.exclusiveModesLabel')}
+                  </Text>
+                </View>
+                <View
+                  className='h-px flex-1'
+                  style={{backgroundColor: colors.divider}}
+                />
+              </View>
+
+              <View className='flex-1 gap-2.5'>
                 {(() => {
-                  const fullWidth = modes.filter(m => m.id === 'classic');
-                  const halfWidth = modes.filter(m => m.id !== 'classic');
+                  const fullWidth = EXCLUSIVE_MODE_IDS.filter(
+                    item => item === 'ghost',
+                  );
+                  const halfWidth = EXCLUSIVE_MODE_IDS.filter(
+                    item => item !== 'ghost',
+                  );
+
                   return (
                     <>
-                      {fullWidth.map(m => {
-                        const selected = config.mode === m.id;
-                        const acc = MODE_ACCENT[m.id];
-                        return (
-                          <SelectableCard
-                            key={m.id}
-                            title={m.title}
-                            selected={selected}
-                            locked={isModeLocked(m.id)}
-                            onPress={() => onPressMode(m.id)}
-                            accent={acc}
-                            icon={
-                              <ModeIcon
-                                name={m.iconKey}
-                                size={38}
-                                color={
-                                  selected
-                                    ? accentHex[acc]
-                                    : colors.textSecondary
-                                }
-                              />
-                            }
-                          />
-                        );
-                      })}
+                      {fullWidth.map(id => (
+                        <View key={id}>
+                          {renderMode(byId(id), 32)}
+                        </View>
+                      ))}
                       <View className='flex-row gap-2.5'>
-                        {halfWidth.map(m => {
-                          const selected = config.mode === m.id;
-                          const acc = MODE_ACCENT[m.id];
-                          return (
-                            <View key={m.id} className='flex-1'>
-                              <SelectableCard
-                                title={m.title}
-                                selected={selected}
-                                locked={isModeLocked(m.id)}
-                                comingSoon={!IAP_ENABLED && !TESTING_FULL_ACCESS && (PREMIUM_MODE_IDS as readonly string[]).includes(m.id)}
-                                comingSoonLabel={t('categories.comingSoon')}
-                                onPress={() => onPressMode(m.id)}
-                                accent={acc}
-                                icon={
-                                  <ModeIcon
-                                    name={m.iconKey}
-                                    size={32}
-                                    color={
-                                      selected
-                                        ? accentHex[acc]
-                                        : colors.textSecondary
-                                    }
-                                  />
-                                }
-                              />
-                            </View>
-                          );
-                        })}
+                        {halfWidth.map(id => (
+                          <View key={id} style={{width: '48.5%'}}>
+                            {renderMode(byId(id), 32)}
+                          </View>
+                        ))}
                       </View>
                     </>
                   );
@@ -172,13 +208,37 @@ export default function Setup() {
               </GlassCard>
 
               <Label>{t('setup.additionalLabel')}</Label>
+              {isGhost || isSyndicate ? (
+                <>
+                  <GlassCard>
+                    <View className='flex-row items-center'>
+                      <View
+                        style={{
+                          backgroundColor: `${modeAccentHex}1F`,
+                          borderColor: `${modeAccentHex}33`,
+                        }}
+                        className='mr-3 h-11 w-11 items-center justify-center rounded-2xl border'
+                      >
+                        <ModeIcon name={mode.iconKey} size={24} color={modeAccentHex} />
+                      </View>
+                      <Text className='flex-1 font-sans text-sm leading-6 text-text-secondary'>
+                        {mode.short}
+                      </Text>
+                    </View>
+                  </GlassCard>
+                  <View className='h-2.5' />
+                </>
+              ) : null}
               {mode.configurableSpecialCount ? (
                 <GlassCard>
                   <Stepper
                     label={stepLabel}
-                    value={Math.min(config.specialCount, stepMax)}
+                    value={Math.max(
+                      stepMin,
+                      Math.min(config.specialCount, stepMax),
+                    )}
                     onChange={setSpecialCount}
-                    min={1}
+                    min={stepMin}
                     max={stepMax}
                     accent='accent'
                   />
@@ -235,7 +295,10 @@ export default function Setup() {
           </View>
         </View>
       </SafeAreaView>
-      <FullAccessSheet visible={fullAccessOpen} onClose={() => setFullAccessOpen(false)} />
+      <FullAccessSheet
+        visible={fullAccessOpen}
+        onClose={() => setFullAccessOpen(false)}
+      />
     </ScreenGradient>
   );
 }

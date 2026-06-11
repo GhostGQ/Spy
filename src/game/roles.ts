@@ -102,8 +102,13 @@ export function assignRoles(config: GameConfig, pools: WordPool[]): AssignResult
     fakeWord = pickDifferentWord(pool.words, word);
     specialCount = Math.min(Math.max(1, config.specialCount), maxSpecialMajority(n));
     for (let i = 0; i < specialCount; i++) kinds.push('ghost');
+  } else if (config.mode === 'syndicate') {
+    // Like classic, but the spies form a team and see each other (teammates are
+    // filled in below, once player numbers are known). A syndicate needs ≥2.
+    specialCount = Math.min(Math.max(2, config.specialCount), maxSpecialMajority(n));
+    for (let i = 0; i < specialCount; i++) kinds.push('spy');
   } else {
-    // classic
+    // classic (also the safe fallback for 'detective' until it has its own logic)
     specialCount = Math.min(Math.max(1, config.specialCount), maxSpecialMajority(n));
     for (let i = 0; i < specialCount; i++) kinds.push('spy');
   }
@@ -133,6 +138,14 @@ export function assignRoles(config: GameConfig, pools: WordPool[]): AssignResult
     }
     return { id: index, player: index + 1, kind, labelKey: 'civilian', word };
   });
+
+  // Syndicate: each spy sees the other spies' player numbers on their own card.
+  if (config.mode === 'syndicate') {
+    const spyPlayers = roles.filter((r) => r.kind === 'spy').map((r) => r.player);
+    for (const r of roles) {
+      if (r.kind === 'spy') r.teammates = spyPlayers.filter((p) => p !== r.player);
+    }
+  }
 
   return { roles, word, fakeWord, specialCount, categoryId };
 }

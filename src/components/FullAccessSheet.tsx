@@ -1,9 +1,10 @@
-import { CheckCircle, X } from 'phosphor-react-native';
+import { CheckCircle, Sparkle, X } from 'phosphor-react-native';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Animated, Dimensions, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { PriceTag } from '@/components/PriceTag';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { ALL_CATEGORIES_PRODUCT_ID } from '@/config/iap';
 import { usePurchaseStore } from '@/store/purchaseStore';
@@ -28,7 +29,7 @@ interface Props {
 /** Bottom sheet explaining the "full access" bundle, with the activation CTA. */
 export function FullAccessSheet({ visible, onClose }: Props) {
   const { t } = useTranslation();
-  const getPriceLabel = usePurchaseStore((s) => s.getPriceLabel);
+  const getPrice = usePurchaseStore((s) => s.getPrice);
   const purchaseAllCategories = usePurchaseStore((s) => s.purchaseAllCategories);
   const isPurchasing = usePurchaseStore((s) => s.isLoading);
 
@@ -55,6 +56,8 @@ export function FullAccessSheet({ visible, onClose }: Props) {
 
   if (!mounted) return null;
 
+  const price = getPrice(ALL_CATEGORIES_PRODUCT_ID);
+
   const onActivate = () => {
     void purchaseAllCategories();
     onClose();
@@ -75,10 +78,21 @@ export function FullAccessSheet({ visible, onClose }: Props) {
         >
           <SafeAreaView edges={['bottom']}>
             <View className="p-6">
-              <View className="mb-1 flex-row items-center justify-between">
-                <Text className="font-display text-xl uppercase tracking-widest text-white">
-                  {t('purchase.fullAccessTitle')}
-                </Text>
+              <View className="mb-4 flex-row items-center">
+                <View
+                  style={{ backgroundColor: `${colors.purple}1F`, borderColor: `${colors.purple}40` }}
+                  className="mr-3 h-12 w-12 items-center justify-center rounded-2xl border"
+                >
+                  <Sparkle size={26} color={colors.purpleLight} weight="fill" />
+                </View>
+                <View className="flex-1">
+                  <Text className="font-display text-xl uppercase tracking-widest text-white">
+                    {t('purchase.fullAccessTitle')}
+                  </Text>
+                  <Text className="font-sans text-xs text-muted">
+                    {t('purchase.fullAccessTagline')}
+                  </Text>
+                </View>
                 <Pressable
                   onPress={onClose}
                   style={{ backgroundColor: colors.surface3 }}
@@ -87,16 +101,29 @@ export function FullAccessSheet({ visible, onClose }: Props) {
                   <X size={16} color={colors.textSecondary} weight="bold" />
                 </Pressable>
               </View>
-              <Text className="mb-4 font-sans text-sm text-muted">
-                {t('purchase.fullAccessSavings')}
-              </Text>
+
               <View className="mb-5 gap-2.5">
                 <BenefitRow text={t('purchase.fullAccessCategories')} />
                 <BenefitRow text={t('purchase.fullAccessModes')} />
-                <BenefitRow text={t('purchase.fullAccessNoAds')} />
+                <BenefitRow text={t('purchase.fullAccessFuture')} />
+                <BenefitRow text={t('purchase.fullAccessForever')} />
               </View>
+
+              <View className="mb-4 items-center">
+                <PriceTag
+                  regular={price.regular}
+                  discounted={price.discounted}
+                  saleEndsAt={price.saleEndsAt}
+                  size="lg"
+                  color={colors.purpleLight}
+                />
+                <Text className="mt-0.5 font-sans text-xs text-muted">
+                  {t('purchase.fullAccessSavings')}
+                </Text>
+              </View>
+
               <PrimaryButton
-                label={`${t('purchase.activate')} — ${getPriceLabel(ALL_CATEGORIES_PRODUCT_ID)}`}
+                label={t('purchase.activate')}
                 icon="lock-open-outline"
                 size="lg"
                 accent="purple"

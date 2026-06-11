@@ -10,7 +10,9 @@ import {
   FREE_CATEGORY_IDS,
   IAP_ENABLED,
   PREMIUM_MODE_IDS,
+  PRODUCT_PRICES,
   TESTING_FULL_ACCESS,
+  type PriceConfig,
 } from '@/config/iap';
 import * as purchases from '@/iap/purchases';
 import type { PurchaseProduct } from '@/iap/types';
@@ -33,8 +35,8 @@ interface PurchaseState {
   init: () => Promise<void>;
   /** Whether the given category is playable right now. */
   hasAccess: (categoryId: string) => boolean;
-  /** Display price for a product, falling back to a default while RevenueCat loads. */
-  getPriceLabel: (productId: string) => string;
+  /** Price for a product (regular + optional sale price) for display. */
+  getPrice: (productId: string) => PriceConfig;
   /** Whether the given mode requires the "full access" purchase and isn't unlocked. */
   isModeLocked: (modeId: string) => boolean;
   purchaseCategory: (categoryId: string) => Promise<void>;
@@ -85,9 +87,20 @@ export const usePurchaseStore = create<PurchaseState>()(
         return allUnlocked || unlockedCategoryIds.includes(categoryId);
       },
 
-      getPriceLabel: (productId) => {
-        const fallback = productId === ALL_CATEGORIES_PRODUCT_ID ? ALL_ACCESS_PRICE : CATEGORY_PRICE;
-        return get().products[productId]?.priceString ?? fallback;
+      getPrice: (productId) => {
+        const cfg =
+          PRODUCT_PRICES[productId] ??
+          (productId === ALL_CATEGORIES_PRODUCT_ID ? ALL_ACCESS_PRICE : CATEGORY_PRICE);
+        // A real store price (RevenueCat), when loaded, overrides the regular
+        // label; the configured sale price still applies on top of it.
+        const storePrice = get().products[productId]?.priceString;
+        const regular = storePrice ?? cfg.regular;
+        // Once the deadline passes, the discount expires and the regular
+        // price applies again.
+        if (cfg.saleEndsAt && Date.parse(cfg.saleEndsAt) <= Date.now()) {
+          return { regular };
+        }
+        return { regular, discounted: cfg.discounted, saleEndsAt: cfg.saleEndsAt };
       },
 
       isModeLocked: (modeId) => {

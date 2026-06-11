@@ -4,7 +4,7 @@
  * stores. While `false`, every category is accessible and no purchase UI is
  * shown — the app behaves exactly as before this feature was added.
  */
-export const IAP_ENABLED = false;
+export const IAP_ENABLED = true;
 
 /**
  * Unlocks every premium category and mode without purchases or "coming soon"
@@ -46,11 +46,43 @@ export const REVENUECAT_API_KEYS = {
   android: 'test_qabBvLexYrgJgspyaAFrbhKcvgd',
 };
 
-/** Fallback display price for a single category pack, used until RevenueCat returns one. */
-export const CATEGORY_PRICE = '$1.49';
+/**
+ * A configurable price. Set `discounted` to run a promo: the UI then shows the
+ * `regular` price struck-through next to the highlighted `discounted` price.
+ */
+export interface PriceConfig {
+  /** Regular price label, e.g. '$9.99'. */
+  regular: string;
+  /** Optional sale price. When set, `regular` is shown crossed out. */
+  discounted?: string;
+  /**
+   * Optional ISO 8601 deadline (e.g. '2026-07-01T00:00:00Z') for the
+   * `discounted` price. While in the future, the UI shows a countdown; once
+   * passed, the discount is treated as expired and `regular` applies again.
+   */
+  saleEndsAt?: string;
+}
 
-/** Fallback display price for the "unlock everything" bundle. */
-export const ALL_ACCESS_PRICE = '$9.99';
+/** Default price for a single category pack (used until the store returns one). */
+export const CATEGORY_PRICE: PriceConfig = { regular: '$1.49', discounted: '$0.99', saleEndsAt: '2026-06-28T00:00:00Z' };
+
+/** Default price for the "unlock everything / full access" bundle. */
+export const ALL_ACCESS_PRICE: PriceConfig = {
+  regular: '$9.99',
+  discounted: '$5.99',
+  saleEndsAt: '2026-06-28T00:00:00Z'
+};
+
+/**
+ * Per-product price overrides (productId → price). Anything not listed here
+ * falls back to the defaults above. To run a sale, add a `discounted` value:
+ *
+ *   export const PRODUCT_PRICES = {
+ *     [ALL_CATEGORIES_PRODUCT_ID]: { regular: '$9.99', discounted: '$5.99' },
+ *     games_pack: { regular: '$1.99', discounted: '$0.99' },
+ *   };
+ */
+export const PRODUCT_PRICES: Record<string, PriceConfig> = {};
 
 /** Game modes that require the "full access" purchase. */
-export const PREMIUM_MODE_IDS = ['ghost'] as const;
+export const PREMIUM_MODE_IDS = ['ghost', 'syndicate', 'detective'] as const;
