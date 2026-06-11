@@ -17,6 +17,8 @@ const MODES_DATA: ModeMeta[] = [
   { id: 'classic', iconKey: 'spy', emoji: '🕵️', configurableSpecialCount: true },
   { id: 'chaos', iconKey: 'chaos', emoji: '🌀', configurableSpecialCount: false },
   { id: 'ghost', iconKey: 'ghost', emoji: '👻', configurableSpecialCount: true },
+  { id: 'syndicate', iconKey: 'syndicate', emoji: '🕶️', configurableSpecialCount: true },
+  { id: 'detective', iconKey: 'detective', emoji: '🔍', configurableSpecialCount: true },
 ];
 
 /** Winner button keys/accents per mode (labels are localized at read time). */
@@ -34,6 +36,16 @@ const MODE_WINNERS: Record<ModeId, { key: Winner; accent: WinnerOption['accent']
   ghost: [
     { key: 'majority', accent: 'info' },
     { key: 'ghosts', accent: 'level' },
+    { key: 'skip', accent: 'muted' },
+  ],
+  syndicate: [
+    { key: 'civilians', accent: 'streak' },
+    { key: 'spies', accent: 'danger' },
+    { key: 'skip', accent: 'muted' },
+  ],
+  detective: [
+    { key: 'civilians', accent: 'streak' },
+    { key: 'spies', accent: 'danger' },
     { key: 'skip', accent: 'muted' },
   ],
 };

@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { CheckCircle, Lock } from 'phosphor-react-native';
+import { CheckCircle, Lock, Sparkle } from 'phosphor-react-native';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Pressable, ScrollView, Text, useWindowDimensions, View } from 'react-native';
@@ -7,11 +7,17 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Card } from '@/components/Card';
 import { ComingSoonOverlay } from '@/components/ComingSoonOverlay';
+import { PriceTag } from '@/components/PriceTag';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { ScreenGradient } from '@/components/ScreenGradient';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { CategoryIcon } from '@/components/icons/CategoryIcon';
-import { ALL_CATEGORIES_PRODUCT_ID, IAP_ENABLED, TESTING_FULL_ACCESS } from '@/config/iap';
+import {
+  ALL_CATEGORIES_PRODUCT_ID,
+  IAP_ENABLED,
+  TESTING_FULL_ACCESS,
+  type PriceConfig,
+} from '@/config/iap';
 import { CATEGORIES_DATA, categoryTitle, enabledCount } from '@/data/categories';
 import { hapticSelection } from '@/lib/haptics';
 import { colors } from '@/theme/colors';
@@ -37,7 +43,7 @@ function CategoryTile({
   selected,
   locked,
   comingSoon,
-  priceLabel,
+  price,
   size,
   onPress,
   onLongPress,
@@ -51,7 +57,7 @@ function CategoryTile({
   selected: boolean;
   locked: boolean;
   comingSoon: boolean;
-  priceLabel?: string;
+  price?: PriceConfig;
   size: number;
   onPress: () => void;
   onLongPress: () => void;
@@ -100,12 +106,17 @@ function CategoryTile({
         <CategoryIcon id={id} size={42} color={selected ? colors.accent : colors.textSecondary} />
       </View>
       <Text className="mt-3 font-sans-sb text-base text-white text-center">{title}</Text>
-      {locked ? (
+      {locked && price ? (
         <View
           style={{ backgroundColor: colors.purple }}
           className="mt-1.5 rounded-full px-2.5 py-1"
         >
-          <Text className="font-sans-b text-xs text-white">{priceLabel}</Text>
+          <PriceTag
+            regular={price.regular}
+            discounted={price.discounted}
+            color="#FFFFFF"
+            strikeColor="rgba(255,255,255,0.65)"
+          />
         </View>
       ) : (
         <Text className="mt-0.5 font-sans text-xs text-muted">
@@ -135,7 +146,7 @@ export default function Categories() {
   const startGame = useGameStore((s) => s.startGame);
   const disabledWords = useSettingsStore((s) => s.disabledWords);
   const hasAccess = usePurchaseStore((s) => s.hasAccess);
-  const getPriceLabel = usePurchaseStore((s) => s.getPriceLabel);
+  const getPrice = usePurchaseStore((s) => s.getPrice);
   const purchaseCategory = usePurchaseStore((s) => s.purchaseCategory);
   const purchaseAllCategories = usePurchaseStore((s) => s.purchaseAllCategories);
   const allUnlocked = usePurchaseStore((s) => s.allUnlocked);
@@ -188,7 +199,7 @@ export default function Categories() {
               {visibleCategories.map((c) => {
                 const comingSoon = !IAP_ENABLED && !TESTING_FULL_ACCESS && c.premium;
                 const locked = !comingSoon && c.premium && !hasAccess(c.id);
-                const priceLabel = locked && c.productId ? getPriceLabel(c.productId) : undefined;
+                const price = locked && c.productId ? getPrice(c.productId) : undefined;
                 return (
                   <CategoryTile
                     key={c.id}
@@ -199,7 +210,7 @@ export default function Categories() {
                     selected={config.categoryIds.includes(c.id)}
                     locked={locked}
                     comingSoon={comingSoon}
-                    priceLabel={priceLabel}
+                    price={price}
                     size={tileSize}
                     onPress={() => onPressTile(c)}
                     onLongPress={() => router.push({ pathname: '/game/category', params: { id: c.id } })}
@@ -212,20 +223,44 @@ export default function Categories() {
 
             {IAP_ENABLED ? (
               <Card className="mt-5 mb-3">
-                <Text className="mb-2 font-display text-sm uppercase tracking-widest text-white">
-                  {t('purchase.fullAccessTitle')}
-                </Text>
+                <View className="mb-3 flex-row items-center">
+                  <View
+                    style={{ backgroundColor: `${colors.purple}1F`, borderColor: `${colors.purple}40` }}
+                    className="mr-3 h-10 w-10 items-center justify-center rounded-2xl border"
+                  >
+                    <Sparkle size={22} color={colors.purpleLight} weight="fill" />
+                  </View>
+                  <View className="flex-1">
+                    <Text className="font-display text-base uppercase tracking-widest text-white">
+                      {t('purchase.fullAccessTitle')}
+                    </Text>
+                    <Text className="font-sans text-xs text-muted">
+                      {t('purchase.fullAccessTagline')}
+                    </Text>
+                  </View>
+                </View>
                 <View className="gap-1.5 mb-4">
                   <BenefitRow text={t('purchase.fullAccessCategories')} />
                   <BenefitRow text={t('purchase.fullAccessModes')} />
-                  <BenefitRow text={t('purchase.fullAccessNoAds')} />
+                  <BenefitRow text={t('purchase.fullAccessFuture')} />
+                  <BenefitRow text={t('purchase.fullAccessForever')} />
                 </View>
+                {!allUnlocked ? (
+                  <View className="mb-3 items-center">
+                    <PriceTag
+                      regular={getPrice(ALL_CATEGORIES_PRODUCT_ID).regular}
+                      discounted={getPrice(ALL_CATEGORIES_PRODUCT_ID).discounted}
+                      saleEndsAt={getPrice(ALL_CATEGORIES_PRODUCT_ID).saleEndsAt}
+                      size="lg"
+                      color={colors.purpleLight}
+                    />
+                    <Text className="mt-0.5 font-sans text-xs text-muted">
+                      {t('purchase.fullAccessSavings')}
+                    </Text>
+                  </View>
+                ) : null}
                 <PrimaryButton
-                  label={
-                    allUnlocked
-                      ? t('purchase.activated')
-                      : `${t('purchase.activate')} — ${getPriceLabel(ALL_CATEGORIES_PRODUCT_ID)}`
-                  }
+                  label={allUnlocked ? t('purchase.activated') : t('purchase.activate')}
                   icon={allUnlocked ? 'checkmark' : 'lock-open-outline'}
                   size="md"
                   accent={allUnlocked ? 'streak' : 'purple'}

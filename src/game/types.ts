@@ -1,4 +1,4 @@
-export type ModeId = 'classic' | 'chaos' | 'ghost';
+export type ModeId = 'classic' | 'chaos' | 'ghost' | 'syndicate' | 'detective';
 
 export type RoleKind = 'civilian' | 'spy' | 'ghost';
 
@@ -25,6 +25,11 @@ export interface Role {
   labelKey: 'civilian' | 'spy';
   /** The word shown to this player, or null if none (spies). */
   word: string | null;
+  /**
+   * Syndicate mode only — the player numbers of this spy's teammates (the other
+   * spies). Shown on the spy's own card so the syndicate can coordinate.
+   */
+  teammates?: number[];
 }
 
 /** Configuration chosen on the setup + category screens. */

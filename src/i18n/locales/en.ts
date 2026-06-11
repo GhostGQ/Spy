@@ -26,12 +26,25 @@ const en = {
 
   rules: {
     title: 'Rules',
+    goalTitle: 'Goal',
+    goalBody:
+      "One secret word is chosen. Civilians know it; the spies don't. During the discussion, civilians try to expose the spies without giving the word away, while the spies try to blend in, work out the word, and avoid getting caught. The whole game runs on a single device passed around the circle.",
     howToPlayTitle: 'How to play',
     howToPlayBody:
-      'Pass the device around the circle. Each player in turn looks at their role and word, then hides it and passes it on. After the deal, the discussion begins: any player may ask any other player a question (try to ask indirect questions so the spy has a harder time guessing). The goal is to find those who don’t know the word.',
+      "Pass the device around the circle. Each player opens their card, memorizes their role and word, hides it, and passes the phone on. Once everyone has seen their card, the discussion begins: players take turns asking each other questions about the secret word and answering them. Answer so that your fellow civilians can tell you know the word, but the spy can't figure out what it is. When the timer runs out, everyone votes for a suspect together.",
+    rolesTitle: 'Roles',
+    roleCivilianTitle: 'Civilian',
+    roleCivilianBody:
+      'Knows the secret word. Asks leading questions and answers in a way that convinces the other civilians they are one of them — without handing the word to the spy. Wins once all spies are exposed.',
+    roleSpyTitle: 'Spy',
+    roleSpyBody:
+      "Does not know the word. Tries not to give themselves away, to deduce the word from others' answers, and to deflect suspicion during the vote. Wins by staying undetected to the end (and, in some modes, by guessing the word).",
     stagesTitle: 'Stages',
     stagesBody:
-      '1. Game setup — pick the mode, category and player count.\n2. Role deal — everyone looks at their role.\n3. Discussion — a timer for the chosen duration.\n4. Voting — vote for whoever you think was the spy; if the majority votes for that person, they end the game and reveal their role.\n5. Results — who was who and what the word was.',
+      '1. Setup — choose the mode, number of players, number of spies, and word categories.\n2. Role deal — the device goes around the circle; everyone secretly views their card.\n3. Discussion — the timer runs; players ask and answer questions.\n4. Voting — everyone picks a suspect together; whoever gets the majority reveals their role.\n5. Results — the screen shows who was who and what the word was.',
+    constraintsTitle: 'Rules & limits',
+    constraintsBody:
+      "• Never say the secret word out loud — it hands it straight to the spy.\n• Keep questions and answers indirect: clear to your side, but not obvious to the spy.\n• Everyone answers for themselves — you can't speak for another player.\n• 3 to 12 players; you set the number of spies at setup (in “Chaos” it's hidden and random).\n• Players decide the winner themselves on the results screen — the app doesn't track the discussion.",
     modesTitle: 'Modes',
   },
 
@@ -39,6 +52,8 @@ const en = {
     title: 'New game',
     subtitle: 'Set up the round',
     modeLabel: 'Mode',
+    basicModesLabel: 'Basic modes',
+    exclusiveModesLabel: 'Exclusive modes',
     playersLabel: 'Players',
     playersCount: 'Number of players',
     additionalLabel: 'Advanced',
@@ -70,6 +85,19 @@ const en = {
       description:
         'Everyone thinks they are a civilian. Ghosts see a similar but different word — and don’t know they are ghosts. The majority’s task is to find those who are talking “about the wrong thing”.\n\n“Classic ghost” mode: toggled on in the setup. In addition to ordinary spies (who know their role but not the word), one secret ghost with a fake word is added. Civilians look for both the spies and the ghost at once.',
       specialCount: 'Ghosts',
+    },
+    syndicate: {
+      title: 'Syndicate',
+      short: 'Spies know each other and play as a team',
+      description:
+        "Like Classic, but the spies form a syndicate: each spy sees their teammates on their own card. They still don't know the secret word, but they can coordinate, cover for one another, and steer civilians off the trail. A syndicate needs at least two spies. The majority must uncover the whole team.",
+      specialCount: 'Spies',
+    },
+    detective: {
+      title: 'Detective',
+      short: 'A detective is among you, on the hunt',
+      description: 'Coming soon.',
+      specialCount: 'Spies',
     },
   },
 
@@ -121,6 +149,7 @@ const en = {
     civilian: 'Civilian',
     spy: 'Spy',
     ghost: 'Ghost',
+    teammates: 'Your team:',
   },
 
   timer: {
@@ -240,13 +269,16 @@ const en = {
     loading: 'Loading…',
     error: 'Purchase failed',
     fullAccessTitle: 'Full access',
-    fullAccessCategories: 'All categories unlocked',
-    fullAccessModes: 'Chaos and Ghost modes unlocked',
-    fullAccessNoAds: 'No ads',
+    fullAccessTagline: 'The whole game — now and forever',
+    fullAccessCategories: 'All word categories',
+    fullAccessModes: 'All exclusive game modes',
+    fullAccessFuture: 'Every future category and mode',
+    fullAccessForever: 'One-time purchase — yours forever',
     activate: 'Activate',
     activated: 'Activated',
     unlockFullAccess: 'Unlock full access',
     fullAccessSavings: 'Cheaper than buying each category separately',
+    saleEndsIn: 'Offer ends in {{time}}',
   },
 };
 
