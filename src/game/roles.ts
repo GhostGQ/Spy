@@ -5,6 +5,8 @@ import type { GameConfig, Role } from '@/game/types';
 export interface WordPool {
   categoryId: string;
   words: string[];
+  /** Enabled words grouped by semantic cluster (Ghost mode), empty clusters dropped. */
+  clusters: { id: string; words: string[] }[];
 }
 
 function shuffle<T>(arr: T[]): T[] {
@@ -29,6 +31,33 @@ function pickDifferentWord(words: string[], exclude: string): string {
   const pool = words.filter((w) => w !== exclude);
   if (pool.length === 0) return exclude;
   return pool[Math.floor(Math.random() * pool.length)];
+}
+
+/**
+ * Ghost mode word pair: civilians' word and the ghost's word, both drawn from
+ * the same semantic cluster so they're related enough for shared questions to
+ * make sense without being a giveaway. Falls back to a random different word
+ * from the whole pool if no cluster has 2+ enabled words.
+ */
+function pickGhostPair(pools: WordPool[]): { categoryId: string; word: string; fakeWord: string } {
+  const candidates = pools.flatMap((p) =>
+    p.clusters
+      .filter((c) => c.words.length >= 2)
+      .map((cluster) => ({ categoryId: p.categoryId, cluster }))
+  );
+
+  if (candidates.length > 0) {
+    const { categoryId, cluster } = candidates[Math.floor(Math.random() * candidates.length)];
+    const word = pickWord(cluster.words);
+    return { categoryId, word, fakeWord: pickDifferentWord(cluster.words, word) };
+  }
+
+  const usable = pools.filter((p) => p.words.length >= 2);
+  const fallback = (usable.length > 0 ? usable : pools)[
+    Math.floor(Math.random() * (usable.length > 0 ? usable.length : pools.length))
+  ];
+  const word = pickWord(fallback.words);
+  return { categoryId: fallback.categoryId, word, fakeWord: pickDifferentWord(fallback.words, word) };
 }
 
 export interface AssignResult {
@@ -69,11 +98,11 @@ export function assignRoles(config: GameConfig, pools: WordPool[]): AssignResult
       ? usable[Math.floor(Math.random() * usable.length)]
       : (() => {
           const id = config.categoryIds[0] ?? 'food';
-          return { categoryId: id, words: getCategory(id).words };
+          return { categoryId: id, words: getCategory(id).words, clusters: [] };
         })();
 
-  const categoryId = pool.categoryId;
-  const word = pickWord(pool.words);
+  let categoryId = pool.categoryId;
+  let word = pickWord(pool.words);
   const n = config.playerCount;
 
   let specialCount: number;
@@ -91,7 +120,10 @@ export function assignRoles(config: GameConfig, pools: WordPool[]): AssignResult
   } else if (ghostClassic) {
     // Spies (who know they're spies) + exactly one ghost. Keep civilians the
     // majority over all special roles, so the spy count leaves room for the ghost.
-    fakeWord = pickDifferentWord(pool.words, word);
+    const ghostPair = pickGhostPair(pools);
+    categoryId = ghostPair.categoryId;
+    word = ghostPair.word;
+    fakeWord = ghostPair.fakeWord;
     const maxSpies = Math.max(1, maxSpecialMajority(n) - 1);
     const spyCount = Math.min(Math.max(1, config.specialCount), maxSpies);
     specialCount = spyCount + 1; // spies + the single ghost
@@ -99,7 +131,10 @@ export function assignRoles(config: GameConfig, pools: WordPool[]): AssignResult
     kinds.push('ghost');
   } else if (config.mode === 'ghost') {
     // Pure ghost game: no spies, everyone told they're a civilian.
-    fakeWord = pickDifferentWord(pool.words, word);
+    const ghostPair = pickGhostPair(pools);
+    categoryId = ghostPair.categoryId;
+    word = ghostPair.word;
+    fakeWord = ghostPair.fakeWord;
     specialCount = Math.min(Math.max(1, config.specialCount), maxSpecialMajority(n));
     for (let i = 0; i < specialCount; i++) kinds.push('ghost');
   } else if (config.mode === 'syndicate') {
