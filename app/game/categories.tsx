@@ -273,7 +273,11 @@ export default function Categories() {
 
           <View className="pb-4 pt-2">
             <Text className="mb-3 text-center font-sans text-sm text-muted">
-              {selectedCount > 0 && selectedEnabled === 0 ? (
+              {selectedCount === 0 ? (
+                <Text style={{ color: colors.danger }} className="font-sans-sb">
+                  {t('categories.needCategory')}
+                </Text>
+              ) : selectedEnabled === 0 ? (
                 <Text style={{ color: colors.danger }} className="font-sans-sb">
                   {t('categories.needWord')}
                 </Text>

@@ -8,11 +8,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { CircularTimer } from '@/components/CircularTimer';
 import { PrimaryButton } from '@/components/PrimaryButton';
+import { QuestionHintSlider } from '@/components/QuestionHintSlider';
 import { ScreenGradient } from '@/components/ScreenGradient';
 import { hapticNotify } from '@/lib/haptics';
 import { colors } from '@/theme/colors';
 import { glow } from '@/theme/glow';
 import { useGameStore } from '@/store/gameStore';
+import { useSettingsStore } from '@/store/settingsStore';
 
 export default function Timer() {
   // Keep the screen on during discussion. Best-effort: the web Wake Lock API
@@ -32,6 +34,8 @@ export default function Timer() {
   const { t } = useTranslation();
   const total = useGameStore((s) => s.durationSec);
   const reset = useGameStore((s) => s.reset);
+  const roundCategoryId = useGameStore((s) => s.roundCategoryId);
+  const hintsEnabled = useSettingsStore((s) => s.hintsEnabled);
   const [remaining, setRemaining] = useState(total);
   const [paused, setPaused] = useState(false);
   const [exitOpen, setExitOpen] = useState(false);
@@ -74,6 +78,8 @@ export default function Timer() {
         <View className="flex-1 items-center justify-center">
           <CircularTimer remaining={remaining} total={total} />
         </View>
+
+        {hintsEnabled ? <QuestionHintSlider categoryId={roundCategoryId} /> : null}
 
         <View className="flex-row items-center justify-center gap-5 pb-10">
           <Pressable

@@ -4,6 +4,7 @@ import {
   CaretRight,
   Check,
   FileText,
+  Lightbulb,
   ShieldCheck,
   SpeakerHigh,
   Translate,
@@ -129,7 +130,7 @@ function LanguageRow({
 
 export default function Settings() {
   const {t} = useTranslation();
-  const {soundEnabled, hapticsEnabled, setSound, setHaptics, setLanguage} =
+  const {soundEnabled, hapticsEnabled, hintsEnabled, setSound, setHaptics, setHints, setLanguage} =
     useSettingsStore();
   const restorePurchases = usePurchaseStore((s) => s.restorePurchases);
 
@@ -192,6 +193,22 @@ export default function Settings() {
                 label={t('settings.haptics')}
                 value={hapticsEnabled}
                 onValueChange={setHaptics}
+              />
+              <View
+                style={{backgroundColor: colors.divider}}
+                className='h-px'
+              />
+              <Row
+                icon={
+                  <Lightbulb
+                    size={20}
+                    color={colors.accentBright}
+                    weight='bold'
+                  />
+                }
+                label={t('settings.hints')}
+                value={hintsEnabled}
+                onValueChange={setHints}
               />
             </Card>
 

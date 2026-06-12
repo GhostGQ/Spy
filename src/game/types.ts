@@ -3,7 +3,7 @@ export type ModeId = 'classic' | 'chaos' | 'ghost' | 'syndicate' | 'detective';
 export type RoleKind = 'civilian' | 'spy' | 'ghost';
 
 /** Winner option keys used on the result screen. */
-export type Winner = 'civilians' | 'spies' | 'majority' | 'ghosts' | 'skip';
+export type Winner = 'civilians' | 'spies' | 'majority' | 'ghosts' | 'skip' | 'detectiveCaught';
 
 export interface Category {
   id: string;
@@ -22,7 +22,7 @@ export interface Role {
    * i18n `roles.<labelKey>`). In the pure ghost game a ghost is told it's a
    * civilian, so labelKey differs from `kind`.
    */
-  labelKey: 'civilian' | 'spy';
+  labelKey: 'civilian' | 'spy' | 'detective';
   /** The word shown to this player, or null if none (spies). */
   word: string | null;
   /**
@@ -30,6 +30,11 @@ export interface Role {
    * spies). Shown on the spy's own card so the syndicate can coordinate.
    */
   teammates?: number[];
+  /**
+   * Detective mode only — the detective's passive tip: another player's number
+   * and whether that player is a spy.
+   */
+  detectiveTip?: { player: number; isSpy: boolean };
 }
 
 /** Configuration chosen on the setup + category screens. */

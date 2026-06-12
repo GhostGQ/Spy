@@ -14,11 +14,14 @@ interface SettingsState {
   lastCategories: string[];
   /** Per-category list of DISABLED words (off). Absent/empty ⇒ all words on. */
   disabledWords: Record<string, string[]>;
+  /** Show spy-helping question hints on the discussion timer screen. */
+  hintsEnabled: boolean;
   /** Hydration flag so UI can wait for persisted values if needed. */
   _hydrated: boolean;
 
   setSound: (v: boolean) => void;
   setHaptics: (v: boolean) => void;
+  setHints: (v: boolean) => void;
   setLanguage: (lang: AppLanguage) => void;
   rememberSetup: (mode: string, categories: string[]) => void;
   /** Toggle a single word on/off within a category. */
@@ -36,10 +39,12 @@ export const useSettingsStore = create<SettingsState>()(
       lastMode: null,
       lastCategories: [],
       disabledWords: {},
+      hintsEnabled: true,
       _hydrated: false,
 
       setSound: (v) => set({ soundEnabled: v }),
       setHaptics: (v) => set({ hapticsEnabled: v }),
+      setHints: (v) => set({ hintsEnabled: v }),
       setLanguage: (lang) => {
         set({ language: lang });
         i18n.changeLanguage(lang);
@@ -70,6 +75,7 @@ export const useSettingsStore = create<SettingsState>()(
         lastMode: s.lastMode,
         lastCategories: s.lastCategories,
         disabledWords: s.disabledWords,
+        hintsEnabled: s.hintsEnabled,
       }),
       onRehydrateStorage: () => (state) => {
         if (state) {

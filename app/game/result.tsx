@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { Detective, Ghost, SkipForward, Trophy, Users, UsersThree } from 'phosphor-react-native';
+import { Detective, Ghost, MagnifyingGlass, SkipForward, Trophy, Users, UsersThree } from 'phosphor-react-native';
 import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -23,6 +23,8 @@ function winnerIcon(key: Winner, color: string) {
       return <Detective {...p} weight="fill" />;
     case 'ghosts':
       return <Ghost {...p} weight="fill" />;
+    case 'detectiveCaught':
+      return <MagnifyingGlass {...p} weight="fill" />;
     default:
       return <SkipForward {...p} />;
   }

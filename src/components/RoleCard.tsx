@@ -103,6 +103,16 @@ export function RoleCard({ role, playerNumber, revealed }: Props) {
           glow(accent, 'card'),
         ]}
       >
+        {/* Role label above the icon — only for civilians/detective; spies stay unlabeled. */}
+        {!shownSpy ? (
+          <Text
+            style={{ color: accent }}
+            className="mb-3 font-display text-sm uppercase tracking-widest"
+          >
+            {t('roles.civilian')}
+          </Text>
+        ) : null}
+
         <View
           style={[
             { backgroundColor: `${accent}1F`, borderColor: `${accent}40` },
@@ -138,7 +148,7 @@ export function RoleCard({ role, playerNumber, revealed }: Props) {
                 }),
           }}
         >
-          {role.word ?? t('roles.spy')}
+          {role.word ?? t('roles.youAreSpy')}
         </Text>
 
         {/* Syndicate: the spy sees their teammates' player numbers. */}
@@ -151,6 +161,29 @@ export function RoleCard({ role, playerNumber, revealed }: Props) {
             {role.teammates.map((n) => t('roles.player', { number: n })).join(', ')}
           </Text>
         ) : null}
+
+        {/* Detective: a passive tip about one other random player. */}
+        {role.labelKey === 'detective' && role.detectiveTip ? (
+          <Text
+            style={{ color: accent }}
+            className="mt-6 px-6 text-center font-sans-sb text-lg"
+          >
+            {role.detectiveTip.isSpy
+              ? t('roles.detectiveTipSpy', { number: role.detectiveTip.player })
+              : t('roles.detectiveTipCivilian', { number: role.detectiveTip.player })}
+          </Text>
+        ) : null}
+
+        {/* Short reminder of what this player should do during the discussion. */}
+        <Text className="mt-6 px-6 text-center font-sans text-sm text-text-secondary">
+          {t(
+            role.labelKey === 'detective'
+              ? 'roles.hintDetective'
+              : shownSpy
+                ? 'roles.hintSpy'
+                : 'roles.hintCivilian'
+          )}
+        </Text>
       </Animated.View>
     </View>
   );

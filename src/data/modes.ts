@@ -49,6 +49,7 @@ const MODE_WINNERS: Record<ModeId, { key: Winner; accent: WinnerOption['accent']
   detective: [
     { key: 'civilians', accent: 'streak' },
     { key: 'spies', accent: 'danger' },
+    { key: 'detectiveCaught', accent: 'danger' },
     { key: 'skip', accent: 'muted' },
   ],
 };

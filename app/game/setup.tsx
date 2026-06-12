@@ -99,11 +99,7 @@ export default function Setup() {
     const selected = config.mode === m.id;
     const acc = MODE_ACCENT[m.id];
     const isPremium = (PREMIUM_MODE_IDS as readonly string[]).includes(m.id);
-    // Detective has no mechanic yet — always a blurred "coming soon" teaser.
-    const comingSoon =
-      m.id === 'detective'
-        ? true
-        : !IAP_ENABLED && !TESTING_FULL_ACCESS && isPremium;
+    const comingSoon = !IAP_ENABLED && !TESTING_FULL_ACCESS && isPremium;
     return (
       <SelectableCard
         title={m.title}

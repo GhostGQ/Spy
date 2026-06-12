@@ -57,13 +57,10 @@ function RoleRow({
 
 export default function Rules() {
   const { t } = useTranslation();
-  // Premium modes' rules are hidden until access is unlocked; Detective has no
-  // mechanic yet, so it is never listed here.
+  // Premium modes' rules are hidden until access is unlocked.
   const premiumIds = PREMIUM_MODE_IDS as readonly string[];
   const visibleModes = getModes().filter(
-    (m) =>
-      m.id !== 'detective' &&
-      (!premiumIds.includes(m.id) || IAP_ENABLED || TESTING_FULL_ACCESS)
+    (m) => !premiumIds.includes(m.id) || IAP_ENABLED || TESTING_FULL_ACCESS
   );
   return (
     <ScreenGradient>

@@ -80,11 +80,9 @@ export const useGameStore = create<GameState>((set, get) => ({
   toggleCategory: (categoryId) =>
     set((s) => {
       const has = s.config.categoryIds.includes(categoryId);
-      // Don't allow removing the last remaining category.
-      const next = has
+      const categoryIds = has
         ? s.config.categoryIds.filter((id) => id !== categoryId)
         : [...s.config.categoryIds, categoryId];
-      const categoryIds = next.length ? next : s.config.categoryIds;
       return { config: { ...s.config, categoryIds } };
     }),
   setPlayerCount: (n) =>

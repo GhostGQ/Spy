@@ -154,7 +154,7 @@ export function assignRoles(config: GameConfig, pools: WordPool[]): AssignResult
     specialCount = Math.min(Math.max(2, config.specialCount), maxSpecialStrictMajority(n));
     for (let i = 0; i < specialCount; i++) kinds.push('spy');
   } else {
-    // classic (also the safe fallback for 'detective' until it has its own logic)
+    // classic, and detective (which adds a detective on top of this, below)
     specialCount = Math.min(Math.max(1, config.specialCount), maxSpecialMajority(n));
     for (let i = 0; i < specialCount; i++) kinds.push('spy');
   }
@@ -191,6 +191,17 @@ export function assignRoles(config: GameConfig, pools: WordPool[]): AssignResult
     for (const r of roles) {
       if (r.kind === 'spy') r.teammates = spyPlayers.filter((p) => p !== r.player);
     }
+  }
+
+  // Detective: one civilian is secretly the detective and gets a passive tip —
+  // whether one randomly chosen other player is a spy.
+  if (config.mode === 'detective') {
+    const civilians = roles.filter((r) => r.kind === 'civilian');
+    const detective = civilians[Math.floor(Math.random() * civilians.length)];
+    const others = roles.filter((r) => r.player !== detective.player);
+    const target = others[Math.floor(Math.random() * others.length)];
+    detective.labelKey = 'detective';
+    detective.detectiveTip = { player: target.player, isSpy: target.kind === 'spy' };
   }
 
   return { roles, word, fakeWord, specialCount, categoryId };
