@@ -47,33 +47,67 @@ const RAW_CATEGORIES: { id: string; clusters: WordCluster[] }[] = [
     id: 'locations',
     clusters: [
       {
-        id: 'public_institutions',
+        id: 'education',
         words: [
           { ru: 'Школа', en: 'School' },
-          { ru: 'Больница', en: 'Hospital' },
-          { ru: 'Банк', en: 'Bank' },
-          { ru: 'Суд', en: 'Courthouse' },
-          { ru: 'Поликлиника', en: 'Clinic' },
+          { ru: 'Университет', en: 'University' },
+          { ru: 'Библиотека', en: 'Library' },
         ],
       },
       {
-        id: 'entertainment_venues',
+        id: 'medical',
+        words: [
+          { ru: 'Больница', en: 'Hospital' },
+          { ru: 'Поликлиника', en: 'Clinic' },
+          { ru: 'Аптека', en: 'Pharmacy' },
+        ],
+      },
+      {
+        id: 'government',
+        words: [
+          { ru: 'Суд', en: 'Courthouse' },
+          { ru: 'Мэрия', en: 'City Hall' },
+          { ru: 'Налоговая', en: 'Tax Office' },
+        ],
+      },
+      {
+        id: 'finance',
+        words: [
+          { ru: 'Банк', en: 'Bank' },
+          { ru: 'Биржа', en: 'Stock Exchange' },
+          { ru: 'Ломбард', en: 'Pawn Shop' },
+        ],
+      },
+      {
+        id: 'culture',
         words: [
           { ru: 'Театр', en: 'Theater' },
           { ru: 'Музей', en: 'Museum' },
-          { ru: 'Стадион', en: 'Stadium' },
-          { ru: 'Ресторан', en: 'Restaurant' },
           { ru: 'Кинотеатр', en: 'Cinema' },
         ],
       },
       {
-        id: 'travel_hospitality',
+        id: 'sports',
+        words: [
+          { ru: 'Стадион', en: 'Stadium' },
+          { ru: 'Спортзал', en: 'Gym' },
+          { ru: 'Бассейн', en: 'Swimming Pool' },
+        ],
+      },
+      {
+        id: 'transport',
         words: [
           { ru: 'Аэропорт', en: 'Airport' },
-          { ru: 'Отель', en: 'Hotel' },
-          { ru: 'Пляж', en: 'Beach' },
+          { ru: 'Вокзал', en: 'Train Station' },
           { ru: 'Метро', en: 'Subway' },
-          { ru: 'Вокзал', en: 'Train station' },
+        ],
+      },
+      {
+        id: 'vacation',
+        words: [
+          { ru: 'Отель', en: 'Hotel' },
+          { ru: 'Курорт', en: 'Resort' },
+          { ru: 'Пляж', en: 'Beach' },
         ],
       },
     ],
@@ -187,33 +221,30 @@ const RAW_CATEGORIES: { id: string; clusters: WordCluster[] }[] = [
     id: 'relationships',
     clusters: [
       {
-        id: 'early_romance',
+        id: 'romance',
         words: [
-          { ru: 'Флирт', en: 'Flirt' },
           { ru: 'Симпатия', en: 'Crush' },
+          { ru: 'Флирт', en: 'Flirt' },
           { ru: 'Свидание', en: 'Date' },
           { ru: 'Поцелуй', en: 'Kiss' },
-          { ru: 'Влюблённость', en: 'Infatuation' },
         ],
       },
       {
-        id: 'commitment_milestones',
+        id: 'engagement',
         words: [
           { ru: 'Предложение', en: 'Proposal' },
+          { ru: 'Помолвка', en: 'Engagement' },
           { ru: 'Свадьба', en: 'Wedding' },
           { ru: 'Медовый месяц', en: 'Honeymoon' },
-          { ru: 'Любовь', en: 'Love' },
-          { ru: 'Помолвка', en: 'Engagement' },
         ],
       },
       {
-        id: 'relationship_troubles',
+        id: 'relationship_issues',
         words: [
           { ru: 'Ревность', en: 'Jealousy' },
+          { ru: 'Измена', en: 'Infidelity' },
           { ru: 'Развод', en: 'Divorce' },
           { ru: 'Бывший', en: 'Ex' },
-          { ru: 'Секрет', en: 'Secret' },
-          { ru: 'Измена', en: 'Infidelity' },
         ],
       },
     ],
@@ -257,12 +288,11 @@ const RAW_CATEGORIES: { id: string; clusters: WordCluster[] }[] = [
     id: 'movies',
     clusters: [
       {
-        id: 'sci_fi_mindbenders',
+        id: 'sci_fi',
         words: [
           { ru: 'Матрица', en: 'The Matrix' },
           { ru: 'Интерстеллар', en: 'Interstellar' },
           { ru: 'Начало', en: 'Inception' },
-          { ru: 'Аватар', en: 'Avatar' },
           { ru: 'Дюна', en: 'Dune' },
         ],
       },
@@ -271,19 +301,44 @@ const RAW_CATEGORIES: { id: string; clusters: WordCluster[] }[] = [
         words: [
           { ru: 'Шрек', en: 'Shrek' },
           { ru: 'Король Лев', en: 'The Lion King' },
-          { ru: 'Один дома', en: 'Home Alone' },
-          { ru: 'Гарри Поттер', en: 'Harry Potter' },
           { ru: 'История игрушек', en: 'Toy Story' },
+          { ru: 'Мадагаскар', en: 'Madagascar' },
         ],
       },
       {
-        id: 'action_drama_epics',
+        id: 'fantasy',
+        words: [
+          { ru: 'Гарри Поттер', en: 'Harry Potter' },
+          { ru: 'Властелин колец', en: 'The Lord of the Rings' },
+          { ru: 'Хоббит', en: 'The Hobbit' },
+          { ru: 'Хроники Нарнии', en: 'The Chronicles of Narnia' },
+        ],
+      },
+      {
+        id: 'action',
+        words: [
+          { ru: 'Терминатор', en: 'The Terminator' },
+          { ru: 'Гладиатор', en: 'Gladiator' },
+          { ru: 'Джон Уик', en: 'John Wick' },
+          { ru: 'Безумный Макс', en: 'Mad Max' },
+        ],
+      },
+      {
+        id: 'psychological',
+        words: [
+          { ru: 'Джокер', en: 'Joker' },
+          { ru: 'Бойцовский клуб', en: 'Fight Club' },
+          { ru: 'Остров проклятых', en: 'Shutter Island' },
+          { ru: 'Чёрный лебедь', en: 'Black Swan' },
+        ],
+      },
+      {
+        id: 'drama',
         words: [
           { ru: 'Титаник', en: 'Titanic' },
-          { ru: 'Джокер', en: 'Joker' },
-          { ru: 'Гладиатор', en: 'Gladiator' },
-          { ru: 'Терминатор', en: 'The Terminator' },
-          { ru: 'Бойцовский клуб', en: 'Fight Club' },
+          { ru: 'Зелёная миля', en: 'The Green Mile' },
+          { ru: 'Форрест Гамп', en: 'Forrest Gump' },
+          { ru: 'Побег из Шоушенка', en: 'The Shawshank Redemption' },
         ],
       },
     ],
@@ -327,33 +382,39 @@ const RAW_CATEGORIES: { id: string; clusters: WordCluster[] }[] = [
     id: 'anime',
     clusters: [
       {
-        id: 'shonen_battle_classics',
+        id: 'classic_shonen',
         words: [
           { ru: 'Наруто', en: 'Naruto' },
-          { ru: 'Ван-Пис', en: 'One Piece' },
           { ru: 'Блич', en: 'Bleach' },
-          { ru: 'Драконий жемчуг', en: 'Dragon Ball' },
+          { ru: 'Ван-Пис', en: 'One Piece' },
           { ru: 'Hunter x Hunter', en: 'Hunter x Hunter' },
         ],
       },
       {
-        id: 'dark_modern_action',
+        id: 'dark_supernatural',
         words: [
-          { ru: 'Атака титанов', en: 'Attack on Titan' },
           { ru: 'Тетрадь смерти', en: 'Death Note' },
+          { ru: 'Паразит', en: 'Parasyte' },
           { ru: 'Токийский гуль', en: 'Tokyo Ghoul' },
           { ru: 'Человек-бензопила', en: 'Chainsaw Man' },
-          { ru: 'Паразит', en: 'Parasyte' },
         ],
       },
       {
-        id: 'modern_hits_fantasy',
+        id: 'modern_battle',
         words: [
           { ru: 'Клинок, рассекающий демонов', en: 'Demon Slayer' },
           { ru: 'Магическая битва', en: 'Jujutsu Kaisen' },
-          { ru: 'Семья шпиона', en: 'Spy x Family' },
           { ru: 'Моя геройская академия', en: 'My Hero Academia' },
-          { ru: 'Re:Zero', en: 'Re:Zero' },
+          { ru: 'Чёрный клевер', en: 'Black Clover' },
+        ],
+      },
+      {
+        id: 'epic_conflict',
+        words: [
+          { ru: 'Атака титанов', en: 'Attack on Titan' },
+          { ru: 'Код Гиас', en: 'Code Geass' },
+          { ru: '86', en: '86' },
+          { ru: 'Винланд Сага', en: 'Vinland Saga' },
         ],
       },
     ],
