@@ -46,6 +46,7 @@ const en = {
     constraintsBody:
       "• Never say the secret word out loud — it hands it straight to the spy.\n• Keep questions and answers indirect: clear to your side, but not obvious to the spy.\n• Everyone answers for themselves — you can't speak for another player.\n• 3 to 12 players; you set the number of spies at setup (in “Chaos” it's hidden and random).\n• Players decide the winner themselves on the results screen — the app doesn't track the discussion.",
     modesTitle: 'Modes',
+    minPlayers: 'Minimum players: {{count}}',
   },
 
   setup: {
@@ -150,6 +151,9 @@ const en = {
     spy: 'Spy',
     ghost: 'Ghost',
     teammates: 'Your team:',
+    readyTitle: 'Everyone ready?',
+    readyBody: 'Once every player has seen their role, you can start the discussion.',
+    startGame: 'Start game',
   },
 
   timer: {

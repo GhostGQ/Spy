@@ -1,4 +1,5 @@
 import { router } from 'expo-router';
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { Flag, House, Pause, PauseCircle, Play, SignOut } from 'phosphor-react-native';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +15,20 @@ import { glow } from '@/theme/glow';
 import { useGameStore } from '@/store/gameStore';
 
 export default function Timer() {
+  // Keep the screen on during discussion. Best-effort: the web Wake Lock API
+  // can reject (e.g. no HTTPS/permission), so swallow failures silently.
+  useEffect(() => {
+    let activated = false;
+    activateKeepAwakeAsync()
+      .then(() => {
+        activated = true;
+      })
+      .catch(() => {});
+    return () => {
+      if (activated) void deactivateKeepAwake();
+    };
+  }, []);
+
   const { t } = useTranslation();
   const total = useGameStore((s) => s.durationSec);
   const reset = useGameStore((s) => s.reset);

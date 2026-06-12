@@ -160,7 +160,7 @@ export default function TimerSetup() {
               accent='time'
               onPress={() => {
                 hapticImpact();
-                router.replace('/game/timer');
+                router.replace('/game/roles');
               }}
             />
           </View>

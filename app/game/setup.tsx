@@ -13,7 +13,7 @@ import {SelectableCard} from '@/components/SelectableCard';
 import {Stepper} from '@/components/Stepper';
 import {ChaosIcon, ModeIcon} from '@/components/icons/ModeIcons';
 import {getModes, getMode} from '@/data/modes';
-import {maxSpecialMajority} from '@/game/roles';
+import {maxSpecialMajority, maxSpecialStrictMajority, SYNDICATE_MIN_PLAYERS} from '@/game/roles';
 import type {ModeId} from '@/game/types';
 import {useGameStore} from '@/store/gameStore';
 import {usePurchaseStore} from '@/store/purchaseStore';
@@ -78,14 +78,20 @@ export default function Setup() {
   const mode = getMode(config.mode);
   const modes = getModes();
   const byId = (id: ModeId) => modes.find(m => m.id === id)!;
-  const maxSpecial = maxSpecialMajority(config.playerCount);
 
   const isGhost = config.mode === 'ghost';
   const isSyndicate = config.mode === 'syndicate';
   const ghostClassic = isGhost && config.ghostClassic;
+  // Ghost and Syndicate keep civilians ahead of the special roles by at least
+  // one, which is a tighter cap than the general majority rule.
+  const maxSpecial =
+    isGhost || isSyndicate
+      ? maxSpecialStrictMajority(config.playerCount)
+      : maxSpecialMajority(config.playerCount);
   // Classic-ghost reserves one slot for the single ghost, so spies cap lower.
   const stepMax = ghostClassic ? Math.max(1, maxSpecial) : maxSpecial;
   const stepMin = isSyndicate ? 2 : 1;
+  const playersMin = isSyndicate ? SYNDICATE_MIN_PLAYERS : 3;
   const stepLabel = ghostClassic ? t('setup.spies') : mode.specialCountLabel;
   const modeAccentHex = accentHex[MODE_ACCENT[config.mode]];
 
@@ -201,7 +207,7 @@ export default function Setup() {
                   label={t('setup.playersCount')}
                   value={config.playerCount}
                   onChange={setPlayerCount}
-                  min={3}
+                  min={playersMin}
                   max={12}
                   accent='level'
                 />

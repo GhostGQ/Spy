@@ -82,8 +82,19 @@ export interface AssignResult {
  */
 export function maxSpecialMajority(playerCount: number): number {
   // civilians must be strictly greater than special roles
-  return Math.max(1, playerCount - 1);
+  return Math.max(1, (playerCount - 2) - 1);
 }
+
+/**
+ * Stricter majority clamp for Ghost and Syndicate: civilians must always
+ * outnumber the special roles (spies/ghosts combined) by at least one.
+ */
+export function maxSpecialStrictMajority(playerCount: number): number {
+  return Math.max(1, Math.floor((playerCount - 1) / 2));
+}
+
+/** Minimum players for Syndicate, so civilians never drop below 5. */
+export const SYNDICATE_MIN_PLAYERS = 5;
 
 /**
  * Core role assignment. Pure function of config + the enabled word pools
@@ -124,7 +135,7 @@ export function assignRoles(config: GameConfig, pools: WordPool[]): AssignResult
     categoryId = ghostPair.categoryId;
     word = ghostPair.word;
     fakeWord = ghostPair.fakeWord;
-    const maxSpies = Math.max(1, maxSpecialMajority(n) - 1);
+    const maxSpies = Math.max(1, maxSpecialStrictMajority(n) - 1);
     const spyCount = Math.min(Math.max(1, config.specialCount), maxSpies);
     specialCount = spyCount + 1; // spies + the single ghost
     for (let i = 0; i < spyCount; i++) kinds.push('spy');
@@ -135,12 +146,12 @@ export function assignRoles(config: GameConfig, pools: WordPool[]): AssignResult
     categoryId = ghostPair.categoryId;
     word = ghostPair.word;
     fakeWord = ghostPair.fakeWord;
-    specialCount = Math.min(Math.max(1, config.specialCount), maxSpecialMajority(n));
+    specialCount = Math.min(Math.max(1, config.specialCount), maxSpecialStrictMajority(n));
     for (let i = 0; i < specialCount; i++) kinds.push('ghost');
   } else if (config.mode === 'syndicate') {
     // Like classic, but the spies form a team and see each other (teammates are
     // filled in below, once player numbers are known). A syndicate needs ≥2.
-    specialCount = Math.min(Math.max(2, config.specialCount), maxSpecialMajority(n));
+    specialCount = Math.min(Math.max(2, config.specialCount), maxSpecialStrictMajority(n));
     for (let i = 0; i < specialCount; i++) kinds.push('spy');
   } else {
     // classic (also the safe fallback for 'detective' until it has its own logic)

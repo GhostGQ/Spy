@@ -126,6 +126,9 @@ export default function Rules() {
                 <Text className="font-sans-b text-base text-white">{m.title}</Text>
               </View>
               <Text className="font-sans text-sm leading-6 text-text-secondary">{m.description}</Text>
+              <Text className="mt-2 font-sans-sb text-xs uppercase tracking-wide text-muted">
+                {t('rules.minPlayers', { count: m.minPlayers })}
+              </Text>
             </Card>
           ))}
         </ScrollView>

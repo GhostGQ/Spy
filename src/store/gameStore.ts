@@ -2,7 +2,7 @@ import { create } from 'zustand';
 
 import { IAP_ENABLED, TESTING_FULL_ACCESS } from '@/config/iap';
 import { CATEGORIES_DATA, enabledClusters, enabledLocalizedWords } from '@/data/categories';
-import { assignRoles, type WordPool } from '@/game/roles';
+import { assignRoles, SYNDICATE_MIN_PLAYERS, type WordPool } from '@/game/roles';
 import type { GameConfig, ModeId, Role, Winner } from '@/game/types';
 import { usePurchaseStore } from '@/store/purchaseStore';
 import { useSettingsStore } from '@/store/settingsStore';
@@ -67,7 +67,16 @@ export const useGameStore = create<GameState>((set, get) => ({
   durationSec: 180,
   winner: null,
 
-  setMode: (mode) => set((s) => ({ config: { ...s.config, mode } })),
+  setMode: (mode) =>
+    set((s) => {
+      // Syndicate needs enough players to keep civilians at 5+, so bump the
+      // player count up if it's currently below the mode's minimum.
+      const playerCount =
+        mode === 'syndicate'
+          ? Math.max(s.config.playerCount, SYNDICATE_MIN_PLAYERS)
+          : s.config.playerCount;
+      return { config: { ...s.config, mode, playerCount } };
+    }),
   toggleCategory: (categoryId) =>
     set((s) => {
       const has = s.config.categoryIds.includes(categoryId);
@@ -80,7 +89,8 @@ export const useGameStore = create<GameState>((set, get) => ({
     }),
   setPlayerCount: (n) =>
     set((s) => {
-      const playerCount = Math.max(3, Math.min(12, n));
+      const min = s.config.mode === 'syndicate' ? SYNDICATE_MIN_PLAYERS : 3;
+      const playerCount = Math.max(min, Math.min(12, n));
       // keep specialCount valid (< playerCount)
       const specialCount = Math.min(s.config.specialCount, playerCount - 1);
       return { config: { ...s.config, playerCount, specialCount } };

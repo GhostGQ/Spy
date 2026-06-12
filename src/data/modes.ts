@@ -1,4 +1,5 @@
 import type { ModeIconKey } from '@/components/icons/ModeIcons';
+import { SYNDICATE_MIN_PLAYERS } from '@/game/roles';
 import type { GameConfig, ModeId, Winner, WinnerOption } from '@/game/types';
 import i18n from '@/i18n';
 
@@ -11,14 +12,16 @@ export interface ModeMeta {
   emoji: string;
   /** Whether the player configures the special-role count on setup. */
   configurableSpecialCount: boolean;
+  /** Minimum number of players for a correct game. */
+  minPlayers: number;
 }
 
 const MODES_DATA: ModeMeta[] = [
-  { id: 'classic', iconKey: 'spy', emoji: '🕵️', configurableSpecialCount: true },
-  { id: 'chaos', iconKey: 'chaos', emoji: '🌀', configurableSpecialCount: false },
-  { id: 'ghost', iconKey: 'ghost', emoji: '👻', configurableSpecialCount: true },
-  { id: 'syndicate', iconKey: 'syndicate', emoji: '🕶️', configurableSpecialCount: true },
-  { id: 'detective', iconKey: 'detective', emoji: '🔍', configurableSpecialCount: true },
+  { id: 'classic', iconKey: 'spy', emoji: '🕵️', configurableSpecialCount: true, minPlayers: 3 },
+  { id: 'chaos', iconKey: 'chaos', emoji: '🌀', configurableSpecialCount: false, minPlayers: 3 },
+  { id: 'ghost', iconKey: 'ghost', emoji: '👻', configurableSpecialCount: true, minPlayers: 3 },
+  { id: 'syndicate', iconKey: 'syndicate', emoji: '🕶️', configurableSpecialCount: true, minPlayers: SYNDICATE_MIN_PLAYERS },
+  { id: 'detective', iconKey: 'detective', emoji: '🔍', configurableSpecialCount: true, minPlayers: 3 },
 ];
 
 /** Winner button keys/accents per mode (labels are localized at read time). */

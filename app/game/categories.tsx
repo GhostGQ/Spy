@@ -167,7 +167,7 @@ export default function Categories() {
   const onStart = () => {
     if (!canStart) return;
     startGame();
-    router.push('/game/roles');
+    router.push('/game/timer-setup');
   };
 
   const onPressTile = (c: (typeof CATEGORIES_DATA)[number]) => {

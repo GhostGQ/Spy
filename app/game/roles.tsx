@@ -1,7 +1,8 @@
 import { router } from 'expo-router';
+import { CaretLeft, House, Play } from 'phosphor-react-native';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, Text, View } from 'react-native';
+import { Modal, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PrimaryButton } from '@/components/PrimaryButton';
@@ -34,6 +35,8 @@ export default function Roles() {
     );
   }
 
+  const [doneOpen, setDoneOpen] = useState(false);
+
   const total = roles.length;
   const role = roles[index];
   const isLast = index === total - 1;
@@ -45,14 +48,18 @@ export default function Roles() {
       setRevealed(true);
       return;
     }
+    hapticSelection();
+    setRevealed(false);
     if (isLast) {
-      hapticSelection();
-      router.replace('/game/timer-setup');
+      setDoneOpen(true);
     } else {
-      hapticSelection();
-      setRevealed(false);
       setIndex((i) => i + 1);
     }
+  };
+
+  const onBackToSetup = () => {
+    hapticSelection();
+    router.replace('/game/setup');
   };
 
   const hint = !revealed
@@ -65,6 +72,18 @@ export default function Roles() {
     <ScreenGradient>
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
         <View className="flex-1 px-3 py-4">
+          {/* back to setup */}
+          <View className="mb-2 flex-row items-center">
+            <Pressable
+              onPress={onBackToSetup}
+              hitSlop={12}
+              style={{ backgroundColor: colors.surface, borderColor: colors.borderSubtle }}
+              className="h-11 w-11 items-center justify-center rounded-full border active:opacity-80"
+            >
+              <CaretLeft size={22} color={colors.textSecondary} weight="bold" />
+            </Pressable>
+          </View>
+
           {/* progress dots */}
           <View className="mb-2 flex-row items-center justify-center gap-1.5">
             {roles.map((r, i) => (
@@ -91,6 +110,40 @@ export default function Roles() {
           {/* tap hint (kept off the card so the card stays clean) */}
           <Text className="mt-4 text-center font-sans text-sm text-muted">{hint}</Text>
         </View>
+
+        {/* All cards seen — ready to start */}
+        <Modal visible={doneOpen} transparent animationType="fade" onRequestClose={() => setDoneOpen(false)}>
+          <View className="flex-1 items-center justify-center bg-black/70 px-8">
+            <View
+              style={{ borderColor: colors.borderSubtle }}
+              className="w-full rounded-3xl border bg-surface p-6"
+            >
+              <View className="mb-5 items-center">
+                <Text className="font-display text-2xl uppercase text-white">{t('roles.readyTitle')}</Text>
+                <Text className="mt-1 text-center font-sans text-sm text-muted">
+                  {t('roles.readyBody')}
+                </Text>
+              </View>
+              <PrimaryButton
+                label={t('roles.startGame')}
+                iconNode={<Play size={20} color="#FFFFFF" weight="fill" />}
+                accent="streak"
+                onPress={() => {
+                  hapticImpact();
+                  router.replace('/game/timer');
+                }}
+              />
+              <View className="h-3" />
+              <PrimaryButton
+                label={t('roles.toSetup')}
+                iconNode={<House size={20} color={colors.danger} weight="bold" />}
+                accent="danger"
+                variant="soft"
+                onPress={onBackToSetup}
+              />
+            </View>
+          </View>
+        </Modal>
       </SafeAreaView>
     </ScreenGradient>
   );
