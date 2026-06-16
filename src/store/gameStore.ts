@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 import { IAP_ENABLED, TESTING_FULL_ACCESS } from '@/config/iap';
-import { CATEGORIES_DATA, enabledClusters, enabledLocalizedWords } from '@/data/categories';
+import { CATEGORIES_DATA, enabledGhostEntries, enabledLocalizedWords } from '@/data/categories';
 import { assignRoles, SYNDICATE_MIN_PLAYERS, type WordPool } from '@/game/roles';
 import type { GameConfig, ModeId, Role, Winner } from '@/game/types';
 import { usePurchaseStore } from '@/store/purchaseStore';
@@ -13,7 +13,7 @@ function buildPools(config: GameConfig): WordPool[] {
   return config.categoryIds.map((id) => ({
     categoryId: id,
     words: enabledLocalizedWords(id, disabled[id]),
-    clusters: enabledClusters(id, disabled[id]),
+    ghostWords: enabledGhostEntries(id, disabled[id]),
   }));
 }
 

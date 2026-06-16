@@ -5,8 +5,8 @@ import type { GameConfig, Role } from '@/game/types';
 export interface WordPool {
   categoryId: string;
   words: string[];
-  /** Enabled words grouped by semantic cluster (Ghost mode), empty clusters dropped. */
-  clusters: { id: string; words: string[] }[];
+  /** Per-word ghost analogs (Ghost mode) — each entry is one main word with its similar alternatives. */
+  ghostWords: { word: string; analogs: string[] }[];
 }
 
 function shuffle<T>(arr: T[]): T[] {
@@ -34,22 +34,21 @@ function pickDifferentWord(words: string[], exclude: string): string {
 }
 
 /**
- * Ghost mode word pair: civilians' word and the ghost's word, both drawn from
- * the same semantic cluster so they're related enough for shared questions to
- * make sense without being a giveaway. Falls back to a random different word
- * from the whole pool if no cluster has 2+ enabled words.
+ * Ghost mode word pair: pick one enabled word at random, then pick one of its
+ * ghost analogs as the fake word. Falls back to any two different words from
+ * the pool if no ghost entries exist.
  */
 function pickGhostPair(pools: WordPool[]): { categoryId: string; word: string; fakeWord: string } {
   const candidates = pools.flatMap((p) =>
-    p.clusters
-      .filter((c) => c.words.length >= 2)
-      .map((cluster) => ({ categoryId: p.categoryId, cluster }))
+    p.ghostWords
+      .filter((gw) => gw.analogs.length > 0)
+      .map((gw) => ({ categoryId: p.categoryId, word: gw.word, analogs: gw.analogs }))
   );
 
   if (candidates.length > 0) {
-    const { categoryId, cluster } = candidates[Math.floor(Math.random() * candidates.length)];
-    const word = pickWord(cluster.words);
-    return { categoryId, word, fakeWord: pickDifferentWord(cluster.words, word) };
+    const entry = candidates[Math.floor(Math.random() * candidates.length)];
+    const fakeWord = entry.analogs[Math.floor(Math.random() * entry.analogs.length)];
+    return { categoryId: entry.categoryId, word: entry.word, fakeWord };
   }
 
   const usable = pools.filter((p) => p.words.length >= 2);
@@ -109,7 +108,7 @@ export function assignRoles(config: GameConfig, pools: WordPool[]): AssignResult
       ? usable[Math.floor(Math.random() * usable.length)]
       : (() => {
           const id = config.categoryIds[0] ?? 'food';
-          return { categoryId: id, words: getCategory(id).words, clusters: [] };
+          return { categoryId: id, words: getCategory(id).words, ghostWords: [] };
         })();
 
   let categoryId = pool.categoryId;
