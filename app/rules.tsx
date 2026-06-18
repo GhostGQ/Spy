@@ -65,7 +65,7 @@ export default function Rules() {
   return (
     <ScreenGradient>
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
-        <View className="flex-row items-center px-3 pb-2 pt-4">
+        <View className="flex-row items-center px-4 pb-2 pt-4">
           <Text className="flex-1 font-display text-2xl uppercase text-white">{t('rules.title')}</Text>
           <Pressable
             onPress={() => router.back()}
@@ -77,7 +77,7 @@ export default function Rules() {
           </Pressable>
         </View>
 
-        <ScrollView className="px-6" contentContainerStyle={{ paddingBottom: 32 }}>
+        <ScrollView className="px-4" contentContainerStyle={{ paddingBottom: 32 }}>
           <Section title={t('rules.goalTitle')}>
             <Body>{t('rules.goalBody')}</Body>
           </Section>

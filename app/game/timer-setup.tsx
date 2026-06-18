@@ -39,7 +39,7 @@ export default function TimerSetup() {
           <ScreenHeader
             title={t('timer.title')}
             subtitle={t('timer.subtitle')}
-            showBack={false}
+            onBack={() => router.back()}
           />
 
           <View className='flex-1 gap-8'>

@@ -2,9 +2,10 @@ import { router } from 'expo-router';
 import { CaretLeft, House, Play } from 'phosphor-react-native';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Modal, Pressable, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { BottomSheet } from '@/components/BottomSheet';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { RoleCard } from '@/components/RoleCard';
 import { ScreenGradient } from '@/components/ScreenGradient';
@@ -112,38 +113,31 @@ export default function Roles() {
         </View>
 
         {/* All cards seen — ready to start */}
-        <Modal visible={doneOpen} transparent animationType="fade" onRequestClose={() => setDoneOpen(false)}>
-          <View className="flex-1 items-center justify-center bg-black/70 px-8">
-            <View
-              style={{ borderColor: colors.borderSubtle }}
-              className="w-full rounded-3xl border bg-surface p-6"
-            >
-              <View className="mb-5 items-center">
-                <Text className="font-display text-2xl uppercase text-white">{t('roles.readyTitle')}</Text>
-                <Text className="mt-1 text-center font-sans text-sm text-muted">
-                  {t('roles.readyBody')}
-                </Text>
-              </View>
-              <PrimaryButton
-                label={t('roles.startGame')}
-                iconNode={<Play size={20} color="#FFFFFF" weight="fill" />}
-                accent="streak"
-                onPress={() => {
-                  hapticImpact();
-                  router.replace('/game/timer');
-                }}
-              />
-              <View className="h-3" />
-              <PrimaryButton
-                label={t('roles.toSetup')}
-                iconNode={<House size={20} color={colors.danger} weight="bold" />}
-                accent="danger"
-                variant="soft"
-                onPress={onBackToSetup}
-              />
-            </View>
+        <BottomSheet visible={doneOpen} onRequestClose={() => setDoneOpen(false)}>
+          <View className="mb-5 items-center">
+            <Text className="font-display text-2xl uppercase text-white">{t('roles.readyTitle')}</Text>
+            <Text className="mt-1 text-center font-sans text-sm text-muted">
+              {t('roles.readyBody')}
+            </Text>
           </View>
-        </Modal>
+          <PrimaryButton
+            label={t('roles.startGame')}
+            iconNode={<Play size={20} color="#FFFFFF" weight="fill" />}
+            accent="streak"
+            onPress={() => {
+              hapticImpact();
+              router.replace('/game/timer');
+            }}
+          />
+          <View className="h-3" />
+          <PrimaryButton
+            label={t('roles.toSetup')}
+            iconNode={<House size={20} color={colors.danger} weight="bold" />}
+            accent="danger"
+            variant="soft"
+            onPress={onBackToSetup}
+          />
+        </BottomSheet>
       </SafeAreaView>
     </ScreenGradient>
   );

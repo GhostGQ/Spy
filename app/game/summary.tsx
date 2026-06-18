@@ -1,8 +1,8 @@
 import { router } from 'expo-router';
-import { ArrowsClockwise, GameController, Ghost, House, Key, SkipForward, Trophy, User } from 'phosphor-react-native';
+import { ArrowsClockwise, CaretLeft, GameController, Ghost, House, Key, SkipForward, Trophy, User } from 'phosphor-react-native';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, Text, View } from 'react-native';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Card } from '@/components/Card';
@@ -69,9 +69,20 @@ export default function Summary() {
     <ScreenGradient>
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
         <View className="flex-1 px-3 pt-4">
-          <Text className="mb-1 text-center font-display text-3xl uppercase text-white">
-            {t('summary.title')}
-          </Text>
+          <View className="mb-3 flex-row items-center">
+            <Pressable
+              onPress={() => router.back()}
+              hitSlop={12}
+              style={{ backgroundColor: colors.surface, borderColor: colors.borderSubtle }}
+              className="h-11 w-11 items-center justify-center rounded-full border active:opacity-80"
+            >
+              <CaretLeft size={22} color={colors.textSecondary} weight="bold" />
+            </Pressable>
+            <Text className="flex-1 text-center font-display text-3xl uppercase text-white">
+              {t('summary.title')}
+            </Text>
+            <View className="h-11 w-11" />
+          </View>
 
           <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 16 }}>
             {/* Winner banner */}

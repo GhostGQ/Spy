@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Card } from '@/components/Card';
 import { ScreenGradient } from '@/components/ScreenGradient';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import { CategoryIcon } from '@/components/icons/CategoryIcon';
@@ -23,8 +24,7 @@ function WordRow({
   return (
     <Pressable
       onPress={onToggle}
-      style={{ backgroundColor: colors.surface, borderColor: colors.borderSubtle }}
-      className="mb-2 flex-row items-center justify-between rounded-2xl border px-4 py-3.5 active:opacity-80"
+      className="flex-row items-center justify-between px-4 py-3.5 active:opacity-80"
     >
       <Text
         style={{ color: on ? '#FFFFFF' : colors.muted }}
@@ -33,9 +33,9 @@ function WordRow({
         {word}
       </Text>
       {on ? (
-        <CheckSquare size={26} color={colors.accent} weight="fill" />
+        <CheckSquare size={24} color={colors.accent} weight="fill" />
       ) : (
-        <Square size={26} color={colors.surface3} weight="bold" />
+        <Square size={24} color={colors.surface3} weight="bold" />
       )}
     </Pressable>
   );
@@ -91,14 +91,18 @@ export default function CategoryDetail() {
           </View>
 
           <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 16 }}>
-            {category.words.map((w) => (
-              <WordRow
-                key={w.ru}
-                word={wordLabel(w)}
-                on={!off.has(w.ru)}
-                onToggle={() => toggleWord(category.id, w.ru)}
-              />
-            ))}
+            <Card className="overflow-hidden p-0">
+              {category.words.map((w, i) => (
+                <View key={w.ru}>
+                  {i > 0 ? <View style={{ backgroundColor: colors.divider }} className="h-px" /> : null}
+                  <WordRow
+                    word={wordLabel(w)}
+                    on={!off.has(w.ru)}
+                    onToggle={() => toggleWord(category.id, w.ru)}
+                  />
+                </View>
+              ))}
+            </Card>
           </ScrollView>
         </View>
       </SafeAreaView>

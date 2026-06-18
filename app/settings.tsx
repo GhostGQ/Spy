@@ -147,7 +147,7 @@ export default function Settings() {
     <ScreenGradient>
       <SafeAreaView className='flex-1' edges={['top', 'bottom']}>
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 16 }}>
-          <View className='flex-row items-center px-3 pb-2 pt-4'>
+          <View className='flex-row items-center px-4 pb-2 pt-4'>
             <Text className='flex-1 font-display text-2xl uppercase text-white'>
               {t('settings.title')}
             </Text>
@@ -164,7 +164,7 @@ export default function Settings() {
             </Pressable>
           </View>
 
-          <View className='px-6 pt-2'>
+          <View className='px-4 pt-2'>
             <Card>
               <Row
                 icon={
