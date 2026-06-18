@@ -111,7 +111,7 @@ function CategoryTile({
       <Text className="mt-3 font-sans-sb text-base text-white text-center">{title}</Text>
       {locked && price ? (
         <View
-          style={{ backgroundColor: colors.purple }}
+          style={{ backgroundColor: colors.premium }}
           className="mt-1.5 rounded-full px-2.5 py-1"
         >
           <PriceTag
@@ -229,10 +229,10 @@ export default function Categories() {
               <Card className="mt-5 mb-3">
                 <View className="mb-3 flex-row items-center">
                   <View
-                    style={{ backgroundColor: `${colors.purple}1F`, borderColor: `${colors.purple}40` }}
+                    style={{ backgroundColor: `${colors.premium}1F`, borderColor: `${colors.premium}40` }}
                     className="mr-3 h-10 w-10 items-center justify-center rounded-2xl border"
                   >
-                    <Sparkle size={22} color={colors.purpleLight} weight="fill" />
+                    <Sparkle size={22} color={colors.premiumLight} weight="fill" />
                   </View>
                   <View className="flex-1">
                     <Text className="font-display text-base uppercase tracking-widest text-white">
@@ -256,7 +256,7 @@ export default function Categories() {
                       discounted={getPrice(ALL_CATEGORIES_PRODUCT_ID).discounted}
                       saleEndsAt={getPrice(ALL_CATEGORIES_PRODUCT_ID).saleEndsAt}
                       size="lg"
-                      color={colors.purpleLight}
+                      color={colors.premiumLight}
                     />
                     <Text className="mt-0.5 font-sans text-xs text-muted">
                       {t('purchase.fullAccessSavings')}
@@ -267,7 +267,7 @@ export default function Categories() {
                   label={allUnlocked ? t('purchase.activated') : t('purchase.activate')}
                   icon={allUnlocked ? 'checkmark' : 'lock-open-outline'}
                   size="md"
-                  accent={allUnlocked ? 'streak' : 'purple'}
+                  accent={allUnlocked ? 'streak' : 'premium'}
                   disabled={allUnlocked || isPurchasing}
                   onPress={() => void purchaseAllCategories()}
                 />

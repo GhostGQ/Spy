@@ -26,9 +26,9 @@ export const colors = {
   accent: '#3B82F6', // electric blue — primary
   accentBright: '#60A5FA',
   cyan: '#2DD4F7',
-  purple: '#7C3AED',
-  purpleLight: '#A78BFA',
-  level: '#8B5CF6', // purple
+  premium: '#C9A227', // champagne gold — premium / purchases
+  premiumLight: '#E6C868',
+  level: '#8B5CF6', // purple — ghost role identity
   info: '#60A5FA',
   streak: '#34D399', // green
   danger: '#F87171', // red
@@ -55,8 +55,8 @@ export type AccentToken =
   | 'accent'
   | 'accentBright'
   | 'cyan'
-  | 'purple'
-  | 'purpleLight'
+  | 'premium'
+  | 'premiumLight'
   | 'level'
   | 'info'
   | 'streak'
@@ -75,8 +75,8 @@ export const accentHex: Record<AccentToken, string> = {
   accent: colors.accent,
   accentBright: colors.accentBright,
   cyan: colors.cyan,
-  purple: colors.purple,
-  purpleLight: colors.purpleLight,
+  premium: colors.premium,
+  premiumLight: colors.premiumLight,
   level: colors.level,
   info: colors.info,
   streak: colors.streak,
@@ -104,8 +104,8 @@ export const accentGradient: Record<AccentToken, readonly [string, string]> = {
   accent: ['#3B82F6', '#2DD4F7'],
   accentBright: ['#93C5FD', '#3B82F6'],
   cyan: ['#67E8F9', '#22B8D9'],
-  purple: ['#A78BFA', '#6D28D9'],
-  purpleLight: ['#C4B5FD', '#8B5CF6'],
+  premium: ['#E0BE5C', '#A6801A'],
+  premiumLight: ['#F0D88A', '#C9A227'],
   level: ['#A78BFA', '#7C3AED'],
   info: ['#93C5FD', '#3B82F6'],
   streak: ['#5EEAD4', '#10B981'],

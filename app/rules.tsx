@@ -115,10 +115,10 @@ export default function Rules() {
             <Card key={m.id} className="mb-3">
               <View className="mb-2 flex-row items-center">
                 <View
-                  style={{ backgroundColor: `${colors.accent}1F`, borderColor: `${colors.accent}40` }}
+                  style={{ backgroundColor: `${colors.steel}1F`, borderColor: `${colors.steel}40` }}
                   className="mr-3 h-10 w-10 items-center justify-center rounded-2xl border"
                 >
-                  <ModeIcon name={m.iconKey} size={22} color={colors.accentBright} />
+                  <ModeIcon name={m.iconKey} size={22} color={colors.steelBright} />
                 </View>
                 <Text className="font-sans-b text-base text-white">{m.title}</Text>
               </View>

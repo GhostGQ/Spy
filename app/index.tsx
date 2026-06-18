@@ -59,7 +59,7 @@ export default function MainMenu() {
               label={t('purchase.unlockFullAccess')}
               iconNode={<Sparkle size={20} color="#FFFFFF" weight="fill" />}
               size="md"
-              accent="purple"
+              accent="premium"
               onPress={() => setFullAccessOpen(true)}
             />
           ) : null}

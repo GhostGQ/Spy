@@ -21,9 +21,9 @@ module.exports = {
         accent: '#3B82F6', // electric blue — primary
         'accent-bright': '#60A5FA',
         cyan: '#2DD4F7',
-        purple: '#7C3AED',
-        'purple-light': '#A78BFA',
-        level: '#8B5CF6', // purple (kept name)
+        premium: '#C9A227', // champagne gold — premium / purchases
+        'premium-light': '#E6C868',
+        level: '#8B5CF6', // purple — ghost role identity
         info: '#60A5FA',
         streak: '#34D399', // green
         danger: '#F87171', // red

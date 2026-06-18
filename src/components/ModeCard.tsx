@@ -74,13 +74,15 @@ export function ModeCard({
   }, [selected, lift, pulse]);
 
   const animStyle = useAnimatedStyle(() => {
-    const scale = 1 + lift.value * 0.03;
-    // iOS/web: animate the colored glow opacity. Android: a subtle scale breathe.
+    // Lift the card with a small upward translate only — NOT scale. Scaling grew
+    // the card past its layout slot, so the border was clipped by the row /
+    // ScrollView edges. translateY stays within the layout box.
+    const translateY = lift.value * -4;
     if (isAndroid) {
-      return { transform: [{ scale: scale + pulse.value * 0.01 }] };
+      return { transform: [{ translateY: translateY - pulse.value * 1.5 }] };
     }
     return {
-      transform: [{ scale }],
+      transform: [{ translateY }],
       shadowColor: hex,
       shadowOffset: { width: 0, height: 0 },
       shadowRadius: 18 + pulse.value * 14,
@@ -101,7 +103,7 @@ export function ModeCard({
         style={[
           animStyle,
           {
-            borderWidth: 1.5,
+            borderWidth: 2,
             borderColor: selected ? hex : colors.borderSubtle,
             backgroundColor: selected ? colors.surface2 : colors.surface,
             borderRadius: 18,
@@ -110,11 +112,11 @@ export function ModeCard({
             alignItems: 'center',
             justifyContent: 'center',
             gap: 8,
-            overflow: 'hidden',
           },
         ]}
       >
-        {/* Signature effect behind the icon */}
+        {/* Signature effect behind the icon — clipped on its own layer so the
+            card's border is never cut by overflow:hidden on a scaled view. */}
         <View
           pointerEvents="none"
           style={{
@@ -122,7 +124,9 @@ export function ModeCard({
             top: 0,
             left: 0,
             right: 0,
-            bottom: 0,
+            bottom: 30,
+            borderRadius: 16,
+            overflow: 'hidden',
             alignItems: 'center',
             justifyContent: 'center',
           }}

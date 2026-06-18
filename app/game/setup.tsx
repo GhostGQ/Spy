@@ -139,14 +139,14 @@ export default function Setup() {
                 <View
                   className='mx-3 flex-row items-center rounded-full border px-3 py-1.5'
                   style={{
-                    backgroundColor: `${colors.purple}1F`,
-                    borderColor: `${colors.purple}40`,
+                    backgroundColor: `${colors.premium}1F`,
+                    borderColor: `${colors.premium}40`,
                   }}
                 >
-                  <Sparkle size={15} color={colors.purple} weight='fill' />
+                  <Sparkle size={15} color={colors.premiumLight} weight='fill' />
                   <Text
                     className='ml-1.5 font-display text-[12px] uppercase tracking-widest'
-                    style={{color: colors.purple}}
+                    style={{color: colors.premiumLight}}
                   >
                     {t('setup.exclusiveModesLabel')}
                   </Text>
@@ -193,7 +193,7 @@ export default function Setup() {
                   onChange={setPlayerCount}
                   min={playersMin}
                   max={12}
-                  accent='level'
+                  accent={modeAccent(config.mode)}
                 />
               </GlassCard>
 
@@ -230,7 +230,7 @@ export default function Setup() {
                     onChange={setSpecialCount}
                     min={stepMin}
                     max={stepMax}
-                    accent='accent'
+                    accent={modeAccent(config.mode)}
                   />
                 </GlassCard>
               ) : (

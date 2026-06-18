@@ -107,7 +107,7 @@ export function RoleCard({ role, playerNumber, revealed, accent: backAccent = co
       >
         <Animated.View
           style={[
-            { backgroundColor: `${backAccent}1F`, borderColor: `${backAccent}40` },
+            { backgroundColor: `${backAccent}1F`, borderColor: `${backAccent}40`, borderRadius: '100%' },
             glow(backAccent, 'cta'),
             breatheStyle,
           ]}
