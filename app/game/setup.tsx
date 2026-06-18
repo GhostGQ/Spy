@@ -6,10 +6,10 @@ import {ScrollView, Switch, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import {FullAccessSheet} from '@/components/FullAccessSheet';
+import {ModeCard} from '@/components/ModeCard';
 import {PrimaryButton} from '@/components/PrimaryButton';
 import {ScreenGradient} from '@/components/ScreenGradient';
 import {ScreenHeader} from '@/components/ScreenHeader';
-import {SelectableCard} from '@/components/SelectableCard';
 import {Stepper} from '@/components/Stepper';
 import {ChaosIcon, ModeIcon} from '@/components/icons/ModeIcons';
 import {getModes, getMode} from '@/data/modes';
@@ -17,17 +17,9 @@ import {maxSpecialMajority, maxSpecialStrictMajority, SYNDICATE_MIN_PLAYERS} fro
 import type {ModeId} from '@/game/types';
 import {useGameStore} from '@/store/gameStore';
 import {usePurchaseStore} from '@/store/purchaseStore';
-import {accentHex, colors, type AccentToken} from '@/theme/colors';
+import {colors} from '@/theme/colors';
+import {MODE_THEME, modeAccent, modeHex} from '@/theme/modeTheme';
 import {IAP_ENABLED, PREMIUM_MODE_IDS, TESTING_FULL_ACCESS} from '@/config/iap';
-
-/** Distinct accent per mode for a livelier, gaming feel. */
-const MODE_ACCENT: Record<ModeId, AccentToken> = {
-  classic: 'accent',
-  chaos: 'cyan',
-  ghost: 'level',
-  syndicate: 'danger',
-  detective: 'purple',
-};
 
 /** Modes shown under the "basic" / "exclusive" (premium) section headers. */
 const BASIC_MODE_IDS: ModeId[] = ['classic', 'chaos'];
@@ -93,35 +85,31 @@ export default function Setup() {
   const stepMin = isSyndicate ? 2 : 1;
   const playersMin = isSyndicate ? SYNDICATE_MIN_PLAYERS : 3;
   const stepLabel = ghostClassic ? t('setup.spies') : mode.specialCountLabel;
-  const modeAccentHex = accentHex[MODE_ACCENT[config.mode]];
+  const modeAccentHex = modeHex(config.mode);
 
   const renderMode = (m: ReturnType<typeof getMode>, iconSize: number) => {
     const selected = config.mode === m.id;
-    const acc = MODE_ACCENT[m.id];
+    const theme = MODE_THEME[m.id];
     const isPremium = (PREMIUM_MODE_IDS as readonly string[]).includes(m.id);
     const comingSoon = !IAP_ENABLED && !TESTING_FULL_ACCESS && isPremium;
     return (
-      <SelectableCard
+      <ModeCard
         title={m.title}
+        iconKey={m.iconKey}
+        iconSize={iconSize}
         selected={selected}
         locked={isModeLocked(m.id)}
         comingSoon={comingSoon}
         comingSoonLabel={t('categories.comingSoon')}
         onPress={() => onPressMode(m.id)}
-        accent={acc}
-        icon={
-          <ModeIcon
-            name={m.iconKey}
-            size={iconSize}
-            color={selected ? accentHex[acc] : colors.textSecondary}
-          />
-        }
+        hex={theme.hex}
+        fxKey={theme.fxKey}
       />
     );
   };
 
   return (
-    <ScreenGradient>
+    <ScreenGradient tint={modeAccentHex}>
       <SafeAreaView className='flex-1' edges={['top', 'bottom']}>
         <View className='flex-1 px-3 pt-4'>
           <ScreenHeader
@@ -276,7 +264,7 @@ export default function Setup() {
                       value={config.ghostClassic}
                       onValueChange={setGhostClassic}
                       trackColor={{
-                        true: accentHex.level,
+                        true: colors.level,
                         false: colors.surface3,
                       }}
                       thumbColor='#FFFFFF'
@@ -292,6 +280,7 @@ export default function Setup() {
               label={t('setup.next')}
               iconNode={<ArrowRight size={22} color='#FFFFFF' weight='bold' />}
               size='lg'
+              accent={modeAccent(config.mode)}
               onPress={() => router.push('/game/categories')}
             />
           </View>

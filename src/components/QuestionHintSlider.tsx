@@ -6,6 +6,7 @@ import { Pressable, Text, View } from 'react-native';
 import { hapticSelection } from '@/lib/haptics';
 import { colors } from '@/theme/colors';
 import { glow } from '@/theme/glow';
+import { useModeAccent } from '@/theme/modeTheme';
 
 interface Props {
   /** Category dealt for this round (falls back gracefully if unknown). */
@@ -20,6 +21,7 @@ interface Props {
 export function QuestionHintSlider({ categoryId }: Props) {
   const { t } = useTranslation();
   const [index, setIndex] = useState(0);
+  const { hex: accent } = useModeAccent();
 
   const questions = t(`hintQuestions.${categoryId}`, { returnObjects: true, defaultValue: [] });
   const list = useMemo(() => (Array.isArray(questions) ? questions : []), [questions]);
@@ -38,11 +40,11 @@ export function QuestionHintSlider({ categoryId }: Props) {
       <View
         style={[
           { backgroundColor: colors.surface, borderColor: colors.borderSubtle },
-          glow(colors.accent, 'soft'),
+          glow(accent, 'soft'),
         ]}
         className="flex-row items-center gap-3 rounded-2xl border px-4 py-4"
       >
-        <ChatCircleDots size={24} color={colors.accentBright} weight="bold" />
+        <ChatCircleDots size={24} color={accent} weight="bold" />
         <Text className="flex-1 font-sans-sb text-base text-white">{list[index % list.length]}</Text>
         <Pressable
           onPress={next}
@@ -50,7 +52,7 @@ export function QuestionHintSlider({ categoryId }: Props) {
           style={{ backgroundColor: colors.surface3, borderColor: colors.borderSubtle }}
           className="h-10 w-10 items-center justify-center rounded-full border active:opacity-70"
         >
-          <ArrowClockwise size={20} color={colors.accentBright} weight="bold" />
+          <ArrowClockwise size={20} color={accent} weight="bold" />
         </Pressable>
       </View>
     </View>

@@ -10,15 +10,18 @@ import { ScreenHeader } from '@/components/ScreenHeader';
 import { CategoryIcon } from '@/components/icons/CategoryIcon';
 import { categoryTitle, getCategoryData, wordLabel } from '@/data/categories';
 import { colors } from '@/theme/colors';
+import { useModeAccent } from '@/theme/modeTheme';
 import { useSettingsStore } from '@/store/settingsStore';
 
 function WordRow({
   word,
   on,
+  accent,
   onToggle,
 }: {
   word: string;
   on: boolean;
+  accent: string;
   onToggle: () => void;
 }) {
   return (
@@ -33,7 +36,7 @@ function WordRow({
         {word}
       </Text>
       {on ? (
-        <CheckSquare size={24} color={colors.accent} weight="fill" />
+        <CheckSquare size={24} color={accent} weight="fill" />
       ) : (
         <Square size={24} color={colors.surface3} weight="bold" />
       )}
@@ -48,6 +51,7 @@ export default function CategoryDetail() {
   const disabled = useSettingsStore((s) => s.disabledWords[category.id]);
   const toggleWord = useSettingsStore((s) => s.toggleWord);
   const setAllWords = useSettingsStore((s) => s.setAllWords);
+  const { hex: accent } = useModeAccent();
 
   // Canonical (ru) keys are used for disabled tracking; display uses the
   // active language. `off` holds the disabled keys for quick lookup.
@@ -57,7 +61,7 @@ export default function CategoryDetail() {
   const allOn = enabledLen === category.words.length;
 
   return (
-    <ScreenGradient>
+    <ScreenGradient tint={accent}>
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
         <View className="flex-1 px-3 pt-4">
           <ScreenHeader
@@ -70,10 +74,10 @@ export default function CategoryDetail() {
           <View className="mb-3 flex-row items-center justify-between">
             <View className="flex-row items-center">
               <View
-                style={{ backgroundColor: `${colors.accent}1F`, borderColor: `${colors.accent}40` }}
+                style={{ backgroundColor: `${accent}1F`, borderColor: `${accent}40` }}
                 className="mr-3 h-11 w-11 items-center justify-center rounded-2xl border"
               >
-                <CategoryIcon id={category.id} size={24} color={colors.accent} />
+                <CategoryIcon id={category.id} size={24} color={accent} />
               </View>
               <Text className="font-sans text-sm text-text-secondary">
                 {t('category.markWords')}
@@ -84,7 +88,7 @@ export default function CategoryDetail() {
               hitSlop={8}
               className="active:opacity-70"
             >
-              <Text style={{ color: colors.accentBright }} className="font-sans-sb text-sm">
+              <Text style={{ color: accent }} className="font-sans-sb text-sm">
                 {allOn ? t('category.deselectAll') : t('category.selectAll')}
               </Text>
             </Pressable>
@@ -98,6 +102,7 @@ export default function CategoryDetail() {
                   <WordRow
                     word={wordLabel(w)}
                     on={!off.has(w.ru)}
+                    accent={accent}
                     onToggle={() => toggleWord(category.id, w.ru)}
                   />
                 </View>

@@ -3,7 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { accentHex, ctaGradient, type AccentToken } from '@/theme/colors';
+import { accentGradient, accentHex, type AccentToken } from '@/theme/colors';
 import { glow } from '@/theme/glow';
 
 type Variant = 'solid' | 'soft' | 'outline';
@@ -46,15 +46,14 @@ export function PrimaryButton({
 
   const isSolid = variant === 'solid';
   const isSoft = variant === 'soft';
-  const isPrimaryGradient = isSolid && accent === 'accent';
+  // All solid buttons now render a per-accent gradient (was blue-only).
+  const isGradient = isSolid;
 
-  const bg = isPrimaryGradient
+  const bg = isGradient
     ? 'transparent'
-    : isSolid
-      ? hex
-      : isSoft
-        ? withAlpha(hex, '22')
-        : 'transparent';
+    : isSoft
+      ? withAlpha(hex, '22')
+      : 'transparent';
   const borderColor = variant === 'outline' ? withAlpha(hex, 'AA') : 'transparent';
   const textColor = isSolid ? '#FFFFFF' : hex;
   const iconSize = size === 'lg' ? 22 : 20;
@@ -74,9 +73,9 @@ export function PrimaryButton({
       ]}
       className={`flex-row items-center justify-center overflow-hidden rounded-full active:opacity-80 ${pad} ${className}`}
     >
-      {isPrimaryGradient ? (
+      {isGradient ? (
         <LinearGradient
-          colors={ctaGradient}
+          colors={accentGradient[accent]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={StyleSheet.absoluteFill}
