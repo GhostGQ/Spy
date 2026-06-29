@@ -94,9 +94,9 @@ export default function TimerSetup() {
                     >
                       {minutes}
                     </Text>
-                    <Text className='mt-1 font-sans text-sm text-muted'>
+                    {/* <Text className='mt-1 font-sans text-sm text-muted'>
                       {t('timer.minutes', {count: minutes})}
-                    </Text>
+                    </Text> */}
                   </View>
 
                   {/* Plus */}

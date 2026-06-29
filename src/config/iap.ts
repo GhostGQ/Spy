@@ -11,7 +11,7 @@ export const IAP_ENABLED = false;
  * placeholders, regardless of `IAP_ENABLED`. Use for closed-testing builds
  * that need full feature access; flip back to `false` for production builds.
  */
-export const TESTING_FULL_ACCESS = true;
+export const TESTING_FULL_ACCESS = false;
 
 /** Categories that remain free regardless of purchase state. */
 export const FREE_CATEGORY_IDS = ['locations', 'food', 'cities'] as const;

@@ -166,7 +166,7 @@ export default function Settings() {
 
           <View className='px-4 pt-2'>
             <Card>
-              <Row
+              {/* <Row
                 icon={
                   <SpeakerHigh
                     size={20}
@@ -181,7 +181,7 @@ export default function Settings() {
               <View
                 style={{backgroundColor: colors.divider}}
                 className='h-px'
-              />
+              /> */}
               <Row
                 icon={
                   <Vibrate
