@@ -11,11 +11,14 @@ import { RoleCard } from '@/components/RoleCard';
 import { ScreenGradient } from '@/components/ScreenGradient';
 import { hapticImpact, hapticSelection } from '@/lib/haptics';
 import { colors } from '@/theme/colors';
+import { modeHex } from '@/theme/modeTheme';
 import { useGameStore } from '@/store/gameStore';
 
 export default function Roles() {
   const { t } = useTranslation();
   const roles = useGameStore((s) => s.roles);
+  const mode = useGameStore((s) => s.config.mode);
+  const tint = modeHex(mode);
   const [index, setIndex] = useState(0);
   const [revealed, setRevealed] = useState(false);
   // The FRONT face keeps showing the role captured at reveal time, frozen while
@@ -70,7 +73,7 @@ export default function Roles() {
       : t('roles.hintNext');
 
   return (
-    <ScreenGradient>
+    <ScreenGradient tint={tint}>
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
         <View className="flex-1 px-3 py-4">
           {/* back to setup */}
@@ -93,7 +96,7 @@ export default function Roles() {
                 style={{
                   width: i === index ? 22 : 8,
                   backgroundColor:
-                    i < index ? colors.streak : i === index ? colors.accentBright : colors.surface3,
+                    i < index ? colors.streak : i === index ? tint : colors.surface3,
                 }}
                 className="h-2 rounded-full"
               />
@@ -105,7 +108,7 @@ export default function Roles() {
 
           {/* full-bleed tappable card */}
           <Pressable onPress={onTapCard} className="flex-1">
-            <RoleCard role={frontRole} playerNumber={role.player} revealed={revealed} />
+            <RoleCard role={frontRole} playerNumber={role.player} revealed={revealed} accent={tint} />
           </Pressable>
 
           {/* tap hint (kept off the card so the card stays clean) */}

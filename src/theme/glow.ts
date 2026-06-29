@@ -1,8 +1,9 @@
 import { Platform, type ViewStyle } from 'react-native';
 
-type GlowIntensity = 'cta' | 'card' | 'soft';
+type GlowIntensity = 'hero' | 'cta' | 'card' | 'soft';
 
 const PRESETS: Record<GlowIntensity, { radius: number; opacity: number }> = {
+  hero: { radius: 28, opacity: 0.7 }, // large pulsing aura (menu hero, selected mode)
   cta: { radius: 18, opacity: 0.55 },
   card: { radius: 16, opacity: 0.28 },
   soft: { radius: 10, opacity: 0.2 },

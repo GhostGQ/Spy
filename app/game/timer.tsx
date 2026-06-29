@@ -21,6 +21,7 @@ import {ScreenGradient} from '@/components/ScreenGradient';
 import {hapticNotify} from '@/lib/haptics';
 import {colors} from '@/theme/colors';
 import {glow} from '@/theme/glow';
+import {modeHex} from '@/theme/modeTheme';
 import {useGameStore} from '@/store/gameStore';
 import {useSettingsStore} from '@/store/settingsStore';
 
@@ -43,6 +44,7 @@ export default function Timer() {
   const total = useGameStore(s => s.durationSec);
   const reset = useGameStore(s => s.reset);
   const roundCategoryId = useGameStore(s => s.roundCategoryId);
+  const tint = modeHex(useGameStore(s => s.config.mode));
   const hintsEnabled = useSettingsStore(s => s.hintsEnabled);
   const [remaining, setRemaining] = useState(total);
   const [paused, setPaused] = useState(false);
@@ -80,7 +82,7 @@ export default function Timer() {
   };
 
   return (
-    <ScreenGradient>
+    <ScreenGradient tint={tint}>
       <SafeAreaView className='flex-1' edges={['top', 'bottom']}>
         {/* Minimal screen: timer + pause + exit only */}
         <View className='flex-1 items-center justify-center'>
@@ -106,8 +108,8 @@ export default function Timer() {
           <Pressable
             onPress={() => setPaused(true)}
             style={[
-              {backgroundColor: colors.accent},
-              glow(colors.accent, 'cta'),
+              {backgroundColor: tint},
+              glow(tint, 'cta'),
             ]}
             className='h-20 w-20 items-center justify-center rounded-full active:opacity-90'
           >

@@ -51,7 +51,7 @@ function Row({
       <Switch
         value={value}
         onValueChange={onValueChange}
-        trackColor={{true: colors.accent, false: colors.surface3}}
+        trackColor={{true: colors.steel, false: colors.surface3}}
         thumbColor='#FFFFFF'
       />
     </View>
@@ -122,7 +122,7 @@ function LanguageRow({
       </View>
       <Text className='flex-1 font-sans-sb text-base text-white'>{label}</Text>
       {selected ? (
-        <Check size={20} color={colors.accentBright} weight='bold' />
+        <Check size={20} color={colors.steelBright} weight='bold' />
       ) : null}
     </Pressable>
   );
@@ -166,11 +166,11 @@ export default function Settings() {
 
           <View className='px-4 pt-2'>
             <Card>
-              <Row
+              {/* <Row
                 icon={
                   <SpeakerHigh
                     size={20}
-                    color={colors.accentBright}
+                    color={colors.steelBright}
                     weight='bold'
                   />
                 }
@@ -181,12 +181,12 @@ export default function Settings() {
               <View
                 style={{backgroundColor: colors.divider}}
                 className='h-px'
-              />
+              /> */}
               <Row
                 icon={
                   <Vibrate
                     size={20}
-                    color={colors.accentBright}
+                    color={colors.steelBright}
                     weight='bold'
                   />
                 }
@@ -202,7 +202,7 @@ export default function Settings() {
                 icon={
                   <Lightbulb
                     size={20}
-                    color={colors.accentBright}
+                    color={colors.steelBright}
                     weight='bold'
                   />
                 }
@@ -220,7 +220,7 @@ export default function Settings() {
                 icon={
                   <Translate
                     size={20}
-                    color={colors.accentBright}
+                    color={colors.steelBright}
                     weight='bold'
                   />
                 }
@@ -236,7 +236,7 @@ export default function Settings() {
                 icon={
                   <Translate
                     size={20}
-                    color={colors.accentBright}
+                    color={colors.steelBright}
                     weight='bold'
                   />
                 }
@@ -254,7 +254,7 @@ export default function Settings() {
                 icon={
                   <FileText
                     size={20}
-                    color={colors.accentBright}
+                    color={colors.steelBright}
                     weight='bold'
                   />
                 }
@@ -269,7 +269,7 @@ export default function Settings() {
                 icon={
                   <ShieldCheck
                     size={20}
-                    color={colors.accentBright}
+                    color={colors.steelBright}
                     weight='bold'
                   />
                 }
@@ -286,7 +286,7 @@ export default function Settings() {
                     icon={
                       <ArrowsClockwise
                         size={20}
-                        color={colors.accentBright}
+                        color={colors.steelBright}
                         weight='bold'
                       />
                     }

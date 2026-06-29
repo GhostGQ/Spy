@@ -10,6 +10,7 @@ import { getWinners } from '@/data/modes';
 import type { Winner } from '@/game/types';
 import { colors } from '@/theme/colors';
 import { glow } from '@/theme/glow';
+import { modeHex } from '@/theme/modeTheme';
 import { useGameStore } from '@/store/gameStore';
 
 function winnerIcon(key: Winner, color: string) {
@@ -35,6 +36,7 @@ export default function Result() {
   const config = useGameStore((s) => s.config);
   const setWinner = useGameStore((s) => s.setWinner);
   const winners = getWinners(config);
+  const tint = modeHex(config.mode);
 
   const choose = (w: Winner) => {
     setWinner(w);
@@ -42,18 +44,18 @@ export default function Result() {
   };
 
   return (
-    <ScreenGradient variant="splash">
+    <ScreenGradient variant="splash" tint={tint}>
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
         <View className="flex-1 justify-center px-6">
           <View className="mb-10 items-center">
             <View
               style={[
-                { backgroundColor: `${colors.accent}1F`, borderColor: `${colors.accent}40` },
-                glow(colors.accent, 'card'),
+                { backgroundColor: `${tint}1F`, borderColor: `${tint}40` },
+                glow(tint, 'cta'),
               ]}
               className="h-24 w-24 items-center justify-center rounded-full border"
             >
-              <Trophy size={44} color={colors.accent} weight="fill" />
+              <Trophy size={44} color={tint} weight="fill" />
             </View>
             <Text className="mt-5 font-display text-3xl uppercase text-white">{t('result.title')}</Text>
             <Text className="mt-2 text-center font-sans text-sm text-text-secondary">

@@ -11,6 +11,7 @@ import {hapticImpact, hapticSelection} from '@/lib/haptics';
 import {useGameStore} from '@/store/gameStore';
 import {colors} from '@/theme/colors';
 import {glow} from '@/theme/glow';
+import {modeAccent, modeHex} from '@/theme/modeTheme';
 
 const QUICK = [1, 3, 5];
 const MIN_MIN = 1;
@@ -20,6 +21,8 @@ export default function TimerSetup() {
   const {t} = useTranslation();
   const durationSec = useGameStore(s => s.durationSec);
   const setDuration = useGameStore(s => s.setDuration);
+  const mode = useGameStore(s => s.config.mode);
+  const tint = modeHex(mode);
 
   const minutes = Math.round(durationSec / 60);
   const setMinutes = (m: number) => {
@@ -30,10 +33,10 @@ export default function TimerSetup() {
   const canDec = minutes > MIN_MIN;
   const canInc = minutes < MAX_MIN;
 
-  const hex = colors.time;
+  const hex = tint;
 
   return (
-    <ScreenGradient>
+    <ScreenGradient tint={tint}>
       <SafeAreaView className='flex-1' edges={['top', 'bottom']}>
         <View className='flex-1 px-6 pt-4'>
           <ScreenHeader
@@ -91,9 +94,9 @@ export default function TimerSetup() {
                     >
                       {minutes}
                     </Text>
-                    <Text className='mt-1 font-sans text-sm text-muted'>
+                    {/* <Text className='mt-1 font-sans text-sm text-muted'>
                       {t('timer.minutes', {count: minutes})}
-                    </Text>
+                    </Text> */}
                   </View>
 
                   {/* Plus */}
@@ -157,7 +160,7 @@ export default function TimerSetup() {
               label={t('timer.start')}
               iconNode={<Play size={22} color='#FFFFFF' weight='fill' />}
               size='lg'
-              accent='time'
+              accent={modeAccent(mode)}
               onPress={() => {
                 hapticImpact();
                 router.replace('/game/roles');

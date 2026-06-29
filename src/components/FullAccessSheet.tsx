@@ -80,10 +80,10 @@ export function FullAccessSheet({ visible, onClose }: Props) {
             <View className="p-6">
               <View className="mb-4 flex-row items-center">
                 <View
-                  style={{ backgroundColor: `${colors.purple}1F`, borderColor: `${colors.purple}40` }}
+                  style={{ backgroundColor: `${colors.premium}1F`, borderColor: `${colors.premium}40` }}
                   className="mr-3 h-12 w-12 items-center justify-center rounded-2xl border"
                 >
-                  <Sparkle size={26} color={colors.purpleLight} weight="fill" />
+                  <Sparkle size={26} color={colors.premiumLight} weight="fill" />
                 </View>
                 <View className="flex-1">
                   <Text className="font-display text-xl uppercase tracking-widest text-white">
@@ -115,7 +115,7 @@ export function FullAccessSheet({ visible, onClose }: Props) {
                   discounted={price.discounted}
                   saleEndsAt={price.saleEndsAt}
                   size="lg"
-                  color={colors.purpleLight}
+                  color={colors.premiumLight}
                 />
                 <Text className="mt-0.5 font-sans text-xs text-muted">
                   {t('purchase.fullAccessSavings')}
@@ -126,7 +126,7 @@ export function FullAccessSheet({ visible, onClose }: Props) {
                 label={t('purchase.activate')}
                 icon="lock-open-outline"
                 size="lg"
-                accent="purple"
+                accent="premium"
                 disabled={isPurchasing}
                 onPress={onActivate}
               />

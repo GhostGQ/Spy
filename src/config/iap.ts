@@ -4,7 +4,7 @@
  * stores. While `false`, every category is accessible and no purchase UI is
  * shown — the app behaves exactly as before this feature was added.
  */
-export const IAP_ENABLED = true;
+export const IAP_ENABLED = false;
 
 /**
  * Unlocks every premium category and mode without purchases or "coming soon"

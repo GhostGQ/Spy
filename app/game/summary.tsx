@@ -15,6 +15,7 @@ import { getMode, getWinners } from '@/data/modes';
 import type { Role } from '@/game/types';
 import { colors } from '@/theme/colors';
 import { glow } from '@/theme/glow';
+import { modeAccent, modeHex } from '@/theme/modeTheme';
 import { useGameStore } from '@/store/gameStore';
 
 /** Color per true role kind; labels are localized at render via i18n. */
@@ -52,6 +53,7 @@ export default function Summary() {
   const reset = useGameStore((s) => s.reset);
 
   const mode = getMode(config.mode);
+  const tint = modeHex(config.mode);
   const category = getCategory(roundCategoryId || config.categoryIds[0]);
   const winnerOption = winner ? getWinners(config).find((w) => w.key === winner) : undefined;
   const showWinner = winner && winner !== 'skip' && winnerOption;
@@ -66,7 +68,7 @@ export default function Summary() {
   };
 
   return (
-    <ScreenGradient>
+    <ScreenGradient tint={tint}>
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
         <View className="flex-1 px-3 pt-4">
           <View className="mb-3 flex-row items-center">
@@ -89,13 +91,13 @@ export default function Summary() {
             {showWinner ? (
               <View
                 style={[
-                  { backgroundColor: `${colors.accent}1A`, borderColor: colors.accent },
-                  glow(colors.accent, 'card'),
+                  { backgroundColor: `${tint}1A`, borderColor: tint },
+                  glow(tint, 'cta'),
                 ]}
                 className="mt-4 items-center rounded-3xl border p-5"
               >
-                <Trophy size={34} color={colors.accent} weight="fill" />
-                <Text style={{ color: colors.accent }} className="mt-2 font-display text-xl uppercase">
+                <Trophy size={34} color={tint} weight="fill" />
+                <Text style={{ color: tint }} className="mt-2 font-display text-xl uppercase">
                   {winnerOption!.label}
                 </Text>
               </View>
@@ -116,7 +118,7 @@ export default function Summary() {
                 label={t('summary.mode')}
                 valueNode={
                   <View className="flex-row items-center">
-                    <ModeIcon name={mode.iconKey} size={18} color={colors.accentBright} />
+                    <ModeIcon name={mode.iconKey} size={18} color={tint} />
                     <Text className="ml-1.5 font-sans-b text-base text-white">{mode.title}</Text>
                   </View>
                 }
@@ -127,7 +129,7 @@ export default function Summary() {
                 label={t('summary.category')}
                 valueNode={
                   <View className="flex-row items-center">
-                    <CategoryIcon id={category.id} size={18} color={colors.accentBright} />
+                    <CategoryIcon id={category.id} size={18} color={tint} />
                     <Text className="ml-1.5 font-sans-b text-base text-white">{category.title}</Text>
                   </View>
                 }
@@ -177,15 +179,15 @@ export default function Summary() {
               label={t('summary.playAgain')}
               iconNode={<ArrowsClockwise size={22} color="#FFFFFF" weight="bold" />}
               size="lg"
-              accent="accent"
+              accent={modeAccent(config.mode)}
               onPress={onPlayAgain}
             />
             <View className="h-3" />
             <PrimaryButton
               label={t('summary.mainMenu')}
-              iconNode={<House size={20} color={colors.accentBright} weight="bold" />}
+              iconNode={<House size={20} color={colors.steelBright} weight="bold" />}
               variant="soft"
-              accent="info"
+              accent="steel"
               onPress={onMenu}
             />
           </View>

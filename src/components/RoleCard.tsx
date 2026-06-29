@@ -1,10 +1,15 @@
 import { Fingerprint, User } from 'phosphor-react-native';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Platform, Text, View } from 'react-native';
 import Animated, {
+  Easing,
   interpolate,
   useAnimatedStyle,
   useDerivedValue,
+  useSharedValue,
+  withRepeat,
+  withSequence,
   withTiming,
 } from 'react-native-reanimated';
 
@@ -19,6 +24,8 @@ interface Props {
   /** Player number shown on the BACK (the current player to act). */
   playerNumber: number;
   revealed: boolean;
+  /** Active mode color for the (role-neutral) back face chrome. */
+  accent?: string;
 }
 
 // NativeWind className is NOT applied to Reanimated's Animated.View, so the
@@ -44,7 +51,7 @@ const faceBase = {
  * fake word, so it looks identical to a civilian — otherwise the ghost would
  * see a different icon and realise it is the ghost.
  */
-export function RoleCard({ role, playerNumber, revealed }: Props) {
+export function RoleCard({ role, playerNumber, revealed, accent: backAccent = colors.accent }: Props) {
   const { t } = useTranslation();
   const progress = useDerivedValue(
     () => withTiming(revealed ? 1 : 0, { duration: 450 }),
@@ -67,6 +74,24 @@ export function RoleCard({ role, playerNumber, revealed }: Props) {
     opacity: progress.value < 0.5 ? 1 : 0,
   }));
 
+  // Gentle breathing on the pre-reveal fingerprint — shown identically to every
+  // player (it's the face-down side), so it never hints at the hidden role.
+  const breathe = useSharedValue(0);
+  useEffect(() => {
+    breathe.value = withRepeat(
+      withSequence(
+        withTiming(1, { duration: 1500, easing: Easing.inOut(Easing.ease) }),
+        withTiming(0, { duration: 1500, easing: Easing.inOut(Easing.ease) })
+      ),
+      -1,
+      false
+    );
+  }, [breathe]);
+  const breatheStyle = useAnimatedStyle(() => ({
+    opacity: 0.5 + breathe.value * 0.5,
+    transform: [{ scale: 1 + breathe.value * 0.06 }],
+  }));
+
   const shownSpy = role.word === null; // spies have no word; ghosts hold a fake one
   const accent = shownSpy ? colors.danger : colors.streak;
 
@@ -80,18 +105,20 @@ export function RoleCard({ role, playerNumber, revealed }: Props) {
           { backgroundColor: colors.surface2, borderWidth: 1, borderColor: colors.borderSubtle },
         ]}
       >
-        <View
+        <Animated.View
           style={[
-            { backgroundColor: `${colors.accent}1F`, borderColor: `${colors.accent}40` },
-            glow(colors.accent, 'card'),
+            { backgroundColor: `${backAccent}1F`, borderColor: `${backAccent}40`, borderRadius: '100%' },
+            glow(backAccent, 'cta'),
+            breatheStyle,
           ]}
           className="h-32 w-32 items-center justify-center rounded-full border"
         >
-          <Fingerprint size={62} color={colors.accentBright} weight="duotone" />
-        </View>
+          <Fingerprint size={62} color={backAccent} weight="duotone" />
+        </Animated.View>
         <Text className="mt-8 font-display text-4xl uppercase tracking-wide text-white">
           {t('roles.player', { number: playerNumber })}
         </Text>
+        <Text className="mt-2 font-sans text-sm text-muted">{t('roles.hintReveal')}</Text>
       </Animated.View>
 
       {/* Front (revealed) — only the word (or «Шпион») */}

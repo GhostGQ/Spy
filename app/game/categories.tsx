@@ -22,6 +22,7 @@ import { CATEGORIES_DATA, categoryTitle, enabledCount } from '@/data/categories'
 import { hapticSelection } from '@/lib/haptics';
 import { colors } from '@/theme/colors';
 import { glow } from '@/theme/glow';
+import { modeAccent, modeHex } from '@/theme/modeTheme';
 import { useGameStore } from '@/store/gameStore';
 import { usePurchaseStore } from '@/store/purchaseStore';
 import { useSettingsStore } from '@/store/settingsStore';
@@ -45,6 +46,7 @@ function CategoryTile({
   comingSoon,
   price,
   size,
+  accent,
   onPress,
   onLongPress,
   wordsLabel,
@@ -59,6 +61,7 @@ function CategoryTile({
   comingSoon: boolean;
   price?: PriceConfig;
   size: number;
+  accent: string;
   onPress: () => void;
   onLongPress: () => void;
   wordsLabel: string;
@@ -78,11 +81,11 @@ function CategoryTile({
         {
           width: size,
           height: size,
-          borderColor: selected ? colors.accent : colors.borderSubtle,
+          borderColor: selected ? accent : colors.borderSubtle,
           backgroundColor: selected ? colors.surface2 : colors.surface,
           opacity: locked ? 0.6 : 1,
         },
-        selected ? glow(colors.accent, 'card') : null,
+        selected ? glow(accent, 'card') : null,
       ]}
       className="items-center justify-center rounded-3xl border-2 p-3 active:opacity-90 overflow-hidden"
     >
@@ -90,7 +93,7 @@ function CategoryTile({
         {locked ? (
           <Lock size={22} color={colors.muted} weight="fill" />
         ) : selected ? (
-          <CheckCircle size={26} color={colors.accent} weight="fill" />
+          <CheckCircle size={26} color={accent} weight="fill" />
         ) : !comingSoon ? (
           <View style={{ borderColor: colors.surface3 }} className="h-6 w-6 rounded-full border-2" />
         ) : null}
@@ -98,17 +101,17 @@ function CategoryTile({
 
       <View
         style={{
-          backgroundColor: selected ? `${colors.accent}1F` : colors.surface3,
-          borderColor: selected ? `${colors.accent}40` : colors.borderSubtle,
+          backgroundColor: selected ? `${accent}1F` : colors.surface3,
+          borderColor: selected ? `${accent}40` : colors.borderSubtle,
         }}
         className="h-16 w-16 items-center justify-center rounded-2xl border"
       >
-        <CategoryIcon id={id} size={42} color={selected ? colors.accent : colors.textSecondary} />
+        <CategoryIcon id={id} size={42} color={selected ? accent : colors.textSecondary} />
       </View>
       <Text className="mt-3 font-sans-sb text-base text-white text-center">{title}</Text>
       {locked && price ? (
         <View
-          style={{ backgroundColor: colors.purple }}
+          style={{ backgroundColor: colors.premium }}
           className="mt-1.5 rounded-full px-2.5 py-1"
         >
           <PriceTag
@@ -185,7 +188,7 @@ export default function Categories() {
   }, [purchaseError, t]);
 
   return (
-    <ScreenGradient>
+    <ScreenGradient tint={modeHex(config.mode)}>
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
         <View className="flex-1 px-3 pt-4">
           <ScreenHeader
@@ -212,6 +215,7 @@ export default function Categories() {
                     comingSoon={comingSoon}
                     price={price}
                     size={tileSize}
+                    accent={modeHex(config.mode)}
                     onPress={() => onPressTile(c)}
                     onLongPress={() => router.push({ pathname: '/game/category', params: { id: c.id } })}
                     wordsLabel={wordsLabel}
@@ -225,10 +229,10 @@ export default function Categories() {
               <Card className="mt-5 mb-3">
                 <View className="mb-3 flex-row items-center">
                   <View
-                    style={{ backgroundColor: `${colors.purple}1F`, borderColor: `${colors.purple}40` }}
+                    style={{ backgroundColor: `${colors.premium}1F`, borderColor: `${colors.premium}40` }}
                     className="mr-3 h-10 w-10 items-center justify-center rounded-2xl border"
                   >
-                    <Sparkle size={22} color={colors.purpleLight} weight="fill" />
+                    <Sparkle size={22} color={colors.premiumLight} weight="fill" />
                   </View>
                   <View className="flex-1">
                     <Text className="font-display text-base uppercase tracking-widest text-white">
@@ -252,7 +256,7 @@ export default function Categories() {
                       discounted={getPrice(ALL_CATEGORIES_PRODUCT_ID).discounted}
                       saleEndsAt={getPrice(ALL_CATEGORIES_PRODUCT_ID).saleEndsAt}
                       size="lg"
-                      color={colors.purpleLight}
+                      color={colors.premiumLight}
                     />
                     <Text className="mt-0.5 font-sans text-xs text-muted">
                       {t('purchase.fullAccessSavings')}
@@ -263,7 +267,7 @@ export default function Categories() {
                   label={allUnlocked ? t('purchase.activated') : t('purchase.activate')}
                   icon={allUnlocked ? 'checkmark' : 'lock-open-outline'}
                   size="md"
-                  accent={allUnlocked ? 'streak' : 'purple'}
+                  accent={allUnlocked ? 'streak' : 'premium'}
                   disabled={allUnlocked || isPurchasing}
                   onPress={() => void purchaseAllCategories()}
                 />
@@ -292,7 +296,7 @@ export default function Categories() {
               label={t('categories.start')}
               icon="play"
               size="lg"
-              accent="accent"
+              accent={modeAccent(config.mode)}
               disabled={!canStart}
               onPress={onStart}
             />
