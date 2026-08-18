@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { Detective, Ghost, MagnifyingGlass, SkipForward, Trophy, Users, UsersThree } from 'phosphor-react-native';
 import { useTranslation } from 'react-i18next';
-import { Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PrimaryButton } from '@/components/PrimaryButton';
@@ -46,7 +46,17 @@ export default function Result() {
   return (
     <ScreenGradient variant="splash" tint={tint}>
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
-        <View className="flex-1 justify-center px-6">
+        {/* flexGrow keeps the vertical centering; scrolls instead of clipping
+            the winner buttons on short viewports (landscape / small tablets). */}
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: 'center',
+            paddingHorizontal: 24,
+            paddingVertical: 24,
+          }}
+        >
           <View className="mb-10 items-center">
             <View
               style={[
@@ -80,7 +90,7 @@ export default function Result() {
               );
             })}
           </View>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     </ScreenGradient>
   );

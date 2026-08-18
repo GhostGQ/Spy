@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { BookOpen, GearSix, Play, Sparkle } from 'phosphor-react-native';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { FullAccessSheet } from '@/components/FullAccessSheet';
@@ -53,7 +53,17 @@ export default function MainMenu() {
     <ScreenGradient variant="splash">
       <SafeAreaView className="flex-1" edges={['top', 'bottom']}>
         <RainField count={24} color={colors.steelBright} opacity={0.4} />
-        <View className="flex-1 justify-between px-3 py-6">
+        {/* flexGrow keeps the portrait spread-out layout; scrolls instead of
+            overlapping on short viewports (landscape / small tablets). */}
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: 'space-between',
+            paddingHorizontal: 12,
+            paddingVertical: 24,
+          }}
+        >
           {showFullAccessCta ? (
             <PrimaryButton
               label={t('purchase.unlockFullAccess')}
@@ -110,7 +120,7 @@ export default function MainMenu() {
               {t('menu.tagline')}
             </Text>
           </View>
-        </View>
+        </ScrollView>
       </SafeAreaView>
       <FullAccessSheet visible={fullAccessOpen} onClose={() => setFullAccessOpen(false)} />
     </ScreenGradient>

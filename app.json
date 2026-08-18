@@ -1,21 +1,21 @@
 {
   "expo": {
-    "name": "Шпион",
+    "name": "Spy: Find the Traitor",
     "slug": "spy",
     "scheme": "spy",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
-    "backgroundColor": "#0E0F13",
+    "backgroundColor": "#0A0A0C",
     "description": "Шпион — локальная party-игра для компании. Передавайте устройство по кругу, узнайте свою роль и попробуйте вычислить шпиона.",
-    "primaryColor": "#0E0F13",
+    "primaryColor": "#0A0A0C",
     "githubUrl": "https://github.com/GhostGQ/Spy",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.spy_ghostgq_studio",
       "adaptiveIcon": {
-        "backgroundColor": "#0E0F13",
+        "backgroundColor": "#0A0A0C",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
@@ -28,7 +28,7 @@
       "package": "com.spy_ghostgq_studio",
       "versionCode": 1,
       "adaptiveIcon": {
-        "backgroundColor": "#0E0F13",
+        "backgroundColor": "#0A0A0C",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
@@ -47,7 +47,7 @@
           "image": "./assets/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#0E0F13"
+          "backgroundColor": "#0A0A0C"
         }
       ]
     ],

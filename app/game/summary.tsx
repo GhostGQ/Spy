@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { ArrowsClockwise, CaretLeft, GameController, Ghost, House, Key, SkipForward, Trophy, User } from 'phosphor-react-native';
-import type { ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -17,6 +17,7 @@ import { colors } from '@/theme/colors';
 import { glow } from '@/theme/glow';
 import { modeAccent, modeHex } from '@/theme/modeTheme';
 import { useGameStore } from '@/store/gameStore';
+import { useSettingsStore } from '@/store/settingsStore';
 
 /** Color per true role kind; labels are localized at render via i18n. */
 const KIND_COLOR: Record<Role['kind'], string> = {
@@ -51,6 +52,12 @@ export default function Summary() {
   const winner = useGameStore((s) => s.winner);
   const playAgain = useGameStore((s) => s.playAgain);
   const reset = useGameStore((s) => s.reset);
+
+  // Count the finished round; the store-review prompt fires itself at the 3rd.
+  const finishRound = useSettingsStore((s) => s.finishRound);
+  useEffect(() => {
+    finishRound();
+  }, [finishRound]);
 
   const mode = getMode(config.mode);
   const tint = modeHex(config.mode);

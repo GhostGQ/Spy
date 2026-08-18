@@ -1,0 +1,98 @@
+<svg width="1024" height="500" viewBox="0 0 1024 500" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#16161c"/>
+<stop offset="100%" stop-color="#0a0a0c"/>
+</linearGradient>
+<linearGradient id="lit" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0%" stop-color="#C8CEDA"/>
+<stop offset="48%" stop-color="#7A8294"/>
+<stop offset="100%" stop-color="#26272E"/>
+</linearGradient>
+<linearGradient id="hat" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#43454F"/>
+<stop offset="100%" stop-color="#15161A"/>
+</linearGradient>
+<radialGradient id="vig" cx="50%" cy="50%" r="50%">
+<stop offset="0%" stop-color="#A6ADBE" stop-opacity="0.14"/>
+<stop offset="60%" stop-color="#6E7689" stop-opacity="0.05"/>
+<stop offset="100%" stop-color="#6E7689" stop-opacity="0"/>
+</radialGradient>
+<clipPath id="figure">
+<path d="M767,222 C767,276 781,300 808,300 C835,300 849,276 849,222 Z"/>
+<path d="M720,378 C723,324 765,306 808,306 C851,306 893,324 896,378 Z"/>
+</clipPath>
+<clipPath id="banner">
+<rect x="0" y="0" width="1024" height="500"/>
+</clipPath>
+</defs>
+
+<g clip-path="url(#banner)">
+<rect x="0" y="0" width="1024" height="500" fill="url(#bg)"/>
+
+<g opacity="0.05">
+<rect x="380" y="-220" width="46" height="940" fill="#C8CEDA" transform="rotate(24 512 250)"/>
+<rect x="500" y="-220" width="30" height="940" fill="#C8CEDA" transform="rotate(24 512 250)"/>
+<rect x="600" y="-220" width="52" height="940" fill="#C8CEDA" transform="rotate(24 512 250)"/>
+<rect x="720" y="-220" width="26" height="940" fill="#C8CEDA" transform="rotate(24 512 250)"/>
+</g>
+
+<g stroke="#C2C4CE" stroke-linecap="round">
+<line x1="120" y1="30" x2="112" y2="88" stroke-width="2" opacity="0.10"/>
+<line x1="235" y1="130" x2="228" y2="174" stroke-width="1.5" opacity="0.08"/>
+<line x1="80" y1="310" x2="73" y2="362" stroke-width="1.5" opacity="0.09"/>
+<line x1="315" y1="60" x2="308" y2="110" stroke-width="2" opacity="0.08"/>
+<line x1="545" y1="240" x2="538" y2="296" stroke-width="1.5" opacity="0.08"/>
+<line x1="590" y1="395" x2="583" y2="445" stroke-width="2" opacity="0.08"/>
+<line x1="660" y1="40" x2="653" y2="96" stroke-width="1.5" opacity="0.11"/>
+<line x1="700" y1="330" x2="693" y2="382" stroke-width="1.5" opacity="0.09"/>
+<line x1="930" y1="70" x2="923" y2="126" stroke-width="2" opacity="0.10"/>
+<line x1="975" y1="260" x2="968" y2="316" stroke-width="1.5" opacity="0.09"/>
+<line x1="870" y1="405" x2="863" y2="457" stroke-width="1.5" opacity="0.08"/>
+<line x1="180" y1="435" x2="173" y2="479" stroke-width="1.5" opacity="0.07"/>
+<line x1="30" y1="140" x2="23" y2="190" stroke-width="1.5" opacity="0.08"/>
+</g>
+
+<g stroke-linecap="round" stroke-width="1.5">
+<line x1="285" y1="230" x2="277" y2="290" stroke="#3B82F6" opacity="0.16"/>
+<line x1="450" y1="80" x2="442" y2="140" stroke="#2DD4F7" opacity="0.14"/>
+<line x1="150" y1="180" x2="142" y2="236" stroke="#8B5CF6" opacity="0.14"/>
+<line x1="620" y1="170" x2="612" y2="228" stroke="#F87171" opacity="0.13"/>
+<line x1="390" y1="360" x2="382" y2="416" stroke="#F5B93E" opacity="0.14"/>
+<line x1="965" y1="150" x2="957" y2="202" stroke="#2DD4F7" opacity="0.10"/>
+<line x1="60" y1="410" x2="53" y2="458" stroke="#3B82F6" opacity="0.10"/>
+</g>
+
+<g transform="translate(808 272) scale(1.28) translate(-808 -272)">
+<circle cx="808" cy="235" r="205" fill="url(#vig)"/>
+
+<path d="M720,378 C723,324 765,306 808,306 C851,306 893,324 896,378 Z" fill="url(#lit)"/>
+<path d="M808,306 L781,367 L808,353 L835,367 Z" fill="#1A1B20" opacity="0.9"/>
+<path d="M767,222 C767,276 781,300 808,300 C835,300 849,276 849,222 Z" fill="url(#lit)"/>
+
+<g clip-path="url(#figure)">
+<rect x="808" y="155" width="180" height="250" fill="#0C0C10" opacity="0.82"/>
+<g opacity="0.2">
+<rect x="680" y="230" width="290" height="9" fill="#C8CEDA" transform="rotate(-16 808 265)"/>
+<rect x="680" y="270" width="290" height="9" fill="#C8CEDA" transform="rotate(-16 808 265)"/>
+<rect x="680" y="310" width="290" height="9" fill="#C8CEDA" transform="rotate(-16 808 265)"/>
+<rect x="680" y="350" width="290" height="9" fill="#C8CEDA" transform="rotate(-16 808 265)"/>
+</g>
+</g>
+
+<ellipse cx="808" cy="217" rx="116" ry="24" fill="url(#hat)"/>
+<ellipse cx="808" cy="214" rx="116" ry="23" fill="none" stroke="#6E7689" stroke-opacity="0.5" stroke-width="1.5"/>
+<path d="M752,217 C752,176 764,159 808,159 C852,159 864,176 864,217 Z" fill="url(#hat)"/>
+<path d="M753,204 C780,214 836,214 863,204 L863,213 C836,223 780,223 753,213 Z" fill="#0E0E13"/>
+<path d="M754,214 C757,180 768,163 805,162" fill="none" stroke="#C8CEDA" stroke-opacity="0.4" stroke-width="2" stroke-linecap="round"/>
+</g>
+
+<rect x="72" y="176" width="46" height="5" fill="#C8CEDA" opacity="0.55"/>
+<text x="70" y="248" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="46" fill="#FFFFFF">Find the one who</text>
+<text x="70" y="304" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="46" fill="#FFFFFF">doesn't know the word</text>
+
+<line x1="72" y1="348" x2="540" y2="348" stroke="#FFFFFF" stroke-opacity="0.1" stroke-width="1"/>
+<text x="72" y="384" font-family="Helvetica, Arial, sans-serif" font-size="21" fill="#8B90A0">A party game of deception</text>
+<text x="72" y="420" font-family="Helvetica, Arial, sans-serif" font-size="19" fill="#7C7F8B">3–12 players · one device · offline</text>
+</g>
+</svg>
